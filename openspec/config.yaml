@@ -1,0 +1,64 @@
+schema: spec-driven
+
+# SDD session choices (init 2026-07-29)
+# execution_mode: auto
+# artifact_store.mode: hybrid
+# delivery_strategy: auto-chain
+# review_budget_lines: 400 (TOTAL changed lines per PR: additions+deletions across ALL files, generated lockfiles included; over-budget only via maintainer-approved size:exception)
+
+context: |
+  Project: teamjobs-landing — marketing landing page for TeamJobs.
+  Stack: Astro 5.18.2 + TypeScript 5.9.3 + Tailwind CSS 4.0.17 + Preact runtime 10.29.7; Astro's Preact adapter is deferred to the interactive UI work unit.
+  Package manager: pnpm only. Runtime/dev/prod: Docker only.
+  Design source: design/mockups (6 section PNGs). Assets: design/assets.
+  Repo state at init: greenfield (git + design/ only; no app source yet).
+
+strict_tdd: false
+
+testing:
+  strict_tdd: false
+  detected: "2026-07-29"
+  runner:
+    command: "docker compose run --rm test pnpm vitest run"
+    framework: "Vitest 4.1.10"
+  layers:
+    unit: { available: true, tool: "Vitest 4.1.10" }
+    integration: { available: true, tool: "Docker Compose + nginx preview harness" }
+    e2e: { available: false, tool: "Deferred to the interactive UI work unit; Compose service is profile-gated" }
+  coverage:
+    available: false
+    command: ""
+  quality:
+    linter: { available: true, command: "docker compose run --rm test pnpm eslint ." }
+    type_checker: { available: true, command: "docker compose run --rm test pnpm check" }
+    formatter: { available: true, command: "docker compose run --rm test pnpm prettier --check ." }
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Respect Docker-first and pnpm-only constraints
+    - Treat design/mockups as visual source of truth for sections
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Document architecture decisions with rationale
+    - Prefer Astro islands with Preact only where interactivity is required
+    - Plan Docker dev and production images with pinned tool versions
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+    - Keep PRs within review_budget_lines: 400 TOTAL changed lines (generated files and lockfiles count; no silent exclusions — over-budget requires maintainer-approved size:exception)
+  apply:
+    guidelines:
+      - Use pnpm exclusively (never npm/yarn)
+      - Run and verify inside Docker; every pnpm command executes in a container (host Node/pnpm never required)
+      - Source images/videos from design/assets; match design/mockups
+    tdd: false
+    test_command: "docker compose run --rm test pnpm vitest run tests/unit/config.test.ts"
+  verify:
+    test_command: "docker compose run --rm test sh -c \"pnpm check && pnpm eslint . && pnpm prettier --check .\""
+    build_command: "docker compose build preview"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
