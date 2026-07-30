@@ -1,0 +1,15 @@
+# SDD / agent local index (regenerable)
+.atl/
+
+# Dependencies & build (expected after scaffold)
+node_modules/
+dist/
+.astro/
+.pnpm-store/
+
+# Env & OS
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log

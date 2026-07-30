@@ -1,0 +1,9 @@
+.git
+.atl
+.astro
+dist
+node_modules
+.pnpm-store
+*.log
+openspec
+design/mockups

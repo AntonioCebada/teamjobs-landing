@@ -1,0 +1,62 @@
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+      network: host
+    ports:
+      - '4321:4321'
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+    environment:
+      CI: 'true'
+    command:
+      ['sh', '-c', 'pnpm install --frozen-lockfile && pnpm dev --host 0.0.0.0']
+
+  build:
+    build:
+      context: .
+      target: build
+      network: host
+    command: ['pnpm', 'build']
+
+  preview:
+    build:
+      context: .
+      target: prod
+      network: host
+    ports:
+      - '4321:80'
+
+  test:
+    build:
+      context: .
+      target: test
+      network: host
+    network_mode: host
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+    environment:
+      CI: 'true'
+    command: ['pnpm', 'test']
+
+  e2e:
+    profiles: ['e2e']
+    image: mcr.microsoft.com/playwright:v1.62.0-noble
+    depends_on:
+      - preview
+    working_dir: /app
+    network_mode: host
+    volumes:
+      - .:/app
+    command:
+      - /bin/bash
+      - -lc
+      - >-
+        echo 'Playwright is deferred to the interactive UI work unit.' >&2;
+        exit 2
+
+volumes:
+  app_node_modules:
