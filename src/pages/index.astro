@@ -1,7 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import { logo } from '../assets/media';
+import Hero from '../components/Hero.astro';
 import Navbar from '../components/Navbar.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { siteConfig } from '../config/site';
 import { siteContent } from '../content/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -15,37 +15,13 @@ const anchorTargets = siteConfig.navigation
 
 <BaseLayout>
   <Navbar slot="header" />
-  <div
-    id="inicio"
-    class="page-shell grid min-h-[75vh] items-center gap-10 py-16 md:grid-cols-2"
-  >
-    <div>
-      <p class="eyebrow">{siteContent.foundation.status}</p>
-      <h1
-        class="mt-5 text-4xl font-bold tracking-tight text-brand-navy md:text-6xl"
-      >
-        {siteContent.foundation.title}
-      </h1>
-      <p class="mt-5 max-w-xl text-lg leading-8 text-brand-muted">
-        {siteContent.foundation.description}
-      </p>
-    </div>
-    <div class="surface-card mx-auto w-full max-w-sm p-8">
-      <Image
-        src={logo}
-        alt={siteContent.seo.imageAlt}
-        width={logo.width}
-        height={logo.height}
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
-  </div>
+  <Hero />
   {
     anchorTargets.map((href) => (
       <div id={href.slice(1)} class="scroll-mt-24" aria-hidden="true" />
     ))
   }
+  <WhatsAppFab />
   <p slot="footer" class="page-shell py-6 text-sm text-brand-muted">
     © 2026 {siteContent.brandName}
   </p>

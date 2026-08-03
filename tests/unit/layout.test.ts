@@ -11,7 +11,7 @@ describe('BaseLayout contract', () => {
   it('defines the Spanish semantic shell and keyboard entry point', () => {
     expect(layout).toContain('<html lang="es">');
     expect(layout).toContain('class="skip-link" href="#main-content"');
-    expect(layout).toContain('<main id="main-content" tabindex="-1">');
+    expect(layout).toMatch(/<main\s+id="main-content"\s+tabindex="-1"/);
     expect(layout.indexOf('skip-link')).toBeLessThan(layout.indexOf('<header'));
   });
 

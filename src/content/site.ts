@@ -31,9 +31,19 @@ export const siteContent = {
       contacto: 'Contacto',
     },
   },
-  foundation: {
-    title: 'Conectamos empresas con talento excepcional',
-    description: 'La experiencia de TeamJobs está en construcción.',
-    status: 'Fundación visual lista',
+  hero: {
+    eyebrow: 'Soluciones de Recursos Humanos',
+    titleStart: 'Conectamos ',
+    titleAccent: 'Empresas',
+    titleEnd: ' con Talento Excepcional',
+    description:
+      'Somos el puente entre el talento excepcional y las organizaciones que buscan crecer. Desde reclutamiento hasta consultoría integral de RH.',
+    primaryCta: 'Explorar Vacantes',
+    secondaryCta: 'Nuestros Servicios',
+    stats: ['+100 Empresas', '98% Satisfacción'],
+    videoLabel: 'Animación de la mascota de TeamJobs',
+  },
+  fab: {
+    ariaLabel: 'Abrir chat de WhatsApp en una nueva ventana',
   },
 };

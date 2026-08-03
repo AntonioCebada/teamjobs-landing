@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+import heroVideo from '../../design/assets/clip-logo.mp4?url';
+import { logo } from '../assets/media';
+import { siteConfig } from '../config/site';
+import { siteContent } from '../content/site';
+import HeroVideo from '../islands/HeroVideo';
+
+const { hero } = siteContent;
+---
+
+<section id="inicio" class="relative overflow-hidden bg-brand-navy text-white">
+  <div
+    class="page-shell grid min-h-[40rem] items-center gap-14 py-16 lg:grid-cols-2 lg:py-20"
+  >
+    <div class="relative z-10">
+      <p
+        class="w-fit rounded-full border border-white/25 px-4 py-2 text-xs font-semibold"
+      >
+        <span class="mr-2 text-brand-teal">●</span>{hero.eyebrow}
+      </p>
+      <h1
+        class="mt-7 max-w-2xl text-4xl font-bold leading-tight tracking-tight md:text-6xl"
+      >
+        {hero.titleStart}<span class="text-brand-blue">{hero.titleAccent}</span
+        >{hero.titleEnd}
+      </h1>
+      <p class="mt-6 max-w-xl text-base leading-8 text-white/75">
+        {hero.description}
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a
+          class="rounded-full bg-brand-blue px-6 py-3 font-semibold shadow-lg hover:bg-brand-violet"
+          href={siteConfig.urls.vacantes}
+        >
+          {hero.primaryCta}
+        </a>
+        <a
+          class="rounded-full border border-white/60 px-6 py-3 font-semibold hover:bg-white/10"
+          href="#servicios"
+        >
+          {hero.secondaryCta}
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="relative mx-auto grid aspect-square w-full max-w-md place-items-center rounded-full border border-brand-teal/50 bg-brand-blue/10 p-14 shadow-2xl"
+    >
+      {
+        siteConfig.enableHeroVideo ? (
+          <HeroVideo
+            client:visible
+            label={hero.videoLabel}
+            poster={logo.src}
+            src={heroVideo}
+          />
+        ) : (
+          <Image
+            src={logo}
+            alt={siteContent.seo.imageAlt}
+            width={logo.width}
+            height={logo.height}
+            priority
+          />
+        )
+      }
+      <span
+        class="absolute right-0 top-8 rounded-xl bg-white px-4 py-3 text-sm font-bold text-brand-navy shadow-xl"
+      >
+        {hero.stats[0]}
+      </span>
+      <span
+        class="absolute bottom-6 left-0 rounded-xl bg-white px-4 py-3 text-sm font-bold text-brand-navy shadow-xl"
+      >
+        {hero.stats[1]}
+      </span>
+    </div>
+  </div>
+</section>

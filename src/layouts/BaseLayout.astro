@@ -65,7 +65,13 @@ const organization = {
     <header class="sticky top-0 z-40" aria-label="Cabecera del sitio">
       <slot name="header" />
     </header>
-    <main id="main-content" tabindex="-1"><slot /></main>
+    <main
+      id="main-content"
+      tabindex="-1"
+      class="pb-[calc(4.5rem+env(safe-area-inset-bottom))]"
+    >
+      <slot />
+    </main>
     <footer><slot name="footer" /></footer>
   </body>
 </html>
