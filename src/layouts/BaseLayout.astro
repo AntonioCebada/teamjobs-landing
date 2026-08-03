@@ -62,7 +62,9 @@ const organization = {
   </head>
   <body>
     <a class="skip-link" href="#main-content">Saltar al contenido</a>
-    <header aria-label="Cabecera del sitio"><slot name="header" /></header>
+    <header class="sticky top-0 z-40" aria-label="Cabecera del sitio">
+      <slot name="header" />
+    </header>
     <main id="main-content" tabindex="-1"><slot /></main>
     <footer><slot name="footer" /></footer>
   </body>

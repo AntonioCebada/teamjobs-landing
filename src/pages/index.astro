@@ -1,15 +1,22 @@
 ---
 import { Image } from 'astro:assets';
 import { logo } from '../assets/media';
+import Navbar from '../components/Navbar.astro';
+import { siteConfig } from '../config/site';
 import { siteContent } from '../content/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const anchorTargets = siteConfig.navigation
+  .map(({ href }) => href)
+  .filter(
+    (href) => href.startsWith('#') && href.length > 1 && href !== '#inicio',
+  );
 ---
 
 <BaseLayout>
-  <p slot="header" class="page-shell py-5 font-bold text-brand-navy">
-    {siteContent.brandName}
-  </p>
+  <Navbar slot="header" />
   <div
+    id="inicio"
     class="page-shell grid min-h-[75vh] items-center gap-10 py-16 md:grid-cols-2"
   >
     <div>
@@ -34,6 +41,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       />
     </div>
   </div>
+  {
+    anchorTargets.map((href) => (
+      <div id={href.slice(1)} class="scroll-mt-24" aria-hidden="true" />
+    ))
+  }
   <p slot="footer" class="page-shell py-6 text-sm text-brand-muted">
     © 2026 {siteContent.brandName}
   </p>

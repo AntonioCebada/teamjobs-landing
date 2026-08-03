@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import { logo } from '../assets/media';
+import { siteConfig } from '../config/site';
+import { siteContent } from '../content/site';
+import MobileNav from '../islands/MobileNav';
+
+const { navigation } = siteContent;
+const links = siteConfig.navigation.map(({ key, href }) => ({
+  href,
+  label: navigation.links[key],
+}));
+---
+
+<nav aria-label={navigation.label} class="bg-brand-navy text-white shadow-lg">
+  <div class="page-shell flex h-18 items-center justify-between gap-5">
+    <a
+      href="#inicio"
+      class="flex items-center gap-2 font-bold"
+      aria-label="TeamJobs, inicio"
+    >
+      <Image src={logo} alt="" width={38} height={38} />
+      <span>Team<span class="text-brand-blue">Jobs</span></span>
+    </a>
+    <div class="hidden items-center gap-5 text-xs font-semibold xl:flex">
+      {
+        links.map(({ href, label }) => (
+          <a class="py-3 hover:text-brand-blue" href={href}>
+            {label}
+          </a>
+        ))
+      }
+      <span
+        aria-label={`Idioma actual: ${navigation.language}`}
+        class="rounded-full border border-white/30 px-3 py-2"
+      >
+        {navigation.language}
+      </span>
+      <a
+        class="rounded-full bg-brand-blue px-5 py-3 hover:bg-brand-violet"
+        href={siteConfig.urls.login}
+      >
+        {navigation.login}
+      </a>
+    </div>
+    <MobileNav
+      client:load
+      links={links}
+      loginHref={siteConfig.urls.login}
+      labels={navigation}
+    />
+  </div>
+</nav>
