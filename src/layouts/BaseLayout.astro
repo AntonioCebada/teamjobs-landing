@@ -1,0 +1,69 @@
+---
+import { logo } from '../assets/media';
+import { siteConfig } from '../config/site';
+import { siteContent } from '../content/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = siteContent.seo.title,
+  description = siteContent.seo.description,
+} = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl);
+const imageUrl = new URL(logo.src, siteConfig.siteUrl);
+const socialUrls = Object.values(siteConfig.urls.socials).filter(
+  (url) => url !== '#',
+);
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteContent.brandName,
+  url: siteConfig.siteUrl,
+  logo: imageUrl,
+  email: siteContent.organization.email,
+  telephone: siteConfig.whatsappNumber,
+  address: {
+    '@type': 'PostalAddress',
+    ...siteContent.organization.address,
+  },
+  ...(socialUrls.length > 0 && { sameAs: socialUrls }),
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content={siteContent.seo.imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={siteContent.seo.imageAlt} />
+    <title>{title}</title>
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(organization).replace(/</g, '\\u003c')}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <header aria-label="Cabecera del sitio"><slot name="header" /></header>
+    <main id="main-content" tabindex="-1"><slot /></main>
+    <footer><slot name="footer" /></footer>
+  </body>
+</html>

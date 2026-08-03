@@ -1,0 +1,17 @@
+---
+interface Props {
+  label: string;
+  class?: string;
+}
+
+const { label, class: className } = Astro.props;
+---
+
+<div
+  class:list={['surface-card grid min-h-32 place-items-center p-6', className]}
+  role="img"
+  aria-label={`Contenido pendiente: ${label}`}
+>
+  <span class="text-center text-sm font-semibold text-brand-muted">{label}</span
+  >
+</div>

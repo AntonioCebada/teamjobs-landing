@@ -1,4 +1,5 @@
 export const siteConfig = {
+  siteUrl: 'https://teamjobs.example',
   whatsappNumber: '+5215610275879',
   formEndpoint: null,
   enableHeroVideo: false,
