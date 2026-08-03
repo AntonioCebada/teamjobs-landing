@@ -16,6 +16,7 @@ export type NavigationKey =
 
 export const siteConfig = {
   siteUrl: 'https://teamjobs.example',
+  contactHref: '#contacto',
   whatsappNumber: '+5215610275879',
   formEndpoint: null,
   enableHeroVideo: false,

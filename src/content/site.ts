@@ -43,6 +43,62 @@ export const siteContent = {
     stats: ['+100 Empresas', '98% Satisfacción'],
     videoLabel: 'Animación de la mascota de TeamJobs',
   },
+  about: {
+    eyebrow: 'Quiénes somos',
+    titleStart: 'Impulsamos el ',
+    titleAccent: 'Capital Humano',
+    titleEnd: ' de tu empresa',
+    description:
+      'En TeamJobs creemos que el talento es el motor de toda organización. Nacimos para simplificar los procesos de RH y crear conexiones significativas entre empresas y profesionales.',
+    location:
+      'Trabajamos desde WeWork Torre Mitikah en CDMX, con un equipo apasionado por la tecnología y el desarrollo humano.',
+    candidates: '15K+',
+    candidatesLabel: 'Candidatos',
+    values: ['Innovación', 'Compromiso', 'Integridad', 'Excelencia'],
+    pillars: [
+      {
+        title: 'Misión',
+        description:
+          'Impulsar el desarrollo del talento humano mediante soluciones estratégicas e innovadoras de gestión de RH, facilitando la conexión entre profesionales y organizaciones para generar valor, crecimiento y eficiencia.',
+      },
+      {
+        title: 'Visión',
+        description:
+          'Consolidarnos como la plataforma referente en gestión del talento, reconocida por la excelencia, innovación tecnológica y contribución al desarrollo sostenible.',
+      },
+    ],
+    cta: 'Hablemos de tu empresa',
+  },
+  solutions: {
+    eyebrow: 'Lo que hacemos',
+    titleStart: 'Soluciones de RH para cada ',
+    titleAccent: 'necesidad',
+    description:
+      'Desde reclutamiento especializado hasta consultoría organizacional, te acompañamos en cada etapa.',
+    action: 'Conocer más',
+    items: [
+      {
+        title: 'Reclutamiento y Selección',
+        description:
+          'Identificamos y evaluamos el talento ideal con metodología comprobada y procesos 100% ágiles y digitales.',
+      },
+      {
+        title: 'Gestión de Talento',
+        description:
+          'Estrategias para desarrollar, retener y motivar a tu equipo impulsando el crecimiento organizacional sostenible.',
+      },
+      {
+        title: 'Outsourcing de RH',
+        description:
+          'Deléganos la gestión operativa de recursos humanos y enfócate en el corazón de tu negocio.',
+      },
+      {
+        title: 'Consultoría Organizacional',
+        description:
+          'Diagnóstico y transformación de procesos de RH. Diseñamos estructuras eficientes alineadas a tus objetivos.',
+      },
+    ],
+  },
   fab: {
     ariaLabel: 'Abrir chat de WhatsApp en una nueva ventana',
   },

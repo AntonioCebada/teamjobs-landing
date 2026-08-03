@@ -1,6 +1,8 @@
 ---
+import About from '../components/About.astro';
 import Hero from '../components/Hero.astro';
 import Navbar from '../components/Navbar.astro';
+import Solutions from '../components/Solutions.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { siteConfig } from '../config/site';
 import { siteContent } from '../content/site';
@@ -11,15 +13,20 @@ const anchorTargets = siteConfig.navigation
   .filter(
     (href) => href.startsWith('#') && href.length > 1 && href !== '#inicio',
   );
+const implementedAnchors = new Set(['#nosotros', '#servicios']);
 ---
 
 <BaseLayout>
   <Navbar slot="header" />
   <Hero />
+  <About />
+  <Solutions />
   {
-    anchorTargets.map((href) => (
-      <div id={href.slice(1)} class="scroll-mt-24" aria-hidden="true" />
-    ))
+    anchorTargets
+      .filter((href) => !implementedAnchors.has(href))
+      .map((href) => (
+        <div id={href.slice(1)} class="scroll-mt-24" aria-hidden="true" />
+      ))
   }
   <WhatsAppFab />
   <p slot="footer" class="page-shell py-6 text-sm text-brand-muted">

@@ -1,0 +1,61 @@
+---
+import { siteConfig } from '../config/site';
+import { siteContent } from '../content/site';
+
+const { solutions } = siteContent;
+const accents = [
+  'border-t-brand-violet',
+  'border-t-brand-teal',
+  'border-t-brand-blue',
+  'border-t-brand-navy',
+];
+---
+
+<section id="servicios" class="scroll-mt-24 bg-brand-surface py-20 sm:py-24">
+  <div class="page-shell min-w-0">
+    <header class="mx-auto max-w-4xl text-center">
+      <p class="eyebrow mx-auto">{solutions.eyebrow}</p>
+      <h2
+        class="mt-5 text-3xl font-bold leading-tight text-brand-navy sm:text-5xl"
+      >
+        {solutions.titleStart}<span
+          class="bg-brand bg-clip-text text-transparent"
+          >{solutions.titleAccent}</span
+        >
+      </h2>
+      <p class="mx-auto mt-5 max-w-2xl leading-7 text-brand-muted">
+        {solutions.description}
+      </p>
+    </header>
+
+    <div class="mt-12 grid min-w-0 gap-5 md:grid-cols-2">
+      {
+        solutions.items.map(({ title, description }, index) => (
+          <article
+            class:list={[
+              'surface-card flex min-w-0 flex-col border-t-4 p-7',
+              accents[index],
+            ]}
+          >
+            <span
+              aria-hidden="true"
+              class="grid size-12 place-items-center rounded-xl bg-brand-sky font-bold text-brand-blue"
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <h3 class="mt-5 text-lg font-bold text-brand-navy">{title}</h3>
+            <p class="mt-3 flex-1 text-sm leading-6 text-brand-muted">
+              {description}
+            </p>
+            <a
+              class="mt-6 w-fit font-semibold text-brand-blue hover:text-brand-violet"
+              href={siteConfig.contactHref}
+            >
+              {solutions.action} <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
