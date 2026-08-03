@@ -99,6 +99,49 @@ export const siteContent = {
       },
     ],
   },
+  companies: {
+    eyebrow: 'Para empresas',
+    titleStart: 'Encuentra el talento ',
+    titleAccent: 'que necesitas',
+    description:
+      'Conectamos tu empresa con profesionales calificados de manera rápida, eficiente y confiable. Así funciona nuestro proceso:',
+    steps: [
+      {
+        title: 'Contáctanos',
+        description:
+          'Cuéntanos las necesidades de tu empresa y el perfil que buscas.',
+        iconLabel: 'Icono pendiente: contacto',
+      },
+      {
+        title: 'Búsqueda Activa',
+        description:
+          'Nuestro equipo identifica y evalúa candidatos con el perfil ideal.',
+        iconLabel: 'Icono pendiente: búsqueda',
+      },
+      {
+        title: 'Presentación',
+        description:
+          'Te presentamos candidatos preseleccionados y evaluados para tu posición.',
+        iconLabel: 'Icono pendiente: presentación',
+      },
+      {
+        title: 'Contratación',
+        description:
+          'Acompañamos el proceso hasta la integración exitosa del candidato.',
+        iconLabel: 'Icono pendiente: contratación',
+      },
+    ],
+    cta: 'Quiero contratar talento',
+    trustHeading: 'Empresas que confían en nosotros',
+    carouselLabel: 'Logotipos de empresas, recursos gráficos pendientes',
+    logoPlaceholders: [
+      'Logotipo pendiente 01',
+      'Logotipo pendiente 02',
+      'Logotipo pendiente 03',
+      'Logotipo pendiente 04',
+      'Logotipo pendiente 05',
+    ],
+  },
   fab: {
     ariaLabel: 'Abrir chat de WhatsApp en una nueva ventana',
   },

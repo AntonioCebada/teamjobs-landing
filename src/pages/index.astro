@@ -1,5 +1,6 @@
 ---
 import About from '../components/About.astro';
+import Empresas from '../components/Empresas.astro';
 import Hero from '../components/Hero.astro';
 import Navbar from '../components/Navbar.astro';
 import Solutions from '../components/Solutions.astro';
@@ -13,7 +14,7 @@ const anchorTargets = siteConfig.navigation
   .filter(
     (href) => href.startsWith('#') && href.length > 1 && href !== '#inicio',
   );
-const implementedAnchors = new Set(['#nosotros', '#servicios']);
+const implementedAnchors = new Set(['#nosotros', '#servicios', '#empresas']);
 ---
 
 <BaseLayout>
@@ -21,6 +22,7 @@ const implementedAnchors = new Set(['#nosotros', '#servicios']);
   <Hero />
   <About />
   <Solutions />
+  <Empresas />
   {
     anchorTargets
       .filter((href) => !implementedAnchors.has(href))
