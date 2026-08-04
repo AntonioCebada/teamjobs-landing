@@ -2,13 +2,13 @@
 
 ## Tecnologías
 
-| Área | Tecnología y función |
-| --- | --- |
-| Frontend y generación estática | Astro 5 genera el sitio estático; TypeScript con configuración estricta aporta tipado al código. |
-| Islas interactivas | Preact 10, integrado con Astro, hidrata la navegación móvil; también implementa una isla opcional para el video principal, actualmente desactivada. |
-| Estilos y recursos | Tailwind CSS 4 se integra mediante Vite; Fontsource proporciona la fuente Poppins y Sharp respalda el procesamiento de imágenes de Astro. |
-| Pruebas y calidad | Vitest 4 ejecuta las pruebas unitarias; Astro Check, ESLint y Prettier cubren validación, análisis estático y formato. |
-| Entorno y publicación | Docker Compose coordina desarrollo, construcción y pruebas en contenedores con Node.js 22 y pnpm 10; la imagen de producción sirve la salida estática mediante nginx 1. |
+| Área                           | Tecnología y función                                                                                                                                                    |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frontend y generación estática | Astro 5 genera el sitio estático; TypeScript con configuración estricta aporta tipado al código.                                                                        |
+| Islas interactivas             | Preact 10, integrado con Astro, hidrata la navegación móvil; también implementa una isla opcional para el video principal, actualmente desactivada.                     |
+| Estilos y recursos             | Tailwind CSS 4 se integra mediante Vite; Fontsource proporciona la fuente Poppins y Sharp respalda el procesamiento de imágenes de Astro.                               |
+| Pruebas y calidad              | Vitest 4 ejecuta las pruebas unitarias; Astro Check, ESLint y Prettier cubren validación, análisis estático y formato.                                                  |
+| Entorno y publicación          | Docker Compose coordina desarrollo, construcción y pruebas en contenedores con Node.js 22 y pnpm 10; la imagen de producción sirve la salida estática mediante nginx 1. |
 
 ## Requisitos previos
 
