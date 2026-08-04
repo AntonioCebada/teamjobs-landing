@@ -142,6 +142,48 @@ export const siteContent = {
       'Logotipo pendiente 05',
     ],
   },
+  resources: {
+    eyebrow: 'Recursos',
+    titleStart: 'Contenido para impulsar ',
+    titleAccent: 'tu carrera',
+    description:
+      'Guías prácticas, estrategias y consejos creados por expertos en RH para ayudarte a crecer profesionalmente.',
+    cards: [
+      {
+        category: 'Para Candidatos',
+        title: 'Cómo hacer un CV que destaque en 2026',
+        description:
+          'Descubre las claves para crear un CV moderno que supere los filtros ATS y capture la atención de los reclutadores en segundos.',
+        readingTime: '8 min lectura',
+        date: 'Jun 2026',
+        gradient: 'linear-gradient(135deg, #6B3FD4, #00CDB8)',
+      },
+      {
+        category: 'Para Empresas',
+        title: '5 estrategias para retener talento clave',
+        description:
+          'Aprende cómo las mejores empresas mantienen motivados a sus equipos.',
+        readingTime: '10 min lectura',
+        date: 'May 2026',
+        gradient: 'linear-gradient(135deg, #3B82F6, #e11d48)',
+      },
+      {
+        category: 'Tips Entrevistas',
+        title: 'Las 10 preguntas más frecuentes en entrevistas',
+        description:
+          'Prepárate con anticipación y llega con confianza a tu próxima entrevista.',
+        readingTime: '12 min lectura',
+        date: 'Jun 2026',
+        gradient: 'linear-gradient(135deg, #2D3270, #7c3aed)',
+      },
+    ],
+    consultation: {
+      title: '¿Listo para encontrar el talento ideal?',
+      description:
+        'Contáctanos hoy y recibe una consulta gratuita para diseñar la estrategia de RH perfecta para tu empresa.',
+      cta: 'Consulta Gratuita',
+    },
+  },
   fab: {
     ariaLabel: 'Abrir chat de WhatsApp en una nueva ventana',
   },

@@ -1,0 +1,207 @@
+---
+import { Image } from 'astro:assets';
+import { logo } from '../assets/media';
+import { siteConfig } from '../config/site';
+import { siteContent } from '../content/site';
+
+const { resources } = siteContent;
+---
+
+<section id="recursos" class="scroll-mt-24 bg-white py-20 sm:py-24">
+  <div class="page-shell min-w-0">
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="eyebrow mx-auto">{resources.eyebrow}</p>
+      <h2
+        class="mt-5 text-3xl font-bold leading-tight text-brand-navy sm:text-5xl"
+      >
+        {resources.titleStart}<span
+          class="bg-brand bg-clip-text text-transparent"
+          >{resources.titleAccent}</span
+        >
+      </h2>
+      <p class="mx-auto mt-5 max-w-2xl leading-7 text-brand-muted">
+        {resources.description}
+      </p>
+    </header>
+
+    <div class="mt-12 grid min-w-0 gap-7 md:grid-cols-3">
+      {
+        resources.cards.map((card) => (
+          <article
+            class="resource-card min-w-0 overflow-hidden rounded-[22px] border border-slate-100 bg-white shadow-[0_4px_22px_rgba(0,0,0,0.08)]"
+            tabindex="0"
+          >
+            <div
+              class="resource-art relative flex min-h-48 flex-col justify-end overflow-hidden p-6"
+              style={`background: ${card.gradient}`}
+            >
+              <span class="relative z-10 flex w-fit items-center gap-1.5 rounded-full border border-white/35 bg-white/25 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-wide text-white backdrop-blur-sm">
+                <svg
+                  aria-hidden="true"
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <>
+                    <circle cx="12" cy="8" r="5" />
+                    <path d="M20 21a8 8 0 0 0-16 0" />
+                  </>
+                </svg>
+                {card.category}
+              </span>
+              <h3 class="relative z-10 mt-3 text-xl font-bold leading-tight text-white">
+                {card.title}
+              </h3>
+            </div>
+            <div class="p-6">
+              <p class="flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-400">
+                <span class="inline-flex items-center gap-1">
+                  <svg
+                    aria-hidden="true"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <>
+                      <path d="M12 6v6h4" />
+                      <circle cx="12" cy="12" r="10" />
+                    </>
+                  </svg>
+                  {card.readingTime}
+                </span>
+                <span class="inline-flex items-center gap-1">
+                  <svg
+                    aria-hidden="true"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <>
+                      <path d="M8 2v4m8-4v4" />
+                      <rect width="18" height="18" x="3" y="4" rx="2" />
+                      <path d="M3 10h18" />
+                    </>
+                  </svg>
+                  {card.date}
+                </span>
+              </p>
+              <p class="mt-4 text-sm leading-6 text-brand-muted">
+                {card.description}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <aside
+      class="consultation-banner relative mt-16 overflow-hidden rounded-3xl px-6 py-10 text-center sm:px-10"
+      aria-labelledby="consultation-title"
+    >
+      <Image
+        src={logo}
+        alt=""
+        width={64}
+        height={64}
+        loading="lazy"
+        class="relative z-10 mx-auto size-16 rounded-full border-4 border-white/30 bg-brand-sky object-contain"
+      />
+      <h3
+        id="consultation-title"
+        class="relative z-10 mt-4 text-2xl font-bold text-white sm:text-3xl"
+      >
+        {resources.consultation.title}
+      </h3>
+      <p class="relative z-10 mx-auto mt-3 max-w-xl leading-7 text-white/80">
+        {resources.consultation.description}
+      </p>
+      <a
+        href={siteConfig.contactHref}
+        class="relative z-10 mt-7 inline-flex items-center gap-2 rounded-full bg-brand-blue px-7 py-3.5 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-blue-600"
+      >
+        <svg
+          aria-hidden="true"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          ><path
+            d="M12 15 9 12a22 22 0 0 1 2-4A13 13 0 0 1 22 2c0 3-1 8-6 11a22 22 0 0 1-4 2Z"
+          ></path><path
+            d="M9 12H4s1-3 2-4c2-1 5 0 5 0m1 7v5s3-1 4-2c1-2 0-5 0-5"
+          ></path></svg
+        >
+        {resources.consultation.cta}
+      </a>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .resource-card {
+    transition:
+      transform 400ms ease,
+      box-shadow 400ms ease;
+  }
+  .resource-card:hover,
+  .resource-card:focus-visible {
+    transform: translateY(-0.625rem);
+    box-shadow: 0 1.625rem 3.5rem rgb(0 0 0 / 0.13);
+  }
+  .resource-art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 90% 15%,
+      rgb(255 255 255 / 0.18),
+      transparent 35%
+    );
+  }
+  .consultation-banner {
+    background: linear-gradient(135deg, #2d3270, #6b3fd4 60%, #00cdb8);
+  }
+  .consultation-banner::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 -60%;
+    width: 50%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.2),
+      transparent
+    );
+    animation: consultation-shimmer 3s infinite;
+    pointer-events: none;
+  }
+  @keyframes consultation-shimmer {
+    to {
+      transform: translateX(320%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .resource-card {
+      transition: none;
+    }
+    .resource-card:hover,
+    .resource-card:focus-visible {
+      transform: none;
+    }
+    .consultation-banner::after {
+      animation: none;
+      display: none;
+    }
+  }
+</style>
