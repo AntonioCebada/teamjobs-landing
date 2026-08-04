@@ -14,7 +14,6 @@ describe('siteConfig', () => {
 
   it('starts in honest demo mode with documented placeholders', () => {
     expect(siteConfig.formEndpoint).toBeNull();
-    expect(siteConfig.enableHeroVideo).toBe(false);
     expect(siteConfig.urls.vacantes).toBe('#');
     expect(siteConfig.urls.login).toBe('#');
   });

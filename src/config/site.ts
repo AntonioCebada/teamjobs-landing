@@ -19,7 +19,6 @@ export const siteConfig = {
   contactHref: '#contacto',
   whatsappNumber: '+5215610275879',
   formEndpoint: null,
-  enableHeroVideo: false,
   urls,
   navigation: [
     { key: 'inicio', href: '#inicio' },

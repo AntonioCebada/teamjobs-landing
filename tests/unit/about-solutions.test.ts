@@ -33,8 +33,7 @@ describe('about and solutions contracts', () => {
     expect(solutions).toContain('<section id="servicios"');
     expect(about.match(/<h2/g)).toHaveLength(1);
     expect(solutions.match(/<h2/g)).toHaveLength(1);
-    expect(about).toContain('width={logo.width}');
-    expect(about).toContain('height={logo.height}');
+    expect(about).toContain('bg-brand-sky');
   });
 
   it('uses honest in-page actions and mobile-first no-overflow contracts', () => {
@@ -51,5 +50,20 @@ describe('about and solutions contracts', () => {
       'md:grid-cols-2',
     );
     expect(source('src/components/About.astro')).toContain('sm:grid-cols-2');
+  });
+
+  it('renders the About video independently with autoplay-safe attributes', () => {
+    const about = source('src/components/About.astro');
+    expect(about).toContain('<video');
+    expect(about).toMatch(/autoplay[\s\S]*muted[\s\S]*loop[\s\S]*playsinline/);
+    expect(about).toContain('poster={logo.src}');
+    expect(about).toContain('onloadedmetadata=');
+    expect(about).toContain("matchMedia('(prefers-reduced-motion: reduce)')");
+    expect(about).toMatch(
+      /removeAttribute.+autoplay.+pause.+currentTime.+0.+load/s,
+    );
+    expect(about).toContain('<source src="/gatito.mp4" type="video/mp4" />');
+    expect(about).toContain('aria-label={about.videoLabel}');
+    expect(siteContent.about.videoFallback).toContain('no puede reproducir');
   });
 });

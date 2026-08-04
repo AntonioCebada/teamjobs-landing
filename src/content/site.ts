@@ -33,15 +33,15 @@ export const siteContent = {
   },
   hero: {
     eyebrow: 'Soluciones de Recursos Humanos',
-    titleStart: 'Conectamos ',
+    titleStart: 'Conectamos',
     titleAccent: 'Empresas',
-    titleEnd: ' con Talento Excepcional',
+    titleEnd: 'con',
+    titleTail: ['Talento', 'Excepcional'],
     description:
       'Somos el puente entre el talento excepcional y las organizaciones que buscan crecer. Desde reclutamiento hasta consultoría integral de RH.',
-    primaryCta: 'Explorar Vacantes',
+    primaryCta: 'Consultar Vacantes',
     secondaryCta: 'Nuestros Servicios',
     stats: ['+100 Empresas', '98% Satisfacción'],
-    videoLabel: 'Animación de la mascota de TeamJobs',
   },
   about: {
     eyebrow: 'Quiénes somos',
@@ -54,6 +54,8 @@ export const siteContent = {
       'Trabajamos desde WeWork Torre Mitikah en CDMX, con un equipo apasionado por la tecnología y el desarrollo humano.',
     candidates: '15K+',
     candidatesLabel: 'Candidatos',
+    videoLabel: 'Mascota de TeamJobs en movimiento',
+    videoFallback: 'Tu navegador no puede reproducir el video de TeamJobs.',
     values: ['Innovación', 'Compromiso', 'Integridad', 'Excelencia'],
     pillars: [
       {

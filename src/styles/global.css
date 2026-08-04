@@ -1,17 +1,19 @@
 @import '@fontsource/poppins/latin-400.css';
 @import '@fontsource/poppins/latin-600.css';
 @import '@fontsource/poppins/latin-700.css';
+@import '@fontsource/poppins/latin-800.css';
+@import '@fontsource/poppins/latin-900.css';
 @import 'tailwindcss';
 
 @theme {
   --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-  --color-brand-navy: #192b60;
-  --color-brand-ink: #2d407e;
-  --color-brand-blue: #3987f4;
-  --color-brand-violet: #6c4ce5;
-  --color-brand-teal: #10c5bb;
+  --color-brand-navy: #0d1145;
+  --color-brand-ink: #2d3270;
+  --color-brand-blue: #3b82f6;
+  --color-brand-violet: #6b3fd4;
+  --color-brand-teal: #00cdb8;
   --color-brand-whatsapp: #25d366;
-  --color-brand-sky: #eaf9fc;
+  --color-brand-sky: #ebf7fd;
   --color-brand-muted: #64768e;
   --color-brand-surface: #f8fdfe;
   --background-image-brand: linear-gradient(
@@ -66,7 +68,22 @@
     html {
       scroll-behavior: auto;
     }
+
+    .motion-art {
+      animation: none !important;
+      transition: none !important;
+    }
   }
+}
+
+@keyframes gentle-float {
+  50% {
+    transform: translateY(-0.75rem);
+  }
+}
+
+.motion-art {
+  animation: gentle-float 5s ease-in-out infinite;
 }
 
 @utility page-shell {

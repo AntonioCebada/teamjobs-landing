@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { siteConfig } from '../../src/config/site';
 import { siteContent } from '../../src/content/site';
 
 const source = (path: string) =>
@@ -11,35 +10,34 @@ describe('hero and FAB contracts', () => {
     const hero = source('src/components/Hero.astro');
     const index = source('src/pages/index.astro');
     expect(siteContent.hero.description).toContain('talento excepcional');
+    expect(siteContent.hero.titleTail).toEqual(['Talento', 'Excepcional']);
     expect(hero.match(/<h1/g)).toHaveLength(1);
     expect(index).not.toContain('<h1');
     expect(hero).toContain('href="#servicios"');
-    expect(hero).toContain('siteConfig.urls.vacantes');
+    expect(hero).toContain('href={siteConfig.contactHref}');
+    expect(siteContent.hero.primaryCta).toBe('Consultar Vacantes');
   });
 
-  it('defaults to a prioritized, explicitly sized static mascot', () => {
+  it('renders a prioritized static mascot without a Hero video island', () => {
     const hero = source('src/components/Hero.astro');
-    expect(siteConfig.enableHeroVideo).toBe(false);
     expect(hero).toContain('width={logo.width}');
     expect(hero).toContain('height={logo.height}');
     expect(hero).toContain('priority');
-    expect(hero).toContain('siteConfig.enableHeroVideo ?');
+    expect(hero).not.toContain('HeroVideo');
+    expect(hero).not.toContain('client:');
+    expect(hero).not.toContain('<video');
+    expect(hero).toContain('linear-gradient(145deg');
+    expect(hero).toContain('viewBox="0 0 1440 80"');
   });
 
-  it('keeps optional video muted, inline, lazy, motion-safe, and visibility-aware', () => {
-    const video = source('src/islands/HeroVideo.tsx');
-    for (const contract of [
-      'video.muted = true',
-      "video.setAttribute('muted', '')",
-      'playsInline',
-      'preload="none"',
-      "matchMedia('(prefers-reduced-motion: reduce)')",
-      'new IntersectionObserver',
-      'resumeWhenVisible = !video.paused',
-      '{ threshold: 0.25 }',
-    ])
-      expect(video).toContain(contract);
-    expect(video).not.toContain('autoPlay');
+  it('keeps responsive artwork and reduced-motion contracts', () => {
+    const hero = source('src/components/Hero.astro');
+    expect(hero).toContain('min-w-0');
+    expect(hero).toContain('lg:grid-cols-2');
+    expect(source('src/styles/global.css')).toContain(
+      '@media (prefers-reduced-motion: reduce)',
+    );
+    expect(source('src/styles/global.css')).toContain('.motion-art');
   });
 
   it('builds a static, safe-area WhatsApp link that announces its new context', () => {
