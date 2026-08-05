@@ -3,8 +3,10 @@ import { Image } from 'astro:assets';
 import { logo } from '../assets/media';
 import { siteConfig } from '../config/site';
 import { siteContent } from '../content/site';
+import Icon from './Icon.astro';
 
 const { resources } = siteContent;
+const cardIcons = ['scroll-text', 'user', 'file-text'] as const;
 ---
 
 <section id="recursos" class="scroll-mt-24 bg-white py-20 sm:py-24">
@@ -26,7 +28,7 @@ const { resources } = siteContent;
 
     <div class="mt-12 grid min-w-0 gap-7 md:grid-cols-3">
       {
-        resources.cards.map((card) => (
+        resources.cards.map((card, index) => (
           <article
             class="resource-card min-w-0 overflow-hidden rounded-[22px] border border-slate-100 bg-white shadow-[0_4px_22px_rgba(0,0,0,0.08)]"
             tabindex="0"
@@ -35,21 +37,12 @@ const { resources } = siteContent;
               class="resource-art relative flex min-h-48 flex-col justify-end overflow-hidden p-6"
               style={`background: ${card.gradient}`}
             >
+              <Icon
+                name={cardIcons[index]}
+                class="absolute right-5 top-5 size-16 text-white/25"
+              />
               <span class="relative z-10 flex w-fit items-center gap-1.5 rounded-full border border-white/35 bg-white/25 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-wide text-white backdrop-blur-sm">
-                <svg
-                  aria-hidden="true"
-                  width="13"
-                  height="13"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <>
-                    <circle cx="12" cy="8" r="5" />
-                    <path d="M20 21a8 8 0 0 0-16 0" />
-                  </>
-                </svg>
+                <Icon name="user" class="size-3.5" />
                 {card.category}
               </span>
               <h3 class="relative z-10 mt-3 text-xl font-bold leading-tight text-white">
@@ -59,38 +52,11 @@ const { resources } = siteContent;
             <div class="p-6">
               <p class="flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-400">
                 <span class="inline-flex items-center gap-1">
-                  <svg
-                    aria-hidden="true"
-                    width="13"
-                    height="13"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <>
-                      <path d="M12 6v6h4" />
-                      <circle cx="12" cy="12" r="10" />
-                    </>
-                  </svg>
+                  <Icon name="clock" class="size-3.5" />
                   {card.readingTime}
                 </span>
                 <span class="inline-flex items-center gap-1">
-                  <svg
-                    aria-hidden="true"
-                    width="13"
-                    height="13"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <>
-                      <path d="M8 2v4m8-4v4" />
-                      <rect width="18" height="18" x="3" y="4" rx="2" />
-                      <path d="M3 10h18" />
-                    </>
-                  </svg>
+                  <Icon name="file-text" class="size-3.5" />
                   {card.date}
                 </span>
               </p>
@@ -128,20 +94,7 @@ const { resources } = siteContent;
         href={siteConfig.contactHref}
         class="relative z-10 mt-7 inline-flex items-center gap-2 rounded-full bg-brand-blue px-7 py-3.5 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-blue-600"
       >
-        <svg
-          aria-hidden="true"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          ><path
-            d="M12 15 9 12a22 22 0 0 1 2-4A13 13 0 0 1 22 2c0 3-1 8-6 11a22 22 0 0 1-4 2Z"
-          ></path><path
-            d="M9 12H4s1-3 2-4c2-1 5 0 5 0m1 7v5s3-1 4-2c1-2 0-5 0-5"
-          ></path></svg
-        >
+        <Icon name="rocket" class="size-4" />
         {resources.consultation.cta}
       </a>
     </aside>

@@ -27,7 +27,7 @@ const { hero } = siteContent;
       <p
         class="w-fit rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold backdrop-blur-sm"
       >
-        <span class="mr-2 text-brand-teal">●</span>{hero.eyebrow}
+        {hero.eyebrow}
       </p>
       <h1
         class="mt-7 max-w-xl text-4xl font-black leading-[1.12] tracking-tight sm:text-5xl xl:text-6xl"
@@ -73,7 +73,7 @@ const { hero } = siteContent;
       >
       </div>
       <div
-        class="motion-art relative z-10 grid size-[58%] place-items-center rounded-full border-4 border-white/20 bg-[#263a76] p-8 shadow-2xl"
+        class="relative z-10 size-[58%] overflow-hidden rounded-full border-4 border-white/20 bg-[#263a76] shadow-2xl"
       >
         <Image
           src={logo}
@@ -81,17 +81,22 @@ const { hero } = siteContent;
           width={logo.width}
           height={logo.height}
           priority
+          class="size-full object-cover object-[center_55%]"
         />
       </div>
       <span
         class="absolute right-1 top-5 z-20 rounded-xl bg-white px-3 py-2 text-xs font-bold text-brand-ink shadow-xl sm:right-0 sm:text-sm"
       >
-        🎯 &nbsp;{hero.stats[0]}
+        <Icon name="target" class="mr-1 inline size-4 text-brand-blue" />{
+          hero.stats[0]
+        }
       </span>
       <span
         class="absolute bottom-5 left-1 z-20 rounded-xl bg-white px-3 py-2 text-xs font-bold text-brand-ink shadow-xl sm:left-0 sm:text-sm"
       >
-        ⭐ &nbsp;{hero.stats[1]}
+        <Icon name="star" class="mr-1 inline size-4 text-amber-500" />{
+          hero.stats[1]
+        }
       </span>
       <span
         class="motion-art absolute left-1 top-1/4 grid size-11 place-items-center rounded-xl bg-brand-blue shadow-lg"

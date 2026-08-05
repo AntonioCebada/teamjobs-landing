@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '../config/site';
 import { siteContent } from '../content/site';
+import Icon from './Icon.astro';
 
 const { companies } = siteContent;
 const accents = [
@@ -9,6 +10,19 @@ const accents = [
   'border-t-brand-blue',
   'border-t-brand-navy',
 ];
+const stepIcons = [
+  'messages-square',
+  'search',
+  'user-check',
+  'handshake',
+] as const;
+const companyIcons = [
+  'truck',
+  'store',
+  'building-2',
+  'microchip',
+  'coins',
+] as const;
 ---
 
 <section id="empresas" class="scroll-mt-24 bg-brand-sky py-20 sm:py-24">
@@ -30,7 +44,7 @@ const accents = [
 
     <ol class="mt-12 grid min-w-0 gap-5 lg:grid-cols-4">
       {
-        companies.steps.map(({ title, description, iconLabel }, index) => (
+        companies.steps.map(({ title, description }, index) => (
           <li
             class:list={[
               'surface-card relative min-w-0 border-t-4 px-6 pb-7 pt-12 text-center',
@@ -43,12 +57,8 @@ const accents = [
             >
               {index + 1}
             </span>
-            <span
-              class="mx-auto grid w-fit min-w-14 place-items-center rounded-lg bg-white/70 px-2 py-2 text-[0.625rem] font-semibold text-brand-muted"
-              role="img"
-              aria-label={iconLabel}
-            >
-              Icono
+            <span class="mx-auto grid size-11 place-items-center rounded-xl bg-brand-sky text-brand-blue">
+              <Icon name={stepIcons[index]} class="size-6" />
             </span>
             <h3 class="mt-4 text-lg font-bold text-brand-navy">{title}</h3>
             <p class="mt-3 text-sm leading-6 text-brand-muted">{description}</p>
@@ -59,10 +69,10 @@ const accents = [
 
     <div class="mt-10 text-center">
       <a
-        class="inline-flex rounded-full bg-brand-blue px-6 py-3 font-semibold text-white shadow-lg hover:bg-brand-violet"
+        class="inline-flex items-center gap-2 rounded-full bg-brand-blue px-6 py-3 font-semibold text-white shadow-lg hover:bg-brand-violet"
         href={siteConfig.contactHref}
       >
-        {companies.cta}
+        <Icon name="building-2" class="size-5" />{companies.cta}
       </a>
     </div>
 
@@ -80,14 +90,20 @@ const accents = [
       >
         <div class="company-track flex w-max gap-4">
           {
-            companies.logoPlaceholders.map((label) => (
-              <span class="company-logo">{label}</span>
+            companies.companyCategories.map((label, index) => (
+              <span class="company-logo">
+                <Icon name={companyIcons[index]} class="size-5" />
+                {label}
+              </span>
             ))
           }
           <div class="contents" aria-hidden="true">
             {
-              companies.logoPlaceholders.map((label) => (
-                <span class="company-logo">{label}</span>
+              companies.companyCategories.map((label, index) => (
+                <span class="company-logo">
+                  <Icon name={companyIcons[index]} class="size-5" />
+                  {label}
+                </span>
               ))
             }
           </div>
@@ -108,9 +124,10 @@ const accents = [
   }
 
   .company-logo {
-    display: grid;
+    display: flex;
     min-width: 12rem;
-    place-items: center;
+    align-items: center;
+    gap: 0.5rem;
     border: 1px solid
       color-mix(in srgb, var(--color-brand-ink) 12%, transparent);
     border-radius: var(--radius-pill);

@@ -26,6 +26,17 @@ describe('hero and FAB contracts', () => {
     expect(hero).not.toContain('HeroVideo');
     expect(hero).not.toContain('client:');
     expect(hero).not.toContain('<video');
+    expect(hero).toContain('overflow-hidden rounded-full');
+    expect(hero).toContain('size-full object-cover object-[center_55%]');
+    expect(hero).toMatch(
+      /class="relative z-10 size-\[58%\][^"]*"[\s\S]*?<Image/,
+    );
+    expect(hero).toContain(
+      'class="relative mx-auto grid aspect-square w-full max-w-md min-w-0 place-items-center"',
+    );
+    expect(hero).toContain('name="target"');
+    expect(hero).toContain('name="star"');
+    expect(hero).not.toMatch(/[🎯⭐]/u);
     expect(hero).toContain('linear-gradient(145deg');
     expect(hero).toContain('viewBox="0 0 1440 80"');
   });

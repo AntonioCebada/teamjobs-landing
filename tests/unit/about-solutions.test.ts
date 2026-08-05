@@ -50,6 +50,20 @@ describe('about and solutions contracts', () => {
       'md:grid-cols-2',
     );
     expect(source('src/components/About.astro')).toContain('sm:grid-cols-2');
+    expect(source('src/components/About.astro')).toContain(
+      'name="messages-square"',
+    );
+    const solutions = source('src/components/Solutions.astro');
+    for (const icon of [
+      'user-round-search',
+      'users-round',
+      'handshake',
+      'network',
+    ])
+      expect(solutions).toContain(`'${icon}'`);
+    expect(source('src/components/Solutions.astro')).toContain(
+      'name="arrow-right"',
+    );
   });
 
   it('renders the About video independently with autoplay-safe attributes', () => {

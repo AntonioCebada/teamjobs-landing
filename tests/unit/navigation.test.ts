@@ -30,6 +30,16 @@ describe('navigation contract', () => {
     expect(navbar).toContain('<MobileNav');
     expect(navbar).toContain('client:load');
     expect(source('src/islands/MobileNav.tsx')).toContain('<details');
+    expect(source('src/islands/MobileNav.tsx')).toContain(
+      'aria-label={open ? labels.close : labels.open}',
+    );
+    expect(source('src/islands/MobileNav.tsx')).toContain(
+      'data-icon="lucide:menu"',
+    );
+    expect(source('src/islands/MobileNav.tsx')).toContain(
+      'data-icon="lucide:x"',
+    );
+    expect(source('src/islands/MobileNav.tsx')).not.toContain('>Menú<');
   });
 
   it('covers dismissal, focus containment, focus return, and scroll restoration', () => {

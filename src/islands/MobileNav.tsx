@@ -90,7 +90,25 @@ export default function MobileNav({ links, loginHref, labels }: Props) {
         aria-label={open ? labels.close : labels.open}
         class="cursor-pointer list-none rounded-md p-3 group-open:fixed group-open:top-4 group-open:right-4 group-open:z-[60] [&::-webkit-details-marker]:hidden"
       >
-        <span class="font-semibold">Menú</span>
+        {open ? (
+          <svg
+            data-icon="lucide:x"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            class="size-6 fill-none stroke-current stroke-2 [stroke-linecap:round] [stroke-linejoin:round]"
+          >
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        ) : (
+          <svg
+            data-icon="lucide:menu"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            class="size-6 fill-none stroke-current stroke-2 [stroke-linecap:round] [stroke-linejoin:round]"
+          >
+            <path d="M4 5h16M4 12h16M4 19h16" />
+          </svg>
+        )}
       </summary>
       <div
         ref={panelRef}

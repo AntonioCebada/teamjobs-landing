@@ -7,7 +7,7 @@ const source = (path: string) =>
   readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 
 describe('Empresas contracts', () => {
-  it('centralizes the exact four-step process and generic logo placeholders', () => {
+  it('centralizes the exact four-step process and five company categories', () => {
     expect(siteContent.companies.steps.map(({ title }) => title)).toEqual([
       'Contáctanos',
       'Búsqueda Activa',
@@ -15,13 +15,12 @@ describe('Empresas contracts', () => {
       'Contratación',
     ]);
     expect(siteContent.companies.cta).toBe('Quiero contratar talento');
-    expect(siteContent.companies.logoPlaceholders).toHaveLength(5);
-    expect(siteContent.companies.logoPlaceholders).toEqual([
-      'Logotipo pendiente 01',
-      'Logotipo pendiente 02',
-      'Logotipo pendiente 03',
-      'Logotipo pendiente 04',
-      'Logotipo pendiente 05',
+    expect(siteContent.companies.companyCategories).toEqual([
+      'Logística',
+      'Retail',
+      'Corporativo',
+      'Tecnología',
+      'Finanzas',
     ]);
   });
 
@@ -37,6 +36,19 @@ describe('Empresas contracts', () => {
     expect(empresas).toContain('<ol class=');
     expect(empresas).toContain('href={siteConfig.contactHref}');
     expect(siteConfig.contactHref).toBe('#contacto');
+    for (const icon of [
+      'messages-square',
+      'search',
+      'user-check',
+      'handshake',
+      'truck',
+      'store',
+      'building-2',
+      'microchip',
+      'coins',
+    ])
+      expect(empresas).toContain(`'${icon}'`);
+    expect(empresas).not.toMatch(/Icono|Logotipo pendiente/);
   });
 
   it('keeps the CSS carousel named, pausable, motion-safe, and overflow-safe', () => {

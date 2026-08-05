@@ -71,6 +71,9 @@ describe('Resources contracts', () => {
     expect(resources).not.toMatch(/href=.*articulos/);
     expect(resources).not.toContain('Conocer más');
     expect(resources.match(/<a\b/g)).toHaveLength(1);
+    expect(resources.match(/<svg\b/g)).toBeNull();
+    for (const icon of ['scroll-text', 'user', 'clock', 'file-text', 'rocket'])
+      expect(resources).toContain(icon);
   });
 
   it('renders the exact accessible consultation CTA through centralized config', () => {
