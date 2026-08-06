@@ -1,10 +1,12 @@
 schema: spec-driven
 
-# SDD session choices (init 2026-07-29)
+# SDD session choices (current apply correction; init history retained in change artifacts)
 # execution_mode: auto
-# artifact_store.mode: hybrid
+# artifact_store.mode: openspec
 # delivery_strategy: auto-chain
-# review_budget_lines: 400 (TOTAL changed lines per PR: additions+deletions across ALL files, generated lockfiles included; over-budget only via maintainer-approved size:exception)
+# review_budget_lines: 800 (CURRENT remaining-work budget: authored additions+deletions per chained slice; generated files and lockfiles remain visible in complete snapshots)
+# Historical PR1 context: the original 400-total-line baseline and sole generated-lockfile size:exception are audit history only, not active policy.
+# Current contract: Contact MUST remain visual-only/non-operational; Vacancies and deployment execution/configuration are excluded; task 4.2 remains pending.
 
 context: |
   Project: teamjobs-landing — marketing landing page for TeamJobs.
@@ -12,6 +14,8 @@ context: |
   Package manager: pnpm only. Runtime/dev/prod: Docker only.
   Design source: design/mockups (6 section PNGs). Assets: design/assets.
   Repo state at init: greenfield (git + design/ only; no app source yet).
+  Current Contact contract: fields and client-side validation are allowed, but the form MUST NOT define/use an endpoint or transport, or claim that data was sent.
+  Future deployment constraint only: Cloudflare Tunnel → Dokploy/Traefik → nginx:80 is non-executable and non-deliverable in this change.
 
 strict_tdd: false
 
@@ -24,7 +28,7 @@ testing:
   layers:
     unit: { available: true, tool: "Vitest 4.1.10" }
     integration: { available: true, tool: "Docker Compose + nginx preview harness" }
-    e2e: { available: false, tool: "Deferred to the interactive UI work unit; Compose service is profile-gated" }
+    e2e: { available: false, tool: "Unavailable in this correction; task 4.2 removes the managed Playwright Compose image/service, and maintainer-managed Playwright setup is outside this change" }
   coverage:
     available: false
     command: ""
@@ -48,12 +52,14 @@ rules:
   tasks:
     - Group by phase, use hierarchical numbering
     - Keep tasks completable in one session
-    - Keep PRs within review_budget_lines: 400 TOTAL changed lines (generated files and lockfiles count; no silent exclusions — over-budget requires maintainer-approved size:exception)
+    - Keep PRs within review_budget_lines: 800 TOTAL authored changed lines (additions+deletions; generated files and lockfiles remain visible in complete snapshots; split over-budget current work before apply). The historical PR1 generated-lockfile size:exception belongs only to the original 400-total-line baseline and is not active policy.
   apply:
     guidelines:
       - Use pnpm exclusively (never npm/yarn)
       - Run and verify inside Docker; every pnpm command executes in a container (host Node/pnpm never required)
       - Source images/videos from design/assets; match design/mockups
+      - Keep Contact visual-only/non-operational; it MUST NOT define/use submission transport or backend states
+      - Do not execute or configure deployment; the future tunnel/proxy/nginx path is architectural context only
     tdd: false
     test_command: "docker compose run --rm test pnpm vitest run tests/unit/config.test.ts"
   verify:

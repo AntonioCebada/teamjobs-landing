@@ -1,5 +1,6 @@
 ---
 import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
 import Empresas from '../components/Empresas.astro';
 import Hero from '../components/Hero.astro';
 import Navbar from '../components/Navbar.astro';
@@ -20,6 +21,7 @@ const implementedAnchors = new Set([
   '#servicios',
   '#empresas',
   '#recursos',
+  '#contacto',
 ]);
 ---
 
@@ -30,6 +32,7 @@ const implementedAnchors = new Set([
   <Solutions />
   <Empresas />
   <Resources />
+  <Contact />
   {
     anchorTargets
       .filter((href) => !implementedAnchors.has(href))

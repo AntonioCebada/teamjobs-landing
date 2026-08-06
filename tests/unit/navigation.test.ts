@@ -12,13 +12,14 @@ describe('navigation contract', () => {
       'inicio',
       'nosotros',
       'servicios',
-      'vacantes',
       'empresas',
       'recursos',
       'contacto',
     ]);
-    expect(siteConfig.urls.vacantes).toBe('#');
     expect(siteConfig.urls.login).toBe('#');
+    expect(siteConfig.navigation.map(({ key }) => key)).not.toContain(
+      'vacantes',
+    );
     siteConfig.navigation.forEach(({ key }) =>
       expect(siteContent.navigation.links[key]).toBeTruthy(),
     );

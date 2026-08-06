@@ -2,7 +2,7 @@
 
 ## Technical Approach
 
-Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands only where specs allow. Tailwind v4 via `@tailwindcss/vite`, tokens in CSS `@theme`. TypeScript strict. pnpm-only inside pinned Docker images; multi-stage prod → nginx serving `dist/`. One route (`/`), six sections, ES copy in a typed content module, behavior knobs in a config module. All tooling (install, dev, build, test, lint, e2e) runs exclusively inside Docker.
+Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands only where specs allow. Tailwind v4 via `@tailwindcss/vite`, tokens in CSS `@theme`. TypeScript strict. pnpm-only inside pinned Docker images; multi-stage local/CI build → nginx preview serving `dist/`. One route (`/`), six sections, ES copy in a typed content module, and local behavior knobs in a config module. Contact is visual-only/non-operational. Available tooling runs exclusively inside Docker; deployment execution/configuration is outside this change.
 
 ## Architecture Decisions
 
@@ -26,7 +26,7 @@ Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands 
 
 ### Decision: Content vs. config naming (single scheme)
 
-**Choice**: exactly two modules — `src/config/site.ts` exporting `siteConfig` (behavior knobs: placeholder URLs, `whatsappNumber` default `'+5215610275879'`, `formEndpoint: string | null`, `enableHeroVideo: boolean`) and `src/content/site.ts` exporting `siteContent` (all visible ES display copy extracted from mockups). No other naming variant (`site.config.ts`, `site.content.ts`) is used anywhere — components import only these two paths.
+**Choice**: exactly two modules — `src/config/site.ts` exporting `siteConfig` (behavior knobs: Iniciar sesión, social, and legal placeholder URLs, `whatsappNumber` default `'+5215610275879'`, and `enableHeroVideo: boolean`) and `src/content/site.ts` exporting `siteContent` (all visible ES display copy extracted from mockups). Contact has no endpoint or transport configuration. No Vacantes URL or config key is part of the current scope. No other naming variant (`site.config.ts`, `site.content.ts`) is used anywhere — components import only these two paths.
 **Rationale**: copy changes never touch behavior; product URLs land in one diff; one scheme removes import ambiguity.
 
 ### Decision: Font loading (compliant path)
@@ -41,7 +41,11 @@ Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands 
 
 ### Decision: Docker topology / nginx
 
-One `Dockerfile`, targets: `base` (`node:<pin>-alpine` + `corepack prepare pnpm@<pin>`), `dev`, `build` (image-stage instruction `RUN pnpm install --frozen-lockfile && pnpm build`, evaluated by the container's shell at image build — never by the host), `prod` (`nginx:<pin>-alpine` + `COPY --from=build dist/`). Compose services: `dev`, `build`, `preview`, plus `test` (unit/static quality) and `e2e` (`mcr.microsoft.com/playwright:<pin>` image, depends on `preview`). Pins locked to latest stable at scaffold time, recorded in Dockerfile comments. `nginx.conf`: `try_files` to `index.html`, gzip, long cache for hashed `/assets/*`, no-cache HTML, security headers.
+One `Dockerfile`, targets: `base` (`node:<pin>-alpine` + `corepack prepare pnpm@<pin>`), `dev`, `build` (image-stage instruction `RUN pnpm install --frozen-lockfile && pnpm build`, evaluated by the container's shell at image build — never by the host), and `prod` (`nginx:<pin>-alpine` + `COPY --from=build dist/`). Compose services cover `dev`, `build`, `preview`, and `test` (unit/static quality). The managed Playwright Compose image/service is not part of this correction; task 4.2 removes it, and no Playwright package, image pull, or installation occurs here. Pins remain recorded in Dockerfile comments. `nginx.conf`: `try_files` to `index.html`, gzip, long cache for hashed `/assets/*`, no-cache HTML, security headers.
+
+### Decision: Deployment boundary
+
+Cloudflare Tunnel → Dokploy/Traefik → nginx:80 is a future architectural constraint only. This change MUST NOT configure or execute that path, and it is not a deliverable of task 4.1 or task 4.2.
 
 ## Data Flow
 
@@ -69,7 +73,7 @@ islands/*.tsx (MobileNav, ContactForm, HeroVideo) ───────┘   (hy
 - **Muted/audio**: `<video muted playsinline preload="none" poster={logo}>`; `muted` set as attribute and property before any `play()`; no `controls`; code never unmutes — audio SHALL NOT play.
 - **Reduced motion**: `matchMedia('(prefers-reduced-motion: reduce)')` true → never load/play; poster/static image only.
 - **Offscreen pause**: `IntersectionObserver` (threshold 0.25) → `pause()` when below threshold; resume only if it was playing when it left.
-- **Load**: `client:visible` + `preload="none"` → no network fetch until enabled and near viewport.
+- **Load**: `client:visible` + `preload="none"` → media loads only when enabled and near viewport; this media rule does not authorize Contact transport.
 
 ### WhatsAppFab (positioning, non-obscuring, new context)
 
@@ -78,12 +82,12 @@ islands/*.tsx (MobileNav, ContactForm, HeroVideo) ───────┘   (hy
 - **New context**: `<a target="_blank" rel="noopener noreferrer" aria-label="Abrir chat de WhatsApp en una nueva ventana">` — the accessible name announces the new context.
 - Static Astro — no hydration (per spec).
 
-### ContactForm (validation, focus, announcements)
+### ContactForm (local validation, focus, announcements)
 
-- **Invalid submit**: validation runs on submit; block native submit; set `aria-invalid="true"` + per-field error in an element referenced by `aria-describedby`; move **focus to the first invalid field**; an error summary with `role="alert"` lists the errors as anchor links to their fields.
-- **Announcements**: a visually-hidden `aria-live="polite"` region announces state transitions: `"Enviando…"` (pending), `"Mensaje enviado correctamente."` (success), `"No se pudo enviar el mensaje. Inténtalo de nuevo."` (error).
-- **Demo honesty**: when `formEndpoint` is `null`, success UI reads `"Demostración: tus datos no se han enviado."` — never claims real delivery.
-- Pending disables submit; failure preserves input. Labels visible; required announced (`aria-required` + visible marker); Asunto is a native labeled `<select>`.
+- **Invalid activation**: local validation runs on control activation; block native navigation/submission; set `aria-invalid="true"` + per-field error in an element referenced by `aria-describedby`; move **focus to the first invalid field**; an error summary with `role="alert"` lists the errors as anchor links to their fields.
+- **Announcements**: a visually-hidden `aria-live="polite"` region announces local validation and inactive status only.
+- **Inactive honesty**: valid fields leave the form in place and show `"El formulario de contacto aún no está activo. Tus datos no se enviaron."`; the form MUST NOT define/use an endpoint, POST, fetch, request, network path, pending backend state, backend success/failure, retry, or delivery claim.
+- Values remain preserved after every local validation result. Labels are visible; required status is announced (`aria-required` + visible marker); Asunto is a native labeled `<select>`.
 
 ## Interfaces / Contracts
 
@@ -91,18 +95,14 @@ islands/*.tsx (MobileNav, ContactForm, HeroVideo) ───────┘   (hy
 // src/config/site.ts
 export const siteConfig = {
   whatsappNumber: '+5215610275879',
-  formEndpoint: null as string | null, // null = documented demo mode
   enableHeroVideo: false,
-  urls: { vacantes: '#', login: '#', socials: { /* '#' */ }, legal: { /* '#' */ } },
+  urls: { login: '#', socials: { /* '#' */ }, legal: { /* '#' */ } },
 } as const;
 
 // src/content/site.ts — ALL visible UI copy, Spanish only
 export const siteContent = {
   form: {
-    pending: 'Enviando…',
-    success: 'Mensaje enviado correctamente.',
-    error: 'No se pudo enviar el mensaje. Inténtalo de nuevo.',
-    demoNote: 'Demostración: tus datos no se han enviado.',
+    inactiveNote: 'Este formulario es solo visual por ahora. Tus datos no se enviarán.',
     // field labels, placeholders, errors: 'El correo no es válido.', etc.
   },
   fab: { ariaLabel: 'Abrir chat de WhatsApp en una nueva ventana' },
@@ -111,14 +111,16 @@ export const siteContent = {
 
 type ContactFormData = { name: string; email: string; subject: string;
   message: string; phone?: string; company?: string };
-type SubmitState = 'idle' | 'pending' | 'success' | 'error';
+type FormState = 'idle' | 'invalid' | 'inactive';
 ```
+
+The approved current scope excludes Vacantes entirely: no vacancy section, route, navigation action, CTA, URL, config key, or requirement is defined.
 
 ## File Changes
 
 | File | Action | Description |
 |------|--------|-------------|
-| `Dockerfile`, `docker-compose.yml`, `.dockerignore`, `nginx.conf` | Create | Docker-only dev/build/preview/test/e2e + prod serving |
+| `Dockerfile`, `docker-compose.yml`, `.dockerignore`, `nginx.conf` | Create | Docker-only local dev/build/preview/test + static nginx artifact; no deployment execution/configuration |
 | `package.json`, `pnpm-lock.yaml`, `astro.config.mjs`, `tsconfig.json` | Create | pnpm-only pinned scaffold |
 | `src/styles/global.css` | Create | Tailwind `@theme` tokens + fontsource import |
 | `src/config/site.ts`, `src/content/site.ts` | Create | Config knobs + ES copy (single naming scheme) |
@@ -137,8 +139,8 @@ Every `pnpm` process executes inside a container. Each documented command is a c
 |-------|------|-------------------------------|
 | Unit | form validation, config defaults | `docker compose run --rm test pnpm vitest run` |
 | Static | types, a11y markup, lint, format | `docker compose run --rm test pnpm astro check` · `docker compose run --rm test pnpm eslint .` · `docker compose run --rm test pnpm prettier --check .` |
-| E2E | section order/anchors, nav behavior, form states, reduced-motion, axe | `docker compose run --rm e2e` (Playwright image against `preview` service) |
-| Build gate | all six sections served | `docker compose build && docker compose up preview` (both sides are `docker compose`; no host pnpm involved) |
+| Browser E2E | Not part of this correction; task 4.2 removes the managed Playwright Compose image/service and the maintainer owns any manual browser setup |
+| Build gate | all six sections served in the local preview artifact | `docker compose build && docker compose up preview` (both sides are `docker compose`; no host pnpm involved; no deployment is executed) |
 
 Single-command alternative for the static layer, properly container-scoped so the container's shell — not the host's — evaluates the chain: `docker compose run --rm test sh -c "pnpm astro check && pnpm eslint . && pnpm prettier --check ."`.
 
@@ -148,13 +150,15 @@ README documents **only** `docker compose` commands; any host-`pnpm` invocation 
 
 N/A — no routing, shell, subprocess, VCS/PR automation, executable-file classification, or process-integration boundary.
 
-## Migration / Rollout — review accounting contract (`auto-chain`, TOTAL lines)
+## Migration / Rollout — review accounting contract (historical PR1 exception; current remaining-work ceiling)
 
-**Budget rule**: `review_budget_lines: 400` caps each PR at **400 TOTAL changed lines** — additions plus deletions across every file in the diff, including generated files (`pnpm-lock.yaml`, any future generated types), configs, tests, and docs. No file is excluded from the count. `delivery_strategy: auto-chain` is preserved: slices ship as chained PRs.
+**Historical PR1 accounting**: The initial scaffold plan used a 400-total-changed-line baseline. Its generated `pnpm-lock.yaml` exceeded that baseline, so the maintainer approved the sole `size:exception` for PR1. This remains historical evidence and does not establish a current exception.
 
-**Generated-output gate (no silent exclusions)**: if any generated artifact's diff alone exceeds 400 lines, the affected slice STOPS before apply for explicit reviewer-burden approval — a maintainer-granted `size:exception`. Known case: `pnpm-lock.yaml` for this stack is ~5k lines and cannot fit under 400, so slice 1 (the dedicated dependency/scaffold slice) REQUIRES an approved `size:exception` before apply. The exception covers only the generated diff; the slice's hand-written content still stays ≤400, and the PR body states the exception rationale and review path (review `package.json`; machine-verify the lockfile via `pnpm install --frozen-lockfile` inside Docker — never line-by-line lockfile reading).
+**Current session accounting**: The maintainer's current SDD Session Preflight approves `review_budget_lines: 800`, an 800-authored-changed-line ceiling for each remaining `auto-chain` slice using `feature-branch-chain`. Authored additions plus deletions are counted for the current slice; the 596-line Contact-form slice leaves 204 lines of headroom under the ceiling, so it has no new `size:exception`. Generated artifacts remain visible in the complete diff and are never silently omitted.
 
-**Planned slices** (forecast in TOTAL changed lines; task planning re-forecasts every slice in total lines before each apply):
+**Generated-output gate**: The historical PR1 lockfile exception applies only to that scaffold slice. A remaining slice must fit the current 800-authored-changed-line ceiling without a new exception; the current 596-line Contact-form slice has 204 lines of headroom, and no generated-output exception is granted. Review the hand-written changes and machine-verify generated output with `pnpm install --frozen-lockfile` inside Docker rather than reviewing a generated lockfile line by line.
+
+**Planned slices** (the forecasts below are the historical plan; task planning re-forecasts every remaining slice against the current 800-authored-changed-line ceiling before apply):
 
 | # | Slice | Forecast (total lines) |
 |---|-------|------------------------|
@@ -165,12 +169,12 @@ N/A — no routing, shell, subprocess, VCS/PR automation, executable-file classi
 | 5 | Recursos + CTA band | ~250 |
 | 6 | Contact + Footer + ContactForm | ~390 |
 
-**Split rule**: if a slice's re-forecast exceeds 400 TOTAL lines, split at component/section boundaries BEFORE implementing (e.g. slice 6 → 6a ContactForm island, 6b Contact section + Footer; slice 2 → 2a Navbar+MobileNav, 2b Hero+HeroVideo+FAB). Generated files count in every forecast; lines are never silently excluded. A generated artifact that alone exceeds 400 (lockfile) triggers the `size:exception` gate above instead of a split. Never split mid-component; each resulting PR must build green via the Docker build gate.
+**Split rule**: if a remaining slice's re-forecast exceeds 800 authored changed lines, split at component/section boundaries BEFORE implementing (e.g. slice 6 → 6a ContactForm island, 6b Contact section + Footer; slice 2 → 2a Navbar+MobileNav, 2b Hero+HeroVideo+FAB). Generated files remain in the complete forecast; lines are never silently excluded. The historical PR1 lockfile exception is not a split rule or a precedent for a new exception. Never split mid-component; each resulting PR must build green via the Docker build gate.
 
-**Rollback**: revert any slice via `git revert` and redeploy the previous nginx image; full rollback removes the scaffold (no state/DB).
+**Rollback**: revert any slice via `git revert` and recreate the previous local/CI static artifact; no deployment execution or configuration is part of rollback. Full rollback removes the scaffold (no state/DB).
 
 ## Open Questions
 
 - [ ] Exact token hex values and mockup font family — extracted from mockups at implementation (approximations would be invented); fontsource package pinned then.
-- [ ] Pinned Node/pnpm/nginx/Playwright versions — locked to latest stable at scaffold time, then frozen.
+- [ ] Pinned Node/pnpm/nginx versions — locked to latest stable at scaffold time, then frozen. Managed Playwright setup is removed by pending task 4.2 and is not installed or pulled in this correction.
 - [ ] Hero video enablement — stays `false` until design confirms muted/acceptable.

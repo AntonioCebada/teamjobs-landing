@@ -8,7 +8,7 @@ Docker-first, pnpm-only scaffold (Astro + TypeScript + Tailwind + Preact) that b
 
 ### Requirement: Docker-only workflows
 
-The project SHALL provide `docker-compose.yml` targets for `dev`, `build`, `preview`, `test`, and `e2e`. All install, dev-server, build, preview, test, lint, format, and type-check commands MUST run inside Docker containers; every documented quality command MUST be a complete `docker compose` invocation (or a single container-scoped shell string such as `docker compose run --rm test sh -c "..."`) so that no pnpm process ever executes on the host. Host Node.js SHALL NOT be required for any documented workflow.
+The project SHALL provide `docker-compose.yml` targets for `dev`, `build`, `preview`, and `test`. All available install, dev-server, build, preview, test, lint, format, and type-check commands MUST run inside Docker containers; every documented quality command MUST be a complete `docker compose` invocation (or a single container-scoped shell string such as `docker compose run --rm test sh -c "..."`) so that no pnpm process ever executes on the host. Managed browser E2E infrastructure is not a deliverable of this correction: task 4.2 MUST remove the managed Playwright Compose image/service, and no Playwright package, image pull, or installation occurs here. Host Node.js SHALL NOT be required for any documented workflow.
 
 #### Scenario: Dev server via compose
 

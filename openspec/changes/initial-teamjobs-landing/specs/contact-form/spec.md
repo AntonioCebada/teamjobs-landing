@@ -2,58 +2,48 @@
 
 ## Purpose
 
-The contact section's Preact form island: client-side validation, explicit submission states, and a pluggable endpoint so the form is honest about not having a production backend yet.
+The Contact section's Preact form island is visual-only and non-operational for this release slice. It MAY render fields, client-side validation, accessibility feedback, and an explicit inactive notice, but it MUST NOT send data.
 
 ## Requirements
 
 ### Requirement: Fields and client-side validation
 
-The form MUST include name, email, subject, and message as required fields; phone and company as optional. Validation MUST run client-side before submission: required fields non-empty and email in valid format. Invalid submissions MUST NOT leave the page and MUST surface per-field error messages.
+The form MUST include name, email, subject, and message as required fields; phone and company as optional. Validation MUST run locally before any state change: required fields are non-empty and email uses a valid format. Invalid interactions MUST remain on the page and MUST surface per-field error messages.
 
-#### Scenario: Invalid submission blocked
+#### Scenario: Invalid field presentation
 
-- GIVEN the email field contains "not-an-email"
-- WHEN the user submits
-- THEN submission is blocked and an error message appears on the email field
+- GIVEN the email field contains `not-an-email`
+- WHEN the user activates the form control
+- THEN no navigation or network activity occurs and an error message appears on the email field
 
-#### Scenario: Valid submission proceeds
+#### Scenario: Valid field presentation
 
 - GIVEN all required fields are valid
-- WHEN the user submits
-- THEN validation passes and the submit flow starts
+- WHEN the user activates the form control
+- THEN the form remains in place, displays its inactive notice, and no transport starts
 
-### Requirement: Submission states
+### Requirement: Non-operational form contract
 
-The form MUST expose distinct idle, pending, success, and error states. While pending, the submit control MUST be disabled. Success MUST show a confirmation in place of (or alongside) the form; failure MUST show an error message and preserve user input.
+The form MUST expose only idle, invalid, and inactive presentation states. It MUST NOT define or use an endpoint or configurable endpoint, `action`/`method` transport, POST, fetch, request, network call, pending backend state, backend success, backend failure, retry behavior, or any claim that data was sent. The inactive notice MUST state that submission is unavailable and the entered data was not sent.
 
-#### Scenario: Pending state
+#### Scenario: No transport
 
-- GIVEN a valid submission in flight
-- WHEN the request is pending
-- THEN the submit button is disabled with a pending indicator
+- GIVEN the user completes every required field
+- WHEN the user activates the form control
+- THEN client-side presentation may run, but no endpoint, POST, fetch, request, or network operation is attempted
 
-#### Scenario: Failed submission
+#### Scenario: Inactive honesty
 
-- GIVEN the endpoint rejects the submission
-- WHEN the failure surfaces
-- THEN an error message is shown and entered values are preserved
-
-### Requirement: Pluggable submit endpoint
-
-The submit target MUST come from configuration (endpoint URL, or documented fallback such as mailto/no-op). Without a configured endpoint the form MUST still validate and show the success UI as a documented demo behavior — it SHALL NOT claim data was delivered to a real backend.
-
-#### Scenario: No endpoint configured
-
-- GIVEN no endpoint in config
-- WHEN a valid submission completes
-- THEN the success UI appears and the config documents that no data was sent
+- GIVEN the Contact form is rendered or activated with valid fields
+- WHEN the status is announced
+- THEN the status says the form is not active and that the data was not sent
 
 ### Requirement: Form accessibility
 
-Every field MUST have an associated visible label; required fields MUST be announced as required; errors MUST be linked to their field via `aria-describedby`. Fields MUST lay out two-column on desktop and single-column on mobile, with Asunto as a native labeled select.
+Every field MUST have an associated visible label; required fields MUST be announced as required; errors MUST be linked to their field via `aria-describedby`, and the first invalid field MUST receive focus. Fields MUST lay out two-column on desktop and single-column on mobile, with Asunto as a native labeled select.
 
 #### Scenario: Screen reader error announcement
 
-- GIVEN a screen reader user submits with an empty required field
-- WHEN validation fails
-- THEN focus or announcement conveys the error tied to that field
+- GIVEN a screen reader user activates the form with an empty required field
+- WHEN local validation fails
+- THEN focus or an announcement conveys the error tied to that field without leaving the page

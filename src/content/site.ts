@@ -8,6 +8,7 @@ export const siteContent = {
   },
   organization: {
     email: 'teamjobsmexico@gmail.com',
+    telephone: '+52 1 56 1027 5879',
     address: {
       streetAddress: 'Av. Río Churubusco 601, Xoco, Benito Juárez',
       addressLocality: 'Ciudad de México',
@@ -25,7 +26,6 @@ export const siteContent = {
       inicio: 'Inicio',
       nosotros: 'Nosotros',
       servicios: 'Servicios',
-      vacantes: 'Vacantes',
       empresas: 'Empresas',
       recursos: 'Recursos',
       contacto: 'Contacto',
@@ -39,7 +39,7 @@ export const siteContent = {
     titleTail: ['Talento', 'Excepcional'],
     description:
       'Somos el puente entre el talento excepcional y las organizaciones que buscan crecer. Desde reclutamiento hasta consultoría integral de RH.',
-    primaryCta: 'Consultar Vacantes',
+    primaryCta: 'Hablar con un especialista',
     secondaryCta: 'Nuestros Servicios',
     stats: ['+100 Empresas', '98% Satisfacción'],
   },
@@ -180,6 +180,62 @@ export const siteContent = {
       description:
         'Contáctanos hoy y recibe una consulta gratuita para diseñar la estrategia de RH perfecta para tu empresa.',
       cta: 'Consulta Gratuita',
+    },
+  },
+  contact: {
+    eyebrow: 'Hablemos',
+    titleLead: 'Hablemos, estamos',
+    titleAccent: 'para ayudarte',
+    description:
+      'Seas candidato o empresa, nuestro equipo está listo para orientarte y encontrar la mejor solución para ti.',
+    details: {
+      address:
+        'Av. Río Churubusco 601, Xoco, Benito Juárez, 03330 Ciudad de México, CDMX',
+      phone: '+52 1 56 1027 5879',
+      email: 'teamjobsmexico@gmail.com',
+      whatsapp: '+52 1 56 1027 5879',
+      hours: 'Lun–Vie: 9:00–18:00 | Sáb: 10:00–14:00 hrs',
+    },
+    form: {
+      title: 'Envíanos un mensaje',
+      inactiveNote:
+        'Este formulario es solo visual por ahora. Tus datos no se enviarán.',
+      labels: {
+        name: 'Nombre completo',
+        email: 'Correo electrónico',
+        phone: 'Teléfono',
+        company: 'Empresa',
+        subject: 'Asunto',
+        message: 'Mensaje',
+      },
+      placeholders: {
+        name: 'Juan García',
+        email: 'juan@empresa.com',
+        phone: '+52 55 0000-0000',
+        company: 'Mi Empresa S.A.',
+        subject: 'Selecciona una opción',
+        message: 'Cuéntanos cómo podemos ayudarte...',
+      },
+      subjects: {
+        recruitment: 'Reclutamiento y Selección',
+        headhunting: 'Headhunting Ejecutivo',
+        training: 'Capacitación y Desarrollo',
+        payroll: 'Nómina y Administración',
+        consulting: 'Consultoría de RH',
+        cv: 'Enviar mi CV',
+        other: 'Otro',
+      },
+      errors: {
+        name: 'Escribe tu nombre completo.',
+        email: 'Escribe un correo electrónico válido.',
+        subject: 'Selecciona un asunto.',
+        message: 'Escribe un mensaje.',
+      },
+      required: 'obligatorio',
+      invalidSummary: 'Revisa los campos marcados.',
+      inactiveStatus:
+        'El formulario de contacto aún no está activo. Tus datos no se enviaron.',
+      submit: 'Enviar Mensaje',
     },
   },
   fab: {

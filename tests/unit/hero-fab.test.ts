@@ -15,7 +15,7 @@ describe('hero and FAB contracts', () => {
     expect(index).not.toContain('<h1');
     expect(hero).toContain('href="#servicios"');
     expect(hero).toContain('href={siteConfig.contactHref}');
-    expect(siteContent.hero.primaryCta).toBe('Consultar Vacantes');
+    expect(siteContent.hero.primaryCta).toBe('Hablar con un especialista');
   });
 
   it('renders a prioritized static mascot without a Hero video island', () => {

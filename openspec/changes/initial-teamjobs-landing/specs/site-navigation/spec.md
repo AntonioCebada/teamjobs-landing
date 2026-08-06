@@ -1,14 +1,16 @@
 # site-navigation Specification
 
+> **Current apply boundary:** Footer integration and Privacy/Cookies route work remain pending task 4.2; this target specification does not mark that task complete.
+
 ## Purpose
 
-Sticky navbar (desktop links + mobile menu), in-page anchor navigation, footer link columns, external URL placeholders, and the floating WhatsApp button — all driven by a central config of documented placeholder URLs.
+Sticky navbar (desktop links + mobile menu), in-page anchor navigation, footer link columns, sign-in/social/legal URL placeholders, and the floating WhatsApp button — all driven by a central config of documented placeholder URLs.
 
 ## Requirements
 
 ### Requirement: Navbar with in-page anchors
 
-The sticky navbar MUST contain the logo and links Inicio, Nosotros, Servicios, Vacantes, Empresas, Recursos, Contacto, plus "Iniciar sesión". In-page links MUST scroll to their section anchors. On small viewports the links MUST collapse into a hamburger menu.
+The sticky navbar MUST contain the logo and links Inicio, Nosotros, Servicios, Empresas, Recursos, Contacto, plus "Iniciar sesión". In-page links MUST scroll to their section anchors. On small viewports the links MUST collapse into a hamburger menu.
 
 #### Scenario: Anchor navigation
 
@@ -24,13 +26,17 @@ The sticky navbar MUST contain the logo and links Inicio, Nosotros, Servicios, V
 
 ### Requirement: External URL placeholders
 
-Vacantes, Iniciar sesión, social profiles, and legal links MUST resolve from a central config of placeholder URLs. Placeholders SHALL be documented as intentional no-ops/`#` until product supplies destinations.
+Iniciar sesión, social profiles, and legal links MUST resolve from a central config of placeholder URLs. Placeholders SHALL be documented as intentional no-ops/`#` until product supplies destinations.
 
 #### Scenario: Placeholder resolution
 
 - GIVEN no real URLs configured
 - WHEN a placeholder link renders
 - THEN its `href` comes from the central config and is documented as a placeholder
+
+### Requirement: Vacancies out of current scope
+
+The current landing MUST NOT define a Vacantes section, route, navigation action, CTA, URL, config key, or requirement. Any original mockup or planning reference to Vacantes is historical evidence only and MUST NOT become a current link.
 
 ### Requirement: Footer columns
 

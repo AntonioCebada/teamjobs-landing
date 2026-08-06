@@ -8,7 +8,7 @@ The hydration policy for the landing: zero-JS by default with Preact islands onl
 
 ### Requirement: Selective hydration
 
-The page MUST ship zero client JavaScript by default. Only these MAY hydrate as Preact islands: mobile nav, contact form, logo carousel (only if CSS cannot meet requirements), and the optional hero video. Static sections, footer, and the WhatsApp FAB SHALL NOT hydrate.
+The page MUST ship zero client JavaScript by default. Only these MAY hydrate as Preact islands: mobile nav, the Contact form for local validation/inactive presentation only, logo carousel (only if CSS cannot meet requirements), and the optional hero video. The Contact form MUST NOT send data or expose backend submission states. Static sections, footer, and the WhatsApp FAB SHALL NOT hydrate.
 
 #### Scenario: Zero-JS baseline
 

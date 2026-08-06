@@ -2,12 +2,14 @@
 
 Single-page TeamJobs marketing landing built from design mockups on a greenfield Astro stack. No product decision blocks proposal; assumptions below are explicit and reversible in design/spec.
 
+> **Historical/non-normative artifact note:** This exploration predates the approved current scope. References to Vacantes below are mockup observations or superseded assumptions only; the current change defines no Vacantes section, route, navigation action, CTA, URL, config key, or requirement. No statement below authorizes Contact transport or deployment work.
+
 ## Quick path
 
 1. Treat `design/mockups/` as visual SoT and `design/assets/` as the only supplied media.
 2. Scaffold Astro + TS + Tailwind + Preact inside Docker (pnpm only).
 3. Ship a first slice: Docker scaffold + shell layout + Navbar + Hero + WhatsApp FAB.
-4. Chain remaining sections and form/carousel islands under the 400-line PR budget.
+4. Chain remaining sections and form/carousel islands under the active 800-authored-changed-line budget.
 
 ## Current State
 
@@ -34,7 +36,7 @@ Greenfield repository. No app source, package manager lockfile, Dockerfile, test
 | `seccion5-posts.png` | Recursos: 3 article cards (category, title, read time, date, excerpt, CTA); mid-page gradient CTA band "Consulta Gratuita"; FAB |
 | `seccion6-contacto&footer.png` | Contact info + socials; contact form (name*, email*, phone, company, subject*, message*); dark footer (nav, services list, contact, legal links, © 2026); FAB |
 
-Nav anchors implied: Inicio · Nosotros · Servicios · Vacantes · Empresas · Recursos · Contacto.
+Historical mockup observation only (non-normative; Vacantes is excluded from the current change): Nav anchors implied: Inicio · Nosotros · Servicios · Empresas · Recursos · Contacto.
 
 ### Asset inventory
 
@@ -78,7 +80,7 @@ BaseLayout
 └── WhatsAppFab (fixed)
 ```
 
-**Vacantes / Iniciar sesión:** mock shows as primary nav/CTA; no vacancies UI or auth in mockups → treat as external URL placeholders until product supplies destinations.
+**Historical/non-normative exploration assumption (superseded) — Vacantes / Iniciar sesión:** mock shows as primary nav/CTA; no vacancies UI or auth in mockups → the original plan treated these as external URL placeholders until product supplied destinations. This does not define a current link or requirement.
 
 ## Component boundaries
 
@@ -93,7 +95,7 @@ BaseLayout
 | `LogoCarousel` | Preact island **or** CSS marquee | Continuous scroll + reduced-motion |
 | `Resources` | Astro | 3 static cards (no CMS v1) |
 | `CtaBanner` | Astro | Mid-page band |
-| `Contact` | Astro shell + Preact form island | Validation + submit UX |
+| `Contact` | Astro shell + Preact form island | Client-side validation and inactive presentation only; no transport |
 | `Footer` | Astro | Link columns; legal hrefs TBD |
 | `WhatsAppFab` | Astro (anchor) | `wa.me` URL; a11y label |
 | `Button`, `SectionHeading`, `Badge` | Astro primitives | Match mock visual language |
@@ -103,7 +105,7 @@ BaseLayout
 **Default to zero JS.** Hydrate only:
 
 1. **MobileNav** — open/close, focus trap, Escape, body scroll lock.
-2. **ContactForm** — client validation, pending/success/error states; submit via form action, mailto, or third-party endpoint (assumption).
+2. **ContactForm** — client-side validation, field-error presentation, and an inactive status; it MUST NOT submit, fetch, request, or use a backend transport.
 3. **LogoCarousel** — only if CSS marquee cannot meet a11y/pause-on-hover; prefer CSS-first.
 4. **LangSwitcher** — only if real ES/EN content swap ships; otherwise decorative flags with `aria` and documented no-op/placeholder (assumption: ES-only v1 UI copy from mockups).
 5. **HeroVideo** (optional) — if MP4 used: muted, loop, playsinline, pause when offscreen / `prefers-reduced-motion`.
@@ -156,12 +158,12 @@ Do **not** island: pure section layout, footer, static cards, WhatsApp link.
 |-------|-------------------------|
 | Page model | Single-page landing with in-page anchors; no multi-route IA in v1 |
 | Language | Spanish UI copy from mockups; lang switcher UI present, ES-only content until copy supplied |
-| Iniciar sesión / Vacantes | External placeholder URLs (env/config) |
+| Iniciar sesión / Vacantes labels (historical, non-normative) | Original mockup placeholder observation; the current change omits Vacantes entirely |
 | Soluciones "Conocer más" | In-page `#servicios` detail anchors or button-as-scroll; no separate service pages v1 |
 | Footer services list | Differs from 4 solution cards (adds Headhunting, Capacitación, etc.) — render as mock shows; may be non-linked or same section |
 | Blog posts | Static fixture content from mockup; cards non-navigating or `#` until CMS |
 | Client logos | Labeled placeholder pills matching mock names (not real trademarks) until assets provided |
-| Contact form backend | Client validation + progressive enhancement; success UI without real mail API unless endpoint provided |
+| Contact form behavior | Client validation plus an explicit inactive notice; no progressive transport, endpoint, or delivery state |
 | WhatsApp number | Config constant; use contact phone `+5215610275879` as default target |
 | Legal links | Footer links to `#` or minimal stub pages out of first slice |
 | Social URLs | Icons visible; `href` placeholders |
@@ -172,7 +174,7 @@ Do **not** island: pure section layout, footer, static cards, WhatsApp link.
 
 1. **SSG single-page + selective Preact islands (recommended)** — Astro pages/components for sections; islands only for nav/form/(carousel); Docker SSG → static nginx.
    - Pros: Matches stack constraints; minimal JS; fast LCP; clear section ownership; fits chained PRs by section.
-   - Cons: Real i18n/CMS/form backend need follow-up changes.
+   - Cons: Real i18n/CMS/backend behavior would require a separate future change and is not part of this contract.
    - Effort: Medium (greenfield scaffold dominates).
 
 2. **Multi-page mini-site (servicios/recursos/legal as routes)** — More IA fidelity to footer service names and blog "Conocer más".
@@ -189,7 +191,7 @@ Do **not** island: pure section layout, footer, static cards, WhatsApp link.
 
 **Approach 1.** Implement one SSG landing that mirrors the six mockups top-to-bottom, with Docker + pnpm scaffold first, then section components, then islands.
 
-### Sensible first-slice scope (PR chain, ≤400 lines each where possible)
+### Sensible first-slice scope (historical PR chain; current ceiling is 800 authored lines)
 
 | Slice | Deliverable |
 |-------|-------------|
@@ -200,14 +202,14 @@ Do **not** island: pure section layout, footer, static cards, WhatsApp link.
 | **5 — Recursos + CTA band** | Static posts + Consulta Gratuita band |
 | **6 — Contact + Footer** | Contact info, form island, footer columns |
 
-`delivery_strategy: auto-chain` + `review_budget_lines: 400` → tasks phase should forecast chained PRs; foundation+hero may need split if scaffold is large.
+`delivery_strategy: auto-chain` + current `review_budget_lines: 800` → tasks phase should forecast chained PRs; any over-budget slice must split before apply.
 
 ### Out of scope for this change (unless product expands)
 
-- Real auth / vacancies product integration
+- Historical/non-normative only: real auth or the Vacantes product integration
 - CMS or MDX blog system
 - Full EN locale content
-- Production mail/CRM integration (beyond pluggable endpoint)
+- Contact submission transport or production mail/CRM integration
 - Pixel-perfect mobile mockups (none provided — responsive interpretation)
 - Real third-party brand logos
 
@@ -215,8 +217,8 @@ Do **not** island: pure section layout, footer, static cards, WhatsApp link.
 
 - **Asset gap:** carousel brands and icons not in `design/assets` → placeholders may look unfinished until design drops files.
 - **Video audio:** autoplay with sound is blocked/bad UX; must mute or not use video initially.
-- **Form without backend:** risk of dead submit if treated as production-ready without explicit endpoint.
-- **Nav promises:** Vacantes / Iniciar sesión / legal / social / Conocer más can 404 or no-op if placeholders not documented.
+- **Visual-only form:** risk of implying delivery if transport-like states appear; the current contract MUST keep the form inactive and local.
+- **Historical navigation risk (superseded, non-normative):** the mockup's Vacantes / Iniciar sesión / legal / social / Conocer más labels could 404 or no-op; none creates a current route or requirement.
 - **Footer vs Solutions taxonomy mismatch** may confuse specs — keep both as designed, note inconsistency.
 - **No mobile mockups** → visual QA subjective; define breakpoints in design phase.
 - **Docker-only DX** increases first-slice size (compose + Dockerfiles + README) vs host scaffold.
@@ -228,7 +230,7 @@ Do **not** island: pure section layout, footer, static cards, WhatsApp link.
 
 **Yes.** No blocking product decision required for a responsible proposal.
 
-Orchestrator should proceed to **sdd-propose** for `initial-teamjobs-landing` with the assumptions above locked as defaults, and call out open config knobs (external URLs, WhatsApp number, form endpoint) as proposal decisions rather than exploration blockers.
+Orchestrator should proceed to **sdd-propose** for `initial-teamjobs-landing` with the assumptions above locked as historical context; current open config knobs are limited to external URLs and the WhatsApp number.
 
 ## Checklist
 
