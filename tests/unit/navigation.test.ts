@@ -7,7 +7,7 @@ const source = (path: string) =>
   readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 
 describe('navigation contract', () => {
-  it('centralizes the complete link set and honest external placeholders', () => {
+  it('centralizes the complete in-page link set without vacancies or dead actions', () => {
     expect(siteConfig.navigation.map(({ key }) => key)).toEqual([
       'inicio',
       'nosotros',
@@ -16,7 +16,6 @@ describe('navigation contract', () => {
       'recursos',
       'contacto',
     ]);
-    expect(siteConfig.urls.login).toBe('#');
     expect(siteConfig.navigation.map(({ key }) => key)).not.toContain(
       'vacantes',
     );
@@ -40,6 +39,8 @@ describe('navigation contract', () => {
     expect(source('src/islands/MobileNav.tsx')).toContain(
       'data-icon="lucide:x"',
     );
+    expect(navbar).not.toContain('siteConfig.urls.login');
+    expect(source('src/islands/MobileNav.tsx')).not.toContain('loginHref');
     expect(source('src/islands/MobileNav.tsx')).not.toContain('>Menú<');
   });
 

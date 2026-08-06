@@ -30,7 +30,7 @@ describe('Empresas contracts', () => {
     expect(index.indexOf('<Solutions />')).toBeLessThan(
       index.indexOf('<Empresas />'),
     );
-    expect(index).toContain("'#empresas'");
+    expect(index).toMatch(/<Empresas \/>\s*<Resources \/>/);
     expect(empresas).toContain('<section id="empresas"');
     expect(empresas.match(/<h2/g)).toHaveLength(1);
     expect(empresas).toContain('<ol class=');

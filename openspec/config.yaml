@@ -1,12 +1,12 @@
 schema: spec-driven
 
-# SDD session choices (current apply correction; init history retained in change artifacts)
+# SDD session choices (final apply slice; init history retained in change artifacts)
 # execution_mode: auto
 # artifact_store.mode: openspec
 # delivery_strategy: auto-chain
 # review_budget_lines: 800 (CURRENT remaining-work budget: authored additions+deletions per chained slice; generated files and lockfiles remain visible in complete snapshots)
 # Historical PR1 context: the original 400-total-line baseline and sole generated-lockfile size:exception are audit history only, not active policy.
-# Current contract: Contact MUST remain visual-only/non-operational; Vacancies and deployment execution/configuration are excluded; task 4.2 remains pending.
+# Current contract: Contact MUST remain visual-only/non-operational; Vacancies and deployment execution/configuration are excluded; task 4.2 is complete.
 
 context: |
   Project: teamjobs-landing — marketing landing page for TeamJobs.

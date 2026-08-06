@@ -2,27 +2,13 @@
 import About from '../components/About.astro';
 import Contact from '../components/Contact.astro';
 import Empresas from '../components/Empresas.astro';
+import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 import Navbar from '../components/Navbar.astro';
 import Resources from '../components/Resources.astro';
 import Solutions from '../components/Solutions.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
-import { siteConfig } from '../config/site';
-import { siteContent } from '../content/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const anchorTargets = siteConfig.navigation
-  .map(({ href }) => href)
-  .filter(
-    (href) => href.startsWith('#') && href.length > 1 && href !== '#inicio',
-  );
-const implementedAnchors = new Set([
-  '#nosotros',
-  '#servicios',
-  '#empresas',
-  '#recursos',
-  '#contacto',
-]);
 ---
 
 <BaseLayout>
@@ -33,15 +19,6 @@ const implementedAnchors = new Set([
   <Empresas />
   <Resources />
   <Contact />
-  {
-    anchorTargets
-      .filter((href) => !implementedAnchors.has(href))
-      .map((href) => (
-        <div id={href.slice(1)} class="scroll-mt-24" aria-hidden="true" />
-      ))
-  }
   <WhatsAppFab />
-  <p slot="footer" class="page-shell py-6 text-sm text-brand-muted">
-    © 2026 {siteContent.brandName}
-  </p>
+  <Footer slot="footer" />
 </BaseLayout>

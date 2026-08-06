@@ -55,7 +55,7 @@ describe('Resources contracts', () => {
     const index = source('src/pages/index.astro');
     const resources = source('src/components/Resources.astro');
     expect(index).toMatch(/<Empresas \/>\s*<Resources \/>/);
-    expect(index).toContain("'#recursos'");
+    expect(index).toMatch(/<Resources \/>\s*<Contact \/>/);
     expect(resources).toContain('<section id="recursos"');
     expect(resources.match(/<article\b/g)).toHaveLength(1);
     expect(resources).not.toContain('client:');

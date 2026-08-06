@@ -1,7 +1,6 @@
 const urls = {
-  login: '#',
-  socials: { linkedin: '#', instagram: '#' },
-  legal: { privacy: '#', terms: '#' },
+  socials: {},
+  legal: { privacy: '/privacidad', cookies: '/cookies' },
 } as const;
 
 export type NavigationKey =

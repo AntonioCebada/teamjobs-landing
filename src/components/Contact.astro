@@ -2,68 +2,149 @@
 import { siteConfig } from '../config/site';
 import { siteContent } from '../content/site';
 import ContactForm from '../islands/ContactForm';
+import Icon from './Icon.astro';
 
 const { contact } = siteContent;
 const whatsappUrl = `https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '')}`;
+const contactItems = [
+  {
+    label: 'Ubicación',
+    value: contact.details.address,
+    icon: 'map-pin',
+    color: '#6B3FD4',
+  },
+  {
+    label: 'Teléfono',
+    value: contact.details.phone,
+    icon: 'phone',
+    color: '#00CDB8',
+  },
+  {
+    label: 'Correo',
+    value: contact.details.email,
+    icon: 'mail',
+    color: '#3B82F6',
+  },
+  {
+    label: 'Horario',
+    value: contact.details.hours,
+    icon: 'clock',
+    color: '#2D3270',
+  },
+] as const;
+const socialIcons = [
+  {
+    name: 'whatsapp',
+    color: '#25d366',
+    title: 'WhatsApp',
+    href: whatsappUrl,
+  },
+  { name: 'linkedin-in', color: '#0077b5', title: 'LinkedIn', href: undefined },
+  { name: 'facebook-f', color: '#1877f2', title: 'Facebook', href: undefined },
+  { name: 'instagram', color: '#e1306c', title: 'Instagram', href: undefined },
+  {
+    name: 'x-twitter',
+    color: '#1da1f2',
+    title: 'X / Twitter',
+    href: undefined,
+  },
+] as const;
 ---
 
 <section
   id="contacto"
-  class="scroll-mt-24 bg-white py-20 sm:py-24"
+  class="scroll-mt-24 bg-[#f0fafc] py-24"
   aria-labelledby="contact-title"
 >
-  <div class="page-shell min-w-0">
-    <header class="mx-auto max-w-3xl text-center">
-      <p class="eyebrow mx-auto">{contact.eyebrow}</p>
+  <div
+    class="mx-auto grid max-w-7xl min-w-0 items-start gap-16 px-6 lg:grid-cols-2 lg:px-12"
+  >
+    <div class="min-w-0">
+      <span
+        class="mb-3 inline-block rounded-full px-4 py-1.5 text-[0.8rem] font-bold tracking-[0.1em] uppercase"
+        style="background: linear-gradient(135deg, rgba(107, 63, 212, 0.12), rgba(0, 205, 184, 0.12)); color: #6b3fd4;"
+      >
+        {contact.eyebrow}
+      </span>
       <h2
         id="contact-title"
-        class="mt-5 text-3xl font-bold leading-tight text-brand-navy sm:text-5xl"
+        class="mb-6 text-4xl leading-tight font-black text-brand-ink lg:text-5xl"
       >
-        {contact.titleLead}<br /><span
-          class="bg-brand bg-clip-text text-transparent"
+        {contact.titleLead}<br />
+        <span class="bg-brand bg-clip-text text-transparent"
           >{contact.titleAccent}</span
         >
       </h2>
-      <p class="mx-auto mt-5 max-w-2xl leading-7 text-brand-muted">
+      <p class="mb-10 text-lg leading-relaxed text-gray-500">
         {contact.description}
       </p>
+
       <address
-        class="mt-7 not-italic text-sm leading-7 text-brand-muted"
+        class="mb-8 space-y-5 not-italic"
         aria-label="Datos de contacto de TeamJobs"
       >
-        <span class="block">{contact.details.address}</span>
-        <span class="block">
-          <a
-            class="underline hover:text-brand-violet"
-            href={`mailto:${contact.details.email}`}
-          >
-            {contact.details.email}
-          </a>
-          <span aria-hidden="true"> · </span>
-          <a
-            class="underline hover:text-brand-violet"
-            href={`tel:${siteConfig.whatsappNumber}`}
-          >
-            {contact.details.phone}
-          </a>
-          <span aria-hidden="true"> · </span>
-          <a
-            class="underline hover:text-brand-violet"
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WhatsApp {contact.details.whatsapp}
-          </a>
-        </span>
-        <span class="block">{contact.details.hours}</span>
+        {
+          contactItems.map((item) => (
+            <div class="flex min-w-0 items-start gap-4">
+              <span
+                class="flex size-12 shrink-0 items-center justify-center rounded-xl text-white"
+                style={`background: linear-gradient(135deg, ${item.color}, ${item.color}cc);`}
+              >
+                <Icon name={item.icon} class="size-4" />
+              </span>
+              <span class="min-w-0">
+                <span class="block text-sm font-bold text-brand-ink">
+                  {item.label}
+                </span>
+                <span class="block break-words text-sm text-gray-500">
+                  {item.value}
+                </span>
+              </span>
+            </div>
+          ))
+        }
       </address>
-    </header>
 
-    <div
-      class="mx-auto mt-12 max-w-3xl rounded-3xl border border-gray-100 bg-white p-6 shadow-2xl sm:p-8"
-    >
-      <ContactForm client:visible />
+      <div>
+        <div class="mb-4 font-bold text-brand-ink">Síguenos en redes</div>
+        <div class="flex gap-3" role="group" aria-label="Redes sociales">
+          {
+            socialIcons.map((social) =>
+              social.href ? (
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex size-11 items-center justify-center rounded-xl text-white shadow-md transition hover:scale-110"
+                  style={`background: ${social.color};`}
+                  aria-label={social.title}
+                  title={social.title}
+                >
+                  <Icon name={social.name} class="size-5" />
+                </a>
+              ) : (
+                <span
+                  role="img"
+                  class="flex size-11 items-center justify-center rounded-xl text-white shadow-md"
+                  style={`background: ${social.color};`}
+                  aria-label={`${social.title} (destino no verificado)`}
+                  title={social.title}
+                >
+                  <Icon name={social.name} class="size-5" />
+                </span>
+              ),
+            )
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="min-w-0">
+      <div
+        class="rounded-3xl border border-gray-100 bg-[#f0fafc] p-8 shadow-2xl"
+      >
+        <ContactForm client:visible />
+      </div>
     </div>
   </div>
 </section>

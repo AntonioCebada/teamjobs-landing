@@ -56,10 +56,17 @@ describe('hero and FAB contracts', () => {
     expect(fab).toContain('siteConfig.whatsappNumber.replace');
     expect(fab).toContain('target="_blank"');
     expect(fab).toContain('rel="noopener noreferrer"');
+    expect(fab).toContain('right-6');
+    expect(fab).toContain('bottom-6');
+    expect(fab).toContain('z-[998]');
+    expect(fab).toContain('shadow-[0_4px_16px_rgba(37,211,102,0.5)]');
+    expect(fab).toContain('hover:shadow-[0_6px_24px_rgba(37,211,102,0.6)]');
+    expect(fab).toContain('<Icon name="whatsapp" class="size-7" />');
+    expect(fab).not.toContain('<path');
     expect(fab).toContain('safe-area-inset-right');
     expect(fab).toContain('safe-area-inset-bottom');
     expect(siteContent.fab.ariaLabel).toContain('nueva ventana');
-    expect(source('src/layouts/BaseLayout.astro')).toContain(
+    expect(source('src/layouts/BaseLayout.astro')).not.toContain(
       'pb-[calc(4.5rem+env(safe-area-inset-bottom))]',
     );
   });

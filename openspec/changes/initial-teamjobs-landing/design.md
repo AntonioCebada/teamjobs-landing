@@ -2,7 +2,7 @@
 
 ## Technical Approach
 
-Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands only where specs allow. Tailwind v4 via `@tailwindcss/vite`, tokens in CSS `@theme`. TypeScript strict. pnpm-only inside pinned Docker images; multi-stage local/CI build → nginx preview serving `dist/`. One route (`/`), six sections, ES copy in a typed content module, and local behavior knobs in a config module. Contact is visual-only/non-operational. Available tooling runs exclusively inside Docker; deployment execution/configuration is outside this change.
+Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands only where specs allow. Tailwind v4 via `@tailwindcss/vite`, tokens in CSS `@theme`. TypeScript strict. pnpm-only inside pinned Docker images; multi-stage local/CI build → nginx preview serving `dist/`. The site has the landing route plus `/privacidad` and `/cookies`, six sections, ES copy in a typed content module, and local behavior knobs in a config module. Contact is visual-only/non-operational. Available tooling runs exclusively inside Docker; deployment execution/configuration is outside this change.
 
 ## Architecture Decisions
 
@@ -26,7 +26,7 @@ Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands 
 
 ### Decision: Content vs. config naming (single scheme)
 
-**Choice**: exactly two modules — `src/config/site.ts` exporting `siteConfig` (behavior knobs: Iniciar sesión, social, and legal placeholder URLs, `whatsappNumber` default `'+5215610275879'`, and `enableHeroVideo: boolean`) and `src/content/site.ts` exporting `siteContent` (all visible ES display copy extracted from mockups). Contact has no endpoint or transport configuration. No Vacantes URL or config key is part of the current scope. No other naming variant (`site.config.ts`, `site.content.ts`) is used anywhere — components import only these two paths.
+**Choice**: exactly two modules — `src/config/site.ts` exporting `siteConfig` (behavior knobs: verified local legal URLs, `whatsappNumber` default `'+5215610275879'`, and navigation) and `src/content/site.ts` exporting `siteContent` (all visible ES display copy extracted from mockups). Unresolved login/social destinations are omitted. Contact has no endpoint or transport configuration. No Vacantes URL or config key is part of the current scope. No other naming variant (`site.config.ts`, `site.content.ts`) is used anywhere — components import only these two paths.
 **Rationale**: copy changes never touch behavior; product URLs land in one diff; one scheme removes import ambiguity.
 
 ### Decision: Font loading (compliant path)
@@ -41,7 +41,7 @@ Astro 5 SSG (`output: 'static'`), zero-JS by default, `@astrojs/preact` islands 
 
 ### Decision: Docker topology / nginx
 
-One `Dockerfile`, targets: `base` (`node:<pin>-alpine` + `corepack prepare pnpm@<pin>`), `dev`, `build` (image-stage instruction `RUN pnpm install --frozen-lockfile && pnpm build`, evaluated by the container's shell at image build — never by the host), and `prod` (`nginx:<pin>-alpine` + `COPY --from=build dist/`). Compose services cover `dev`, `build`, `preview`, and `test` (unit/static quality). The managed Playwright Compose image/service is not part of this correction; task 4.2 removes it, and no Playwright package, image pull, or installation occurs here. Pins remain recorded in Dockerfile comments. `nginx.conf`: `try_files` to `index.html`, gzip, long cache for hashed `/assets/*`, no-cache HTML, security headers.
+One `Dockerfile`, targets: `base` (`node:<pin>-alpine` + `corepack prepare pnpm@<pin>`), `dev`, `build` (image-stage instruction `RUN pnpm install --frozen-lockfile && pnpm build`, evaluated by the container's shell at image build — never by the host), and `prod` (`nginx:<pin>-alpine` + `COPY --from=build dist/`). Compose services cover `dev`, `build`, `preview`, and `test` (unit/static quality); no managed Playwright image or service is retained. Pins remain recorded in Dockerfile comments. `nginx.conf`: `try_files` to `index.html`, gzip, long cache for hashed `/assets/*`, no-cache HTML, security headers.
 
 ### Decision: Deployment boundary
 
@@ -125,9 +125,9 @@ The approved current scope excludes Vacantes entirely: no vacancy section, route
 | `src/styles/global.css` | Create | Tailwind `@theme` tokens + fontsource import |
 | `src/config/site.ts`, `src/content/site.ts` | Create | Config knobs + ES copy (single naming scheme) |
 | `src/layouts/BaseLayout.astro` | Create | `lang="es"`, landmarks, skip link, SEO/OG/JSON-LD |
-| `src/components/*.astro` (Navbar, Hero, About, Solutions, Empresas, Carousel, Recursos, CtaBand, Contact, Footer, WhatsAppFab, Placeholder, Seo) | Create | Static sections |
+| `src/components/*.astro` (Navbar, Hero, About, Solutions, Empresas, Carousel, Recursos, CtaBand, Contact, Footer, LegalPage, WhatsAppFab, Placeholder, Seo) | Create | Static sections and legal document shell |
 | `src/islands/{MobileNav,ContactForm,HeroVideo}.tsx` | Create | Preact islands per contracts above |
-| `src/pages/index.astro` | Create | Single route, spec section order |
+| `src/pages/{index,privacidad,cookies}.astro` | Create | Landing and static legal routes |
 | `src/assets/*`, `public/clip-logo.mp4` | Create | Media from `design/assets/` only |
 | `tests/{unit,e2e}/`, ESLint/Prettier configs | Create | Quality layer |
 
@@ -154,9 +154,9 @@ N/A — no routing, shell, subprocess, VCS/PR automation, executable-file classi
 
 **Historical PR1 accounting**: The initial scaffold plan used a 400-total-changed-line baseline. Its generated `pnpm-lock.yaml` exceeded that baseline, so the maintainer approved the sole `size:exception` for PR1. This remains historical evidence and does not establish a current exception.
 
-**Current session accounting**: The maintainer's current SDD Session Preflight approves `review_budget_lines: 800`, an 800-authored-changed-line ceiling for each remaining `auto-chain` slice using `feature-branch-chain`. Authored additions plus deletions are counted for the current slice; the 596-line Contact-form slice leaves 204 lines of headroom under the ceiling, so it has no new `size:exception`. Generated artifacts remain visible in the complete diff and are never silently omitted.
+**Current session accounting**: The maintainer's current SDD Session Preflight approves `review_budget_lines: 800`, an 800-authored-changed-line ceiling for each `auto-chain` slice using `feature-branch-chain`. Authored additions plus deletions are counted for the final slice; its independently measured total, manifest, and headroom are recorded in `apply-progress.md`. Generated artifacts remain visible in the complete diff and are never silently omitted.
 
-**Generated-output gate**: The historical PR1 lockfile exception applies only to that scaffold slice. A remaining slice must fit the current 800-authored-changed-line ceiling without a new exception; the current 596-line Contact-form slice has 204 lines of headroom, and no generated-output exception is granted. Review the hand-written changes and machine-verify generated output with `pnpm install --frozen-lockfile` inside Docker rather than reviewing a generated lockfile line by line.
+**Generated-output gate**: The historical PR1 lockfile exception applies only to that scaffold slice. The final slice must fit the current 800-authored-changed-line ceiling without a new exception. Review the hand-written changes and machine-verify generated output with `pnpm install --frozen-lockfile` inside Docker rather than reviewing a generated lockfile line by line.
 
 **Planned slices** (the forecasts below are the historical plan; task planning re-forecasts every remaining slice against the current 800-authored-changed-line ceiling before apply):
 
@@ -176,5 +176,5 @@ N/A — no routing, shell, subprocess, VCS/PR automation, executable-file classi
 ## Open Questions
 
 - [ ] Exact token hex values and mockup font family — extracted from mockups at implementation (approximations would be invented); fontsource package pinned then.
-- [ ] Pinned Node/pnpm/nginx versions — locked to latest stable at scaffold time, then frozen. Managed Playwright setup is removed by pending task 4.2 and is not installed or pulled in this correction.
+- [ ] Pinned Node/pnpm/nginx versions — locked to latest stable at scaffold time, then frozen. Managed Playwright setup is not installed or pulled in this change.
 - [ ] Hero video enablement — stays `false` until design confirms muted/acceptable.

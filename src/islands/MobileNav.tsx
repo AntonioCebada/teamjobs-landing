@@ -2,19 +2,17 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 
 type Props = {
   links: ReadonlyArray<{ href: string; label: string }>;
-  loginHref: string;
   labels: {
     open: string;
     close: string;
     language: string;
-    login: string;
   };
 };
 
 const focusable =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export default function MobileNav({ links, loginHref, labels }: Props) {
+export default function MobileNav({ links, labels }: Props) {
   const [open, setOpen] = useState(false);
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
@@ -130,13 +128,6 @@ export default function MobileNav({ links, loginHref, labels }: Props) {
           <p class="px-4 py-3 text-sm font-normal">
             Idioma actual: {labels.language}
           </p>
-          <a
-            class="mt-2 rounded-full bg-brand-blue px-5 py-3 text-center"
-            href={loginHref}
-            onClick={() => close(false)}
-          >
-            {labels.login}
-          </a>
         </div>
       </div>
     </details>

@@ -12,7 +12,11 @@ describe('siteConfig', () => {
     );
   });
 
-  it('starts in honest demo mode with documented placeholders', () => {
-    expect(siteConfig.urls.login).toBe('#');
+  it('keeps unresolved destinations out of the rendered configuration', () => {
+    expect(Object.keys(siteConfig.urls.socials)).toHaveLength(0);
+    expect(siteConfig.urls.legal).toEqual({
+      privacy: '/privacidad',
+      cookies: '/cookies',
+    });
   });
 });

@@ -1,0 +1,193 @@
+---
+import { Image } from 'astro:assets';
+import { logo } from '../assets/media';
+import { siteConfig } from '../config/site';
+import { siteContent } from '../content/site';
+import Icon from './Icon.astro';
+
+const { contact, footer, navigation } = siteContent;
+const isHome = Astro.url.pathname === '/';
+const navigationLinks = siteConfig.navigation.map(({ key, href }) => ({
+  href: isHome ? href : `/${href}`,
+  label: navigation.links[key],
+}));
+const phoneHref = contact.details.phone.replace(/[^\d+]/g, '');
+const whatsappUrl = `https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '')}`;
+const socialIcons = [
+  {
+    name: 'whatsapp',
+    color: '#25d366',
+    title: 'WhatsApp',
+    href: whatsappUrl,
+  },
+  { name: 'linkedin-in', color: '#0077b5', title: 'LinkedIn', href: undefined },
+  { name: 'facebook-f', color: '#1877f2', title: 'Facebook', href: undefined },
+  { name: 'instagram', color: '#e1306c', title: 'Instagram', href: undefined },
+] as const;
+---
+
+<footer
+  id="site-footer"
+  class="bg-[linear-gradient(145deg,#0d1145_0%,#2d3270_100%)] text-white"
+  aria-labelledby="footer-title"
+>
+  <div class="mx-auto max-w-7xl min-w-0 px-6 py-16 lg:px-12">
+    <h2 id="footer-title" class="sr-only">TeamJobs</h2>
+    <div class="mb-12 grid min-w-0 gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <div class="min-w-0">
+        <a
+          href="/"
+          class="mb-4 flex items-center gap-3"
+          aria-label="TeamJobs, inicio"
+        >
+          <Image
+            src={logo}
+            alt="TeamJobs"
+            width={48}
+            height={48}
+            class="size-12 overflow-hidden rounded-full border-2 border-brand-blue/60 object-cover"
+          />
+          <span class="text-xl font-black text-white"
+            >Team<span class="text-brand-blue">Jobs</span></span
+          >
+        </a>
+        <p class="mb-5 max-w-xs text-sm leading-relaxed text-white/60">
+          {footer.description}
+        </p>
+      </div>
+
+      <nav aria-label={footer.navigationLabel}>
+        <h3 class="mb-5 text-sm font-bold tracking-[0.15em] uppercase">
+          {footer.navigationLabel}
+        </h3>
+        <ul class="space-y-2.5">
+          {
+            navigationLinks.map(({ href, label }) => (
+              <li>
+                <a
+                  class="text-sm text-white/60 transition-colors hover:text-brand-blue"
+                  href={href}
+                >
+                  {label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <section aria-labelledby="footer-services-title">
+        <h3
+          id="footer-services-title"
+          class="mb-5 text-sm font-bold tracking-[0.15em] uppercase"
+        >
+          {footer.servicesLabel}
+        </h3>
+        <ul class="space-y-2.5">
+          {
+            footer.serviceList.map((service) => (
+              <li class="text-sm text-white/60">{service}</li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section aria-labelledby="footer-contact-title">
+        <h3
+          id="footer-contact-title"
+          class="mb-5 text-sm font-bold tracking-[0.15em] uppercase"
+        >
+          {footer.contactLabel}
+        </h3>
+        <address class="space-y-3 text-sm leading-6 text-white/60 not-italic">
+          <a
+            class="flex min-w-0 items-start gap-2 break-all transition-colors hover:text-brand-teal"
+            href={`mailto:${contact.details.email}`}
+          >
+            <Icon name="mail" class="mt-0.5 size-4 shrink-0 text-brand-teal" />
+            <span>{contact.details.email}</span>
+          </a>
+          <a
+            class="flex items-start gap-2 transition-colors hover:text-brand-blue"
+            href={`tel:${phoneHref}`}
+          >
+            <Icon name="phone" class="mt-0.5 size-4 shrink-0 text-brand-blue" />
+            <span>{contact.details.phone}</span>
+          </a>
+          <p class="flex items-start gap-2">
+            <Icon
+              name="map-pin"
+              class="mt-0.5 size-4 shrink-0 text-brand-violet"
+            />
+            <span class="min-w-0">{contact.details.address}</span>
+          </p>
+        </address>
+        <div
+          class="mt-6 flex gap-2"
+          role="group"
+          aria-label={footer.socialLabel}
+        >
+          {
+            socialIcons.map((social) =>
+              social.href ? (
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex size-9 items-center justify-center rounded-lg text-white transition-transform hover:scale-110"
+                  style={`background: ${social.color}88;`}
+                  aria-label={social.title}
+                  title={social.title}
+                >
+                  <Icon name={social.name} class="size-4" />
+                </a>
+              ) : (
+                <span
+                  role="img"
+                  class="flex size-9 items-center justify-center rounded-lg text-white"
+                  style={`background: ${social.color}88;`}
+                  aria-label={`${social.title} (destino no verificado)`}
+                  title={social.title}
+                >
+                  <Icon name={social.name} class="size-4" />
+                </span>
+              ),
+            )
+          }
+        </div>
+      </section>
+    </div>
+
+    <div
+      class="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-white/40 sm:flex-row"
+    >
+      <p>{footer.copyright}</p>
+      <nav aria-label={footer.legalLabel}>
+        <ul class="flex items-center gap-6">
+          <li>
+            <span class="inline-flex items-center gap-1.5">
+              <Icon name="lock" class="size-3.5" />
+              {footer.staffLabel}
+            </span>
+          </li>
+          <li>
+            <a
+              class="transition-colors hover:text-white/70"
+              href={siteConfig.urls.legal.privacy}
+            >
+              {footer.legal.privacy}
+            </a>
+          </li>
+          <li>
+            <a
+              class="transition-colors hover:text-white/70"
+              href={siteConfig.urls.legal.cookies}
+            >
+              {footer.legal.cookies}
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>

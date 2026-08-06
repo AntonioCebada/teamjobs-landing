@@ -5,10 +5,16 @@ const source = (path: string) =>
   readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 
 describe('Icons0 provenance contracts', () => {
-  it('keeps every shared UI icon identified as an Icons0 Lucide source', () => {
+  it('keeps every shared UI icon identified as an Icons0 source', () => {
     const icon = source('src/components/Icon.astro');
-    expect(icon).toContain('Exact Icons0 Lucide SVG geometry (ISC)');
-    expect(icon).toContain('data-icon={`lucide:${name}`}');
+    expect(icon).toContain('Exact Icons0 SVG geometry');
+    expect(icon).toContain('const iconSource = iconSources[name]');
+    expect(icon).toContain("'paper-plane': 'lucide:send'");
+    expect(icon).toContain("whatsapp: 'simple-icons:whatsapp'");
+    expect(icon).toContain("'linkedin-in': 'simple-icons:linkedin'");
+    expect(icon).toContain("'facebook-f': 'simple-icons:facebook'");
+    expect(icon).toContain("instagram: 'simple-icons:instagram'");
+    expect(icon).toContain("'x-twitter': 'simple-icons:x'");
     for (const name of [
       'messages-square',
       'user-round-search',
@@ -27,6 +33,11 @@ describe('Icons0 provenance contracts', () => {
       'user',
       'clock',
       'file-text',
+      'mail',
+      'phone',
+      'shield-check',
+      'cookie',
+      'external-link',
     ])
       expect(icon).toMatch(new RegExp(`['"]?${name}['"]?:`));
   });

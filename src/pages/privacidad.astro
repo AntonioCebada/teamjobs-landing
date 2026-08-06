@@ -1,0 +1,72 @@
+---
+import Footer from '../components/Footer.astro';
+import LegalPage from '../components/LegalPage.astro';
+import Navbar from '../components/Navbar.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Aviso de privacidad | TeamJobs"
+  description="Información de privacidad aplicable al sitio estático de TeamJobs."
+>
+  <Navbar slot="header" />
+  <LegalPage
+    title="Aviso de privacidad"
+    description="Información clara sobre los datos que este sitio puede recibir y los canales externos disponibles para contactar a TeamJobs."
+    updatedAt="5 de agosto de 2026"
+  >
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        1. Alcance de este sitio
+      </h2>
+      <p class="mt-3">
+        Esta página pertenece al sitio informativo estático de TeamJobs. Su
+        objetivo es presentar servicios y canales de contacto; no es un portal
+        de registro, autenticación, postulación ni gestión de expedientes.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        2. Datos que no se recaban aquí
+      </h2>
+      <p class="mt-3">
+        El formulario de contacto de esta landing es únicamente visual. La
+        validación ocurre en el navegador, el formulario no tiene endpoint ni
+        transporte y los datos escritos no se envían desde este sitio. El sitio
+        tampoco solicita identificaciones, currículos ni resultados de
+        evaluaciones.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">3. Canales externos</h2>
+      <p class="mt-3">
+        Si una persona elige escribir al correo, llamar por teléfono o abrir
+        WhatsApp, la interacción ocurre fuera de esta página y queda sujeta a
+        los términos y políticas del proveedor correspondiente. Estos enlaces no
+        convierten el formulario visual en un canal de envío.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        4. Consultas sobre privacidad
+      </h2>
+      <p class="mt-3">
+        Para realizar una consulta relacionada con privacidad puede utilizar el
+        correo <a
+          class="font-semibold text-brand-blue underline"
+          href="mailto:teamjobsmexico@gmail.com">teamjobsmexico@gmail.com</a
+        >. No envíe información sensible mediante el formulario visual de esta
+        página.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">5. Actualizaciones</h2>
+      <p class="mt-3">
+        Esta información puede actualizarse cuando cambie el alcance técnico del
+        sitio o los canales publicados. La fecha de actualización se muestra al
+        inicio del documento.
+      </p>
+    </section>
+  </LegalPage>
+  <Footer slot="footer" />
+</BaseLayout>

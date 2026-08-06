@@ -6,16 +6,18 @@ import { siteContent } from '../content/site';
 import MobileNav from '../islands/MobileNav';
 
 const { navigation } = siteContent;
+const isHome = Astro.url.pathname === '/';
 const links = siteConfig.navigation.map(({ key, href }) => ({
-  href,
+  href: isHome ? href : `/${href}`,
   label: navigation.links[key],
 }));
+const brandHref = isHome ? '#inicio' : '/';
 ---
 
 <nav aria-label={navigation.label} class="bg-brand-navy text-white shadow-lg">
   <div class="page-shell flex h-18 items-center justify-between gap-5">
     <a
-      href="#inicio"
+      href={brandHref}
       class="flex items-center gap-2 font-bold"
       aria-label="TeamJobs, inicio"
     >
@@ -36,18 +38,7 @@ const links = siteConfig.navigation.map(({ key, href }) => ({
       >
         {navigation.language}
       </span>
-      <a
-        class="rounded-full bg-brand-blue px-5 py-3 hover:bg-brand-violet"
-        href={siteConfig.urls.login}
-      >
-        {navigation.login}
-      </a>
     </div>
-    <MobileNav
-      client:load
-      links={links}
-      loginHref={siteConfig.urls.login}
-      labels={navigation}
-    />
+    <MobileNav client:load links={links} labels={navigation} />
   </div>
 </nav>

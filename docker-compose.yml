@@ -42,21 +42,5 @@ services:
       CI: 'true'
     command: ['pnpm', 'test']
 
-  e2e:
-    profiles: ['e2e']
-    image: mcr.microsoft.com/playwright:v1.62.0-noble
-    depends_on:
-      - preview
-    working_dir: /app
-    network_mode: host
-    volumes:
-      - .:/app
-    command:
-      - /bin/bash
-      - -lc
-      - >-
-        echo 'Playwright is deferred to the interactive UI work unit.' >&2;
-        exit 2
-
 volumes:
   app_node_modules:

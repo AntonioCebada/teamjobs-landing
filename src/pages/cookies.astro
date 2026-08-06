@@ -1,0 +1,59 @@
+---
+import Footer from '../components/Footer.astro';
+import LegalPage from '../components/LegalPage.astro';
+import Navbar from '../components/Navbar.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Política de cookies | TeamJobs"
+  description="Información sobre cookies y tecnologías de almacenamiento en el sitio estático de TeamJobs."
+>
+  <Navbar slot="header" />
+  <LegalPage
+    title="Política de cookies"
+    description="El sitio estático de TeamJobs no incorpora cookies propias, seguimiento ni analítica en su implementación actual."
+    updatedAt="5 de agosto de 2026"
+  >
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        1. Tecnologías utilizadas
+      </h2>
+      <p class="mt-3">
+        Esta landing se entrega como archivos estáticos y no establece cookies,
+        LocalStorage, SessionStorage, píxeles publicitarios ni herramientas de
+        analítica. Tampoco mantiene sesiones de usuario ni preferencias
+        persistentes.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">2. Enlaces a terceros</h2>
+      <p class="mt-3">
+        Los enlaces de correo, teléfono y WhatsApp pueden abrir aplicaciones o
+        servicios externos. Al salir de este sitio, el proveedor externo puede
+        aplicar sus propias tecnologías y políticas; esas prácticas no son
+        configuradas por esta landing.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        3. Control del navegador
+      </h2>
+      <p class="mt-3">
+        Los navegadores permiten consultar y administrar las cookies de los
+        sitios que sí las utilizan. En este sitio no existe un banner de
+        consentimiento porque la implementación actual no crea cookies ni activa
+        herramientas de seguimiento.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">4. Actualizaciones</h2>
+      <p class="mt-3">
+        Si el sitio incorpora una tecnología que cambie este alcance, esta
+        página se actualizará para describirla de forma clara antes de
+        presentarla como parte de la experiencia pública.
+      </p>
+    </section>
+  </LegalPage>
+  <Footer slot="footer" />
+</BaseLayout>

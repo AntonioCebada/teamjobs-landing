@@ -49,13 +49,22 @@ describe('visual-only contact form contracts', () => {
     expect(validValues.company).toBe('Empresa MX');
   });
 
-  it('integrates a semantic contact section without a submission endpoint', () => {
+  it('integrates the reference two-column contact layout without a submission endpoint', () => {
     const contact = source('src/components/Contact.astro');
     const form = source('src/islands/ContactForm.tsx');
     const index = source('src/pages/index.astro');
 
     expect(index).toContain('<Contact />');
     expect(contact).toContain('id="contacto"');
+    expect(contact).toContain('max-w-7xl');
+    expect(contact).toContain('items-start gap-16');
+    expect(contact).toContain('lg:grid-cols-2');
+    expect(contact).toContain(
+      'rounded-3xl border border-gray-100 bg-[#f0fafc] p-8 shadow-2xl',
+    );
+    expect(contact).toContain('Síguenos en redes');
+    expect(contact).toContain('role="img"');
+    expect(contact).toContain('https://wa.me/');
     expect(contact).toContain('<ContactForm client:visible />');
     expect(form).toContain('event.preventDefault()');
     expect(form).toContain('requestAnimationFrame');
@@ -82,8 +91,13 @@ describe('visual-only contact form contracts', () => {
       expect(form).toContain('aria-required="true"');
     }
     expect(form).not.toMatch(/fetch\s*\(/);
+    expect(form).not.toMatch(/XMLHttpRequest|sendBeacon/);
     expect(form).not.toContain('method="post"');
     expect(form).not.toContain('action=');
+    expect(`${contact}\n${form}`).not.toMatch(
+      /formEndpoint|fetch\s*\(|XMLHttpRequest|sendBeacon|action\s*=|method\s*=\s*["']post/i,
+    );
+    expect(contact).not.toContain('href="#"');
   });
 
   it('keeps authoritative contact details and removes vacancy actions', () => {

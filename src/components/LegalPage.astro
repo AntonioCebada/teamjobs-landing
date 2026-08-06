@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  updatedAt: string;
+}
+
+const { title, description, updatedAt } = Astro.props;
+---
+
+<article class="bg-brand-surface py-12 sm:py-20" aria-labelledby="legal-title">
+  <div class="page-shell min-w-0 max-w-3xl">
+    <a
+      class="text-sm font-semibold text-brand-blue hover:text-brand-violet"
+      href="/">Volver al inicio</a
+    >
+    <header class="mt-10">
+      <p class="eyebrow">Información legal</p>
+      <h1
+        id="legal-title"
+        class="mt-5 text-3xl font-black leading-tight text-brand-navy sm:text-5xl"
+      >
+        {title}
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg leading-8 text-brand-muted">
+        {description}
+      </p>
+      <p class="mt-4 text-sm text-brand-muted">
+        Última actualización: {updatedAt}
+      </p>
+    </header>
+    <div class="mt-10 space-y-8 text-base leading-8 text-brand-muted">
+      <slot />
+    </div>
+  </div>
+</article>

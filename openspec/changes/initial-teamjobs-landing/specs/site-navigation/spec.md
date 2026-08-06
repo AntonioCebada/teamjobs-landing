@@ -1,16 +1,16 @@
 # site-navigation Specification
 
-> **Current apply boundary:** Footer integration and Privacy/Cookies route work remain pending task 4.2; this target specification does not mark that task complete.
+> **Current apply boundary:** Footer integration and Privacy/Cookies routes are complete in task 4.2.
 
 ## Purpose
 
-Sticky navbar (desktop links + mobile menu), in-page anchor navigation, footer link columns, sign-in/social/legal URL placeholders, and the floating WhatsApp button — all driven by a central config of documented placeholder URLs.
+Sticky navbar (desktop links + mobile menu), in-page anchor navigation, footer link columns, verified legal routes, and the floating WhatsApp button — all driven by the central site config and Spanish content module.
 
 ## Requirements
 
 ### Requirement: Navbar with in-page anchors
 
-The sticky navbar MUST contain the logo and links Inicio, Nosotros, Servicios, Empresas, Recursos, Contacto, plus "Iniciar sesión". In-page links MUST scroll to their section anchors. On small viewports the links MUST collapse into a hamburger menu.
+The sticky navbar MUST contain the logo and links Inicio, Nosotros, Servicios, Empresas, Recursos, and Contacto. In-page links MUST scroll to their section anchors. An unresolved login destination MUST NOT render as a dead link. On small viewports the links MUST collapse into a hamburger menu.
 
 #### Scenario: Anchor navigation
 
@@ -24,15 +24,15 @@ The sticky navbar MUST contain the logo and links Inicio, Nosotros, Servicios, E
 - WHEN the user opens the hamburger menu
 - THEN the full link list appears and can be dismissed
 
-### Requirement: External URL placeholders
+### Requirement: Verified destinations
 
-Iniciar sesión, social profiles, and legal links MUST resolve from a central config of placeholder URLs. Placeholders SHALL be documented as intentional no-ops/`#` until product supplies destinations.
+External actions MAY render only when their destination is verified. Unresolved login and social destinations MUST be omitted or rendered as clearly non-interactive text; no active link MAY use `#`. Privacy and cookie links MUST resolve to `/privacidad` and `/cookies` from central config.
 
-#### Scenario: Placeholder resolution
+#### Scenario: Destination resolution
 
-- GIVEN no real URLs configured
-- WHEN a placeholder link renders
-- THEN its `href` comes from the central config and is documented as a placeholder
+- GIVEN unresolved login and social destinations
+- WHEN the landing renders
+- THEN no dead login or social link is present and local legal links point to real routes
 
 ### Requirement: Vacancies out of current scope
 
@@ -40,13 +40,23 @@ The current landing MUST NOT define a Vacantes section, route, navigation action
 
 ### Requirement: Footer columns
 
-The footer MUST render the mocked columns: navigation, services list, contact info, and legal links, with copyright "© 2026". The footer services list MAY differ from the four solution cards; both MUST render as mocked (known taxonomy inconsistency).
+The footer MUST render the mocked columns: TeamJobs description, current in-page navigation excluding Vacantes, services list, real email/phone/address, and legal links to `/privacidad` and `/cookies`, with copyright "© 2026". Only verified external contact destinations MAY be interactive. The footer services list MAY differ from the four solution cards; both MUST render as mocked (known taxonomy inconsistency).
 
 #### Scenario: Footer render
 
 - GIVEN the footer
 - WHEN rendered
 - THEN all four columns and the copyright notice are present
+
+### Requirement: Static legal routes
+
+The site MUST provide static Astro routes `/privacidad` and `/cookies` with Spanish SEO titles, one descriptive H1, professional neutral content grounded in the static site's actual behavior, and a navigation link back to `/`. The cookie page MUST NOT claim cookies, tracking, or analytics that the implementation does not use.
+
+#### Scenario: Legal route availability
+
+- GIVEN a production static build
+- WHEN `/privacidad` or `/cookies` is opened
+- THEN the corresponding document renders with its title, H1, local home link, and shared footer
 
 ### Requirement: WhatsApp floating action button
 

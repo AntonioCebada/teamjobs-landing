@@ -76,9 +76,16 @@ export default function ContactForm() {
   };
 
   return (
-    <form className="space-y-4" noValidate onSubmit={handleSubmit}>
-      <h3 className="text-2xl font-extrabold text-brand-ink">{form.title}</h3>
-      <p id="contact-form-note" className="text-sm leading-6 text-brand-muted">
+    <form
+      className="space-y-4"
+      noValidate
+      aria-describedby="contact-form-note"
+      onSubmit={handleSubmit}
+    >
+      <h3 className="mb-2 text-2xl font-extrabold text-brand-ink">
+        {form.title}
+      </h3>
+      <p id="contact-form-note" className="sr-only">
         {form.inactiveNote}
       </p>
 
@@ -135,7 +142,7 @@ export default function ContactForm() {
             aria-describedby={errors.name ? 'contact-name-error' : undefined}
             autoComplete="name"
             placeholder={form.placeholders.name}
-            className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
+            className="w-full rounded-xl border-2 border-gray-200 bg-[#f0fafc] px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
             onInput={(event) => updateField('name', event.currentTarget.value)}
           />
           {errors.name && (
@@ -167,7 +174,7 @@ export default function ContactForm() {
             aria-describedby={errors.email ? 'contact-email-error' : undefined}
             autoComplete="email"
             placeholder={form.placeholders.email}
-            className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
+            className="w-full rounded-xl border-2 border-gray-200 bg-[#f0fafc] px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
             onInput={(event) => updateField('email', event.currentTarget.value)}
           />
           {errors.email && (
@@ -196,7 +203,7 @@ export default function ContactForm() {
             value={values.phone}
             autoComplete="tel"
             placeholder={form.placeholders.phone}
-            className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
+            className="w-full rounded-xl border-2 border-gray-200 bg-[#f0fafc] px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
             onInput={(event) => updateField('phone', event.currentTarget.value)}
           />
         </div>
@@ -218,7 +225,7 @@ export default function ContactForm() {
             value={values.company}
             autoComplete="organization"
             placeholder={form.placeholders.company}
-            className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
+            className="w-full rounded-xl border-2 border-gray-200 bg-[#f0fafc] px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
             onInput={(event) =>
               updateField('company', event.currentTarget.value)
             }
@@ -247,7 +254,7 @@ export default function ContactForm() {
           aria-describedby={
             errors.subject ? 'contact-subject-error' : undefined
           }
-          className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
+          className="w-full rounded-xl border-2 border-gray-200 bg-[#f0fafc] px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
           onChange={(event) =>
             updateField('subject', event.currentTarget.value)
           }
@@ -289,7 +296,7 @@ export default function ContactForm() {
             errors.message ? 'contact-message-error' : undefined
           }
           placeholder={form.placeholders.message}
-          className="w-full resize-none rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
+          className="w-full resize-none rounded-xl border-2 border-gray-200 bg-[#f0fafc] px-4 py-3 text-sm transition outline-none focus:border-brand-violet focus:ring-4 focus:ring-brand-violet/10"
           onInput={(event) => updateField('message', event.currentTarget.value)}
         />
         {errors.message && (
@@ -304,9 +311,26 @@ export default function ContactForm() {
       </p>
       <button
         type="button"
-        className="inline-flex w-full items-center justify-center rounded-full bg-brand-blue py-3.5 text-base font-bold text-white shadow-[0_8px_25px_rgba(59,130,246,0.45)] transition hover:-translate-y-1 hover:bg-blue-600"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-base font-bold text-white shadow-[0_8px_25px_rgba(59,130,246,0.45)] transition hover:-translate-y-1"
+        style={{
+          background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+        }}
         onClick={validateAndAnnounce}
       >
+        {/* Exact Icons0 lucide:send geometry; this control lives in the Preact island. */}
+        <svg
+          aria-hidden="true"
+          data-icon="lucide:send"
+          viewBox="0 0 24 24"
+          className="size-4"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+        >
+          <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11zm7.318-19.539l-10.94 10.939" />
+        </svg>
         {form.submit}
       </button>
     </form>

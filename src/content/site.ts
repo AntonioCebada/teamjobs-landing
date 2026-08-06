@@ -21,7 +21,6 @@ export const siteContent = {
     open: 'Abrir menú',
     close: 'Cerrar menú',
     language: 'Español',
-    login: 'Iniciar sesión',
     links: {
       inicio: 'Inicio',
       nosotros: 'Nosotros',
@@ -237,6 +236,29 @@ export const siteContent = {
         'El formulario de contacto aún no está activo. Tus datos no se enviaron.',
       submit: 'Enviar Mensaje',
     },
+  },
+  footer: {
+    description:
+      'Conectamos talento con oportunidades reales para transformar equipos y carreras en todo México.',
+    navigationLabel: 'Navegación',
+    servicesLabel: 'Servicios',
+    contactLabel: 'Contacto',
+    socialLabel: 'Redes sociales',
+    legalLabel: 'Información legal',
+    staffLabel: 'Personal',
+    serviceList: [
+      'Reclutamiento y Selección',
+      'Headhunting Ejecutivo',
+      'Capacitación',
+      'Evaluaciones 360°',
+      'Nómina',
+      'Consultoría RH',
+    ],
+    legal: {
+      privacy: 'Aviso de privacidad',
+      cookies: 'Política de cookies',
+    },
+    copyright: '© 2026 TeamJobs. Todos los derechos reservados.',
   },
   fab: {
     ariaLabel: 'Abrir chat de WhatsApp en una nueva ventana',
