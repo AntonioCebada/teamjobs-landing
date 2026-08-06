@@ -1,10 +1,17 @@
 const urls = {
+  login: '/login',
   socials: {},
   legal: { privacy: '/privacidad', cookies: '/cookies' },
 } as const;
 
 export type NavigationKey =
-  'inicio' | 'nosotros' | 'servicios' | 'empresas' | 'recursos' | 'contacto';
+  | 'inicio'
+  | 'nosotros'
+  | 'servicios'
+  | 'vacantes'
+  | 'empresas'
+  | 'recursos'
+  | 'contacto';
 
 export const siteConfig = {
   siteUrl: 'https://teamjobs.example',
@@ -15,6 +22,7 @@ export const siteConfig = {
     { key: 'inicio', href: '#inicio' },
     { key: 'nosotros', href: '#nosotros' },
     { key: 'servicios', href: '#servicios' },
+    { key: 'vacantes', href: '/vacantes' },
     { key: 'empresas', href: '#empresas' },
     { key: 'recursos', href: '#recursos' },
     { key: 'contacto', href: '#contacto' },

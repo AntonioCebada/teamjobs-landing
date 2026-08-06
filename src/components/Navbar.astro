@@ -1,44 +1,106 @@
 ---
 import { Image } from 'astro:assets';
-import { logo } from '../assets/media';
-import { siteConfig } from '../config/site';
+import { logo, mexicoFlag, usaFlag } from '../assets/media';
+import { siteConfig, type NavigationKey } from '../config/site';
 import { siteContent } from '../content/site';
 import MobileNav from '../islands/MobileNav';
 
 const { navigation } = siteContent;
 const isHome = Astro.url.pathname === '/';
 const links = siteConfig.navigation.map(({ key, href }) => ({
-  href: isHome ? href : `/${href}`,
+  href: href.startsWith('#') && !isHome ? `/${href}` : href,
+  key,
   label: navigation.links[key],
 }));
 const brandHref = isHome ? '#inicio' : '/';
+const activeKey: NavigationKey | undefined = isHome ? 'nosotros' : undefined;
 ---
 
-<nav aria-label={navigation.label} class="bg-brand-navy text-white shadow-lg">
-  <div class="page-shell flex h-18 items-center justify-between gap-5">
+<nav
+  aria-label={navigation.label}
+  data-site-navigation
+  class="border-b border-white/10 bg-brand-navy/95 text-white shadow-[0_4px_30px_rgba(13,17,69,0.35)] backdrop-blur-xl"
+>
+  <div
+    class="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-4 px-4 md:px-8 lg:px-12"
+  >
     <a
       href={brandHref}
-      class="flex items-center gap-2 font-bold"
+      class="group flex items-center gap-3"
       aria-label="TeamJobs, inicio"
     >
-      <Image src={logo} alt="" width={38} height={38} />
-      <span>Team<span class="text-brand-blue">Jobs</span></span>
+      <span
+        class="h-11 w-11 overflow-hidden rounded-full border-2 border-brand-blue/60 shadow-lg transition group-hover:border-brand-blue"
+      >
+        <Image
+          src={logo}
+          alt=""
+          width={44}
+          height={44}
+          class="h-full w-full object-cover"
+        />
+      </span>
+      <span class="text-xl font-black tracking-tight text-white"
+        >Team<span class="text-brand-blue">Jobs</span></span
+      >
     </a>
-    <div class="hidden items-center gap-5 text-xs font-semibold xl:flex">
+    <div class="hidden flex-1 items-center justify-center gap-7 lg:flex">
       {
-        links.map(({ href, label }) => (
-          <a class="py-3 hover:text-brand-blue" href={href}>
+        links.map(({ href, key, label }) => (
+          <a
+            data-nav-key={key}
+            aria-current={key === activeKey ? 'location' : undefined}
+            class:list={[
+              'border-b-2 pb-1 text-sm font-semibold transition',
+              key === activeKey
+                ? 'border-brand-blue text-brand-blue'
+                : 'border-transparent text-white/90 hover:border-brand-blue hover:text-white',
+            ]}
+            href={href}
+          >
             {label}
           </a>
         ))
       }
-      <span
-        aria-label={`Idioma actual: ${navigation.language}`}
-        class="rounded-full border border-white/30 px-3 py-2"
-      >
-        {navigation.language}
-      </span>
     </div>
-    <MobileNav client:load links={links} labels={navigation} />
+    <div class="hidden items-center gap-3 lg:flex">
+      <span
+        role="img"
+        aria-label={`Idioma actual: ${navigation.language}`}
+        class="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 p-1"
+      >
+        <span class="rounded-full bg-brand-blue p-1">
+          <Image
+            src={mexicoFlag}
+            alt=""
+            width={20}
+            height={20}
+            class="size-5 rounded-full object-cover"
+          />
+        </span>
+        <span class="rounded-full p-1">
+          <Image
+            src={usaFlag}
+            alt=""
+            width={20}
+            height={20}
+            class="size-5 rounded-full object-cover"
+          />
+        </span>
+      </span>
+      <a
+        href={siteConfig.urls.login}
+        class="rounded-full bg-brand-blue px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_25px_rgba(59,130,246,0.45)] transition hover:-translate-y-0.5 hover:bg-blue-600"
+      >
+        {navigation.login}
+      </a>
+    </div>
+    <MobileNav
+      client:load
+      links={links}
+      labels={navigation}
+      loginHref={siteConfig.urls.login}
+      flags={{ mexico: mexicoFlag.src, usa: usaFlag.src }}
+    />
   </div>
 </nav>

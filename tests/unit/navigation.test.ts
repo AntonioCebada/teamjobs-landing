@@ -7,28 +7,39 @@ const source = (path: string) =>
   readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 
 describe('navigation contract', () => {
-  it('centralizes the complete in-page link set without vacancies or dead actions', () => {
+  it('centralizes the complete link set without dead actions', () => {
     expect(siteConfig.navigation.map(({ key }) => key)).toEqual([
       'inicio',
       'nosotros',
       'servicios',
+      'vacantes',
       'empresas',
       'recursos',
       'contacto',
     ]);
-    expect(siteConfig.navigation.map(({ key }) => key)).not.toContain(
-      'vacantes',
-    );
     siteConfig.navigation.forEach(({ key }) =>
       expect(siteContent.navigation.links[key]).toBeTruthy(),
     );
+    expect(
+      siteConfig.navigation.find(({ key }) => key === 'vacantes')?.href,
+    ).toBe('/vacantes');
+    expect(siteConfig.urls.login).toBe('/login');
   });
 
-  it('keeps the navbar static and hydrates only the mobile disclosure', () => {
+  it('matches the reference desktop shell while hydrating only mobile disclosure', () => {
     const navbar = source('src/components/Navbar.astro');
-    expect(navbar).toContain('<nav aria-label={navigation.label}');
+    expect(navbar).toContain('aria-label={navigation.label}');
     expect(navbar).toContain('<MobileNav');
     expect(navbar).toContain('client:load');
+    expect(navbar).toContain('max-w-7xl');
+    expect(navbar).toContain('h-[72px]');
+    expect(navbar).toContain('h-11 w-11');
+    expect(navbar).toContain('text-xl font-black tracking-tight text-white');
+    expect(navbar).toContain('key === activeKey');
+    expect(navbar).toContain('role="img"');
+    expect(navbar).toContain('mexicoFlag');
+    expect(navbar).toContain('usaFlag');
+    expect(navbar).toContain('siteConfig.urls.login');
     expect(source('src/islands/MobileNav.tsx')).toContain('<details');
     expect(source('src/islands/MobileNav.tsx')).toContain(
       'aria-label={open ? labels.close : labels.open}',
@@ -39,8 +50,9 @@ describe('navigation contract', () => {
     expect(source('src/islands/MobileNav.tsx')).toContain(
       'data-icon="lucide:x"',
     );
-    expect(navbar).not.toContain('siteConfig.urls.login');
-    expect(source('src/islands/MobileNav.tsx')).not.toContain('loginHref');
+    expect(source('src/islands/MobileNav.tsx')).toContain('loginHref');
+    expect(source('src/islands/MobileNav.tsx')).toContain('flags.mexico');
+    expect(source('src/islands/MobileNav.tsx')).toContain('labels.login');
     expect(source('src/islands/MobileNav.tsx')).not.toContain('>Menú<');
   });
 

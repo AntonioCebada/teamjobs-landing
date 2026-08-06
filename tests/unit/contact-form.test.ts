@@ -100,7 +100,7 @@ describe('visual-only contact form contracts', () => {
     expect(contact).not.toContain('href="#"');
   });
 
-  it('keeps authoritative contact details and removes vacancy actions', () => {
+  it('keeps authoritative contact details and uses the sibling vacancy route', () => {
     expect(siteContent.contact.details).toEqual({
       address:
         'Av. Río Churubusco 601, Xoco, Benito Juárez, 03330 Ciudad de México, CDMX',
@@ -109,9 +109,10 @@ describe('visual-only contact form contracts', () => {
       whatsapp: '+52 1 56 1027 5879',
       hours: 'Lun–Vie: 9:00–18:00 | Sáb: 10:00–14:00 hrs',
     });
-    expect(siteConfig.navigation.map(({ key }) => key)).not.toContain(
-      'vacantes',
-    );
+    expect(siteConfig.navigation.map(({ key }) => key)).toContain('vacantes');
+    expect(
+      siteConfig.navigation.find(({ key }) => key === 'vacantes')?.href,
+    ).toBe('/vacantes');
     expect(siteContent.hero.primaryCta).not.toContain('Vacantes');
   });
 });

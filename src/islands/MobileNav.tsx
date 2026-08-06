@@ -2,17 +2,23 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 
 type Props = {
   links: ReadonlyArray<{ href: string; label: string }>;
+  loginHref: string;
+  flags: {
+    mexico: string;
+    usa: string;
+  };
   labels: {
     open: string;
     close: string;
     language: string;
+    login: string;
   };
 };
 
 const focusable =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export default function MobileNav({ links, labels }: Props) {
+export default function MobileNav({ links, loginHref, flags, labels }: Props) {
   const [open, setOpen] = useState(false);
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
@@ -81,12 +87,12 @@ export default function MobileNav({ links, labels }: Props) {
       ref={detailsRef}
       open={open}
       onToggle={(event) => setOpen(event.currentTarget.open)}
-      class="group xl:hidden"
+      class="group lg:hidden"
     >
       <summary
         ref={triggerRef}
         aria-label={open ? labels.close : labels.open}
-        class="cursor-pointer list-none rounded-md p-3 group-open:fixed group-open:top-4 group-open:right-4 group-open:z-[60] [&::-webkit-details-marker]:hidden"
+        class="cursor-pointer list-none rounded-lg border border-white/20 p-2 group-open:fixed group-open:top-5 group-open:right-6 group-open:z-[60] [&::-webkit-details-marker]:hidden"
       >
         {open ? (
           <svg
@@ -125,9 +131,35 @@ export default function MobileNav({ links, labels }: Props) {
               {label}
             </a>
           ))}
-          <p class="px-4 py-3 text-sm font-normal">
-            Idioma actual: {labels.language}
-          </p>
+          <div class="mt-2 flex flex-wrap items-center gap-3 px-4 py-3">
+            <span
+              role="img"
+              aria-label={`Idioma actual: ${labels.language}`}
+              class="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 p-1"
+            >
+              <span class="rounded-full bg-brand-blue p-1">
+                <img
+                  src={flags.mexico}
+                  alt=""
+                  class="size-5 rounded-full object-cover"
+                />
+              </span>
+              <span class="rounded-full p-1">
+                <img
+                  src={flags.usa}
+                  alt=""
+                  class="size-5 rounded-full object-cover"
+                />
+              </span>
+            </span>
+            <a
+              class="rounded-full bg-brand-blue px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_25px_rgba(59,130,246,0.45)] transition hover:bg-blue-600"
+              href={loginHref}
+              onClick={() => close(false)}
+            >
+              {labels.login}
+            </a>
+          </div>
         </div>
       </div>
     </details>

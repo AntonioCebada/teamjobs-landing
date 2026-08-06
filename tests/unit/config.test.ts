@@ -12,8 +12,9 @@ describe('siteConfig', () => {
     );
   });
 
-  it('keeps unresolved destinations out of the rendered configuration', () => {
+  it('keeps unresolved social destinations out while retaining verified app routes', () => {
     expect(Object.keys(siteConfig.urls.socials)).toHaveLength(0);
+    expect(siteConfig.urls.login).toBe('/login');
     expect(siteConfig.urls.legal).toEqual({
       privacy: '/privacidad',
       cookies: '/cookies',

@@ -21,10 +21,12 @@ export const siteContent = {
     open: 'Abrir menú',
     close: 'Cerrar menú',
     language: 'Español',
+    login: 'Iniciar sesión',
     links: {
       inicio: 'Inicio',
       nosotros: 'Nosotros',
       servicios: 'Servicios',
+      vacantes: 'Vacantes',
       empresas: 'Empresas',
       recursos: 'Recursos',
       contacto: 'Contacto',
