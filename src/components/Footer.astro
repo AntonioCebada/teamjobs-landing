@@ -6,11 +6,13 @@ import { siteContent } from '../content/site';
 import Icon from './Icon.astro';
 
 const { contact, footer, navigation } = siteContent;
-const isHome = Astro.url.pathname === '/';
-const navigationLinks = siteConfig.navigation.map(({ key, href }) => ({
-  href: isHome ? href : `/${href}`,
-  label: navigation.links[key],
-}));
+const navigationLinks = siteConfig.navigation.map(
+  ({ key, href, disabled }) => ({
+    href,
+    disabled: disabled ?? false,
+    label: navigation.links[key],
+  }),
+);
 const phoneHref = contact.details.phone.replace(/[^\d+]/g, '');
 const whatsappUrl = `https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '')}`;
 const socialIcons = [
@@ -62,14 +64,25 @@ const socialIcons = [
         </h3>
         <ul class="space-y-2.5">
           {
-            navigationLinks.map(({ href, label }) => (
+            navigationLinks.map(({ href, label, disabled }) => (
               <li>
-                <a
-                  class="text-sm text-white/60 transition-colors hover:text-brand-blue"
-                  href={href}
-                >
-                  {label}
-                </a>
+                {disabled ? (
+                  <span
+                    role="link"
+                    aria-disabled="true"
+                    class="text-sm text-white/35"
+                  >
+                    {label}
+                    <span class="sr-only"> ({navigation.disabled})</span>
+                  </span>
+                ) : (
+                  <a
+                    class="text-sm text-white/60 transition-colors hover:text-brand-blue"
+                    href={href}
+                  >
+                    {label}
+                  </a>
+                )}
               </li>
             ))
           }

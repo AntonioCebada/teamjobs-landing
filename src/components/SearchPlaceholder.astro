@@ -1,0 +1,31 @@
+---
+import { siteContent } from '../content/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const { search } = siteContent.navigation;
+---
+
+<div
+  role="search"
+  aria-label={search.label}
+  aria-disabled="true"
+  data-search-placeholder
+  class:list={[
+    'flex min-w-0 items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-3 text-sm text-white/75 shadow-inner shadow-white/5',
+    className,
+  ]}
+>
+  <Icon name="search" class="size-5 shrink-0 text-white" />
+  <span class="min-w-0 truncate">{search.placeholder}</span>
+  <span
+    class="ml-auto hidden shrink-0 rounded-full border border-white/15 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-white/55 sm:inline-flex"
+  >
+    {search.statusLabel}
+  </span>
+  <span class="sr-only">{search.status}</span>
+</div>

@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
 type Props = {
-  links: ReadonlyArray<{ href: string; label: string }>;
-  loginHref: string;
+  links: ReadonlyArray<{
+    href?: string;
+    label: string;
+    key: string;
+    active: boolean;
+    disabled: boolean;
+  }>;
   flags: {
     mexico: string;
     usa: string;
@@ -11,14 +16,14 @@ type Props = {
     open: string;
     close: string;
     language: string;
-    login: string;
+    disabled: string;
   };
 };
 
 const focusable =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export default function MobileNav({ links, loginHref, flags, labels }: Props) {
+export default function MobileNav({ links, flags, labels }: Props) {
   const [open, setOpen] = useState(false);
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
@@ -122,15 +127,37 @@ export default function MobileNav({ links, loginHref, flags, labels }: Props) {
         }
       >
         <div class="mx-auto flex w-full max-w-sm flex-col gap-2 pt-8 text-lg font-semibold">
-          {links.map(({ href, label }) => (
-            <a
-              class="rounded-md px-4 py-3 hover:bg-white/10"
-              href={href}
-              onClick={() => close(false)}
-            >
-              {label}
-            </a>
-          ))}
+          {links.map(({ href, label, key, active, disabled }) =>
+            disabled ? (
+              <span
+                data-nav-key={key}
+                data-nav-disabled
+                role="link"
+                aria-disabled="true"
+                tabIndex={-1}
+                title={labels.disabled}
+                class="cursor-not-allowed rounded-md px-4 py-3 text-white/45"
+              >
+                {label}
+                <span class="ml-2 text-xs font-medium text-white/35">
+                  {labels.disabled}
+                </span>
+                <span class="sr-only"> ({labels.disabled})</span>
+              </span>
+            ) : (
+              <a
+                data-nav-key={key}
+                aria-current={active ? 'page' : undefined}
+                className={`rounded-md px-4 py-3 hover:bg-white/10${
+                  active ? ' bg-white/10 text-brand-blue' : ''
+                }`}
+                href={href}
+                onClick={() => close(false)}
+              >
+                {label}
+              </a>
+            ),
+          )}
           <div class="mt-2 flex flex-wrap items-center gap-3 px-4 py-3">
             <span
               role="img"
@@ -152,13 +179,6 @@ export default function MobileNav({ links, loginHref, flags, labels }: Props) {
                 />
               </span>
             </span>
-            <a
-              class="rounded-full bg-brand-blue px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_25px_rgba(59,130,246,0.45)] transition hover:bg-blue-600"
-              href={loginHref}
-              onClick={() => close(false)}
-            >
-              {labels.login}
-            </a>
           </div>
         </div>
       </div>

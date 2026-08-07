@@ -7,23 +7,30 @@ const source = (path: string) =>
   readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 
 describe('navigation contract', () => {
-  it('centralizes the complete link set without dead actions', () => {
+  it('centralizes the four approved accesses and honest destinations', () => {
     expect(siteConfig.navigation.map(({ key }) => key)).toEqual([
       'inicio',
-      'nosotros',
-      'servicios',
       'vacantes',
-      'empresas',
-      'recursos',
+      'contenido',
       'contacto',
     ]);
     siteConfig.navigation.forEach(({ key }) =>
       expect(siteContent.navigation.links[key]).toBeTruthy(),
     );
     expect(
-      siteConfig.navigation.find(({ key }) => key === 'vacantes')?.href,
-    ).toBe('/vacantes');
-    expect(siteConfig.urls.login).toBe('/login');
+      siteConfig.navigation.map(({ href, disabled }) => [href, disabled]),
+    ).toEqual([
+      ['/', undefined],
+      [undefined, true],
+      ['/blog', undefined],
+      [undefined, true],
+    ]);
+    expect(siteContent.navigation.links).toEqual({
+      inicio: 'Inicio',
+      vacantes: 'Vacantes',
+      contenido: 'Contenido',
+      contacto: 'Contacto',
+    });
   });
 
   it('matches the reference desktop shell while hydrating only mobile disclosure', () => {
@@ -35,11 +42,13 @@ describe('navigation contract', () => {
     expect(navbar).toContain('h-[72px]');
     expect(navbar).toContain('h-11 w-11');
     expect(navbar).toContain('text-xl font-black tracking-tight text-white');
-    expect(navbar).toContain('key === activeKey');
+    expect(navbar).toContain("aria-current={active ? 'page' : undefined}");
+    expect(navbar).toContain('data-nav-disabled');
+    expect(navbar).toContain('aria-disabled="true"');
+    expect(navbar).toContain('<SearchPlaceholder');
     expect(navbar).toContain('role="img"');
     expect(navbar).toContain('mexicoFlag');
     expect(navbar).toContain('usaFlag');
-    expect(navbar).toContain('siteConfig.urls.login');
     expect(source('src/islands/MobileNav.tsx')).toContain('<details');
     expect(source('src/islands/MobileNav.tsx')).toContain(
       'aria-label={open ? labels.close : labels.open}',
@@ -50,10 +59,24 @@ describe('navigation contract', () => {
     expect(source('src/islands/MobileNav.tsx')).toContain(
       'data-icon="lucide:x"',
     );
-    expect(source('src/islands/MobileNav.tsx')).toContain('loginHref');
     expect(source('src/islands/MobileNav.tsx')).toContain('flags.mexico');
-    expect(source('src/islands/MobileNav.tsx')).toContain('labels.login');
+    expect(source('src/islands/MobileNav.tsx')).toContain('labels.disabled');
+    expect(source('src/islands/MobileNav.tsx')).toContain('data-nav-disabled');
+    expect(source('src/islands/MobileNav.tsx')).toContain(
+      "aria-current={active ? 'page' : undefined}",
+    );
     expect(source('src/islands/MobileNav.tsx')).not.toContain('>Menú<');
+  });
+
+  it('uses a non-interactive search landmark without a fake input or action', () => {
+    const search = source('src/components/SearchPlaceholder.astro');
+    expect(search).toContain('role="search"');
+    expect(search).toContain('aria-disabled="true"');
+    expect(search).toContain('data-search-placeholder');
+    expect(search).toContain('search.placeholder');
+    expect(search).toContain('search.status');
+    expect(search).not.toContain('<input');
+    expect(search).not.toContain('<form');
   });
 
   it('covers dismissal, focus containment, focus return, and scroll restoration', () => {

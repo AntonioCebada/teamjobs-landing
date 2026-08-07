@@ -24,7 +24,6 @@ describe('final footer, legal, and Compose contracts', () => {
     );
     expect(index).not.toMatch(/Vacantes|vacantes/);
     const footer = source('src/components/Footer.astro');
-    expect(footer).not.toMatch(/Vacantes|vacantes/);
     expect(footer).not.toContain('href="#"');
     expect(footer).toContain('max-w-7xl');
     expect(footer).toContain('mb-12');
@@ -51,6 +50,7 @@ describe('final footer, legal, and Compose contracts', () => {
     expect(footer).toContain('break-all');
     expect(footer).toContain('footer.socialLabel');
     expect(footer).toContain('footer.staffLabel');
+    expect(footer).toContain('aria-disabled="true"');
   });
 
   it('provides Spanish SEO and a home link on both static legal routes', () => {

@@ -1,19 +1,22 @@
 ---
 import { Image } from 'astro:assets';
 import { logo, mexicoFlag, usaFlag } from '../assets/media';
-import { siteConfig, type NavigationKey } from '../config/site';
+import { siteConfig } from '../config/site';
 import { siteContent } from '../content/site';
 import MobileNav from '../islands/MobileNav';
+import SearchPlaceholder from './SearchPlaceholder.astro';
 
 const { navigation } = siteContent;
 const isHome = Astro.url.pathname === '/';
-const links = siteConfig.navigation.map(({ key, href }) => ({
-  href: href.startsWith('#') && !isHome ? `/${href}` : href,
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = siteConfig.navigation.map(({ key, href, disabled }) => ({
+  href,
   key,
   label: navigation.links[key],
+  disabled: disabled ?? false,
+  active: !disabled && href === currentPath,
 }));
 const brandHref = isHome ? '#inicio' : '/';
-const activeKey: NavigationKey | undefined = isHome ? 'nosotros' : undefined;
 ---
 
 <nav
@@ -44,22 +47,40 @@ const activeKey: NavigationKey | undefined = isHome ? 'nosotros' : undefined;
         >Team<span class="text-brand-blue">Jobs</span></span
       >
     </a>
+    <SearchPlaceholder class="hidden max-w-xl flex-1 md:flex" />
     <div class="hidden flex-1 items-center justify-center gap-7 lg:flex">
       {
-        links.map(({ href, key, label }) => (
-          <a
-            data-nav-key={key}
-            aria-current={key === activeKey ? 'location' : undefined}
-            class:list={[
-              'border-b-2 pb-1 text-sm font-semibold transition',
-              key === activeKey
-                ? 'border-brand-blue text-brand-blue'
-                : 'border-transparent text-white/90 hover:border-brand-blue hover:text-white',
-            ]}
-            href={href}
-          >
-            {label}
-          </a>
+        links.map(({ href, key, label, disabled, active }) => (
+          <div>
+            {disabled ? (
+              <span
+                data-nav-key={key}
+                data-nav-disabled
+                role="link"
+                aria-disabled="true"
+                tabindex="-1"
+                title={navigation.disabled}
+                class="cursor-not-allowed border-b-2 border-transparent pb-1 text-sm font-semibold text-white/45"
+              >
+                {label}
+                <span class="sr-only"> ({navigation.disabled})</span>
+              </span>
+            ) : (
+              <a
+                data-nav-key={key}
+                aria-current={active ? 'page' : undefined}
+                class:list={[
+                  'border-b-2 pb-1 text-sm font-semibold transition',
+                  active
+                    ? 'border-brand-blue text-brand-blue'
+                    : 'border-transparent text-white/90 hover:border-brand-blue hover:text-white',
+                ]}
+                href={href}
+              >
+                {label}
+              </a>
+            )}
+          </div>
         ))
       }
     </div>
@@ -88,19 +109,15 @@ const activeKey: NavigationKey | undefined = isHome ? 'nosotros' : undefined;
           />
         </span>
       </span>
-      <a
-        href={siteConfig.urls.login}
-        class="rounded-full bg-brand-blue px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_25px_rgba(59,130,246,0.45)] transition hover:-translate-y-0.5 hover:bg-blue-600"
-      >
-        {navigation.login}
-      </a>
     </div>
     <MobileNav
       client:load
       links={links}
       labels={navigation}
-      loginHref={siteConfig.urls.login}
       flags={{ mexico: mexicoFlag.src, usa: usaFlag.src }}
     />
+  </div>
+  <div class="px-4 pb-3 md:hidden">
+    <SearchPlaceholder />
   </div>
 </nav>

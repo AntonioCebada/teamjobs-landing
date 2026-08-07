@@ -100,7 +100,7 @@ describe('visual-only contact form contracts', () => {
     expect(contact).not.toContain('href="#"');
   });
 
-  it('keeps authoritative contact details and uses the sibling vacancy route', () => {
+  it('keeps authoritative contact details and keeps vacancies disabled', () => {
     expect(siteContent.contact.details).toEqual({
       address:
         'Av. Río Churubusco 601, Xoco, Benito Juárez, 03330 Ciudad de México, CDMX',
@@ -111,8 +111,11 @@ describe('visual-only contact form contracts', () => {
     });
     expect(siteConfig.navigation.map(({ key }) => key)).toContain('vacantes');
     expect(
+      siteConfig.navigation.find(({ key }) => key === 'vacantes'),
+    ).toMatchObject({ disabled: true });
+    expect(
       siteConfig.navigation.find(({ key }) => key === 'vacantes')?.href,
-    ).toBe('/vacantes');
+    ).toBeUndefined();
     expect(siteContent.hero.primaryCta).not.toContain('Vacantes');
   });
 });

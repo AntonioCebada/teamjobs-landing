@@ -1,17 +1,9 @@
 const urls = {
-  login: '/login',
   socials: {},
   legal: { privacy: '/privacidad', cookies: '/cookies' },
 } as const;
 
-export type NavigationKey =
-  | 'inicio'
-  | 'nosotros'
-  | 'servicios'
-  | 'vacantes'
-  | 'empresas'
-  | 'recursos'
-  | 'contacto';
+export type NavigationKey = 'inicio' | 'vacantes' | 'contenido' | 'contacto';
 
 export const siteConfig = {
   siteUrl: 'https://teamjobs.example',
@@ -19,12 +11,13 @@ export const siteConfig = {
   whatsappNumber: '+5215610275879',
   urls,
   navigation: [
-    { key: 'inicio', href: '#inicio' },
-    { key: 'nosotros', href: '#nosotros' },
-    { key: 'servicios', href: '#servicios' },
-    { key: 'vacantes', href: '/vacantes' },
-    { key: 'empresas', href: '#empresas' },
-    { key: 'recursos', href: '#recursos' },
-    { key: 'contacto', href: '#contacto' },
-  ] satisfies ReadonlyArray<{ key: NavigationKey; href: string }>,
+    { key: 'inicio', href: '/' },
+    { key: 'vacantes', disabled: true },
+    { key: 'contenido', href: '/blog' },
+    { key: 'contacto', disabled: true },
+  ] satisfies ReadonlyArray<{
+    key: NavigationKey;
+    href?: string;
+    disabled?: boolean;
+  }>,
 } as const;

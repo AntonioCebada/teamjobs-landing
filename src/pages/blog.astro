@@ -1,0 +1,18 @@
+---
+import { siteContent } from '../content/site';
+import BlogPage from '../components/BlogPage.astro';
+import Footer from '../components/Footer.astro';
+import Navbar from '../components/Navbar.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const { blog } = siteContent;
+---
+
+<BaseLayout
+  title={`Contenido | ${siteContent.brandName}`}
+  description={blog.description}
+>
+  <Navbar slot="header" />
+  <BlogPage />
+  <Footer slot="footer" />
+</BaseLayout>
