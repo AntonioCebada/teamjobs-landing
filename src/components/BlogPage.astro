@@ -5,17 +5,13 @@ const { blog } = siteContent;
 ---
 
 <section class="bg-white py-10 sm:py-14 lg:py-16">
-  <div class="page-shell min-w-0">
-    <header class="max-w-3xl">
+  <div class="blog-page-canvas min-w-0" data-blog-canvas>
+    <header class="blog-intro" data-blog-intro>
       <p class="eyebrow">{blog.eyebrow}</p>
-      <h1
-        class="mt-5 text-4xl font-bold leading-tight text-brand-navy sm:text-5xl lg:text-6xl"
-      >
-        {blog.titleStart}<span class="bg-brand bg-clip-text text-transparent"
-          >{blog.titleAccent}</span
-        >
+      <h1 class="blog-intro-title font-bold text-brand-navy" data-blog-title>
+        {blog.title}
       </h1>
-      <p class="mt-5 max-w-2xl text-base leading-7 text-brand-muted sm:text-lg">
+      <p class="blog-intro-subtitle text-brand-muted" data-blog-subtitle>
         {blog.description}
       </p>
     </header>
@@ -54,41 +50,18 @@ const { blog } = siteContent;
                 class="blog-card overflow-hidden rounded-[1.25rem] border border-brand-ink/10 bg-white shadow-[0_0.75rem_2rem_rgba(45,50,112,0.08)]"
                 data-layout={post.layout}
                 data-tone={post.tone}
-                aria-labelledby={`blog-post-${post.id}`}
+                data-blog-card
+                aria-label={post.title}
               >
                 <div
                   class="blog-placeholder"
                   data-placeholder
                   role="img"
                   aria-label={post.placeholder}
-                >
-                  <span>{post.placeholder}</span>
-                </div>
-                <div class="p-5 sm:p-6">
-                  <div class="flex items-center justify-between gap-3">
-                    <span class="rounded-full bg-brand-sky px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-brand-violet">
-                      {post.category}
-                    </span>
-                    <time
-                      class="shrink-0 text-xs font-semibold text-brand-muted"
-                      datetime={post.dateTime}
-                    >
-                      {post.date}
-                    </time>
-                  </div>
-                  <h3
-                    id={`blog-post-${post.id}`}
-                    class="mt-4 text-xl font-bold leading-tight text-brand-navy"
-                  >
-                    {post.title}
-                  </h3>
-                  <p class="mt-3 text-sm leading-6 text-brand-muted">
-                    {post.description}
-                  </p>
-                  <div class="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-brand-ink/10 pt-4 text-xs font-semibold text-brand-muted">
-                    <span>{post.author}</span>
-                    <span>{post.readingTime}</span>
-                  </div>
+                />
+                <div class="blog-card-overlay" data-blog-overlay>
+                  <span data-blog-publisher>{post.author}</span>
+                  <span data-blog-reading-time>{post.readingTime}</span>
                 </div>
               </article>
             ))
@@ -139,56 +112,109 @@ const { blog } = siteContent;
 </section>
 
 <style>
+  .blog-page-canvas {
+    width: 100%;
+    max-width: none;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 3vw, 4rem);
+  }
+
+  .blog-intro {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .blog-intro-title {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin-top: clamp(1rem, 1.25vw, 1.5rem);
+    overflow-wrap: break-word;
+    font-size: clamp(2.25rem, calc(2rem + 1.1vw), 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .blog-intro-subtitle {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin-top: clamp(0.75rem, 0.8vw, 1.25rem);
+    font-size: clamp(1rem, calc(0.9rem + 0.3vw), 1.25rem);
+    line-height: clamp(1.5rem, calc(1.4rem + 0.3vw), 2rem);
+  }
+
   .blog-masonry {
     column-count: 1;
-    column-gap: 1rem;
+    column-gap: clamp(0.75rem, 1.25vw, 1.5rem);
   }
 
   .blog-card {
+    position: relative;
     display: inline-block;
     width: 100%;
     margin: 0 0 1rem;
     break-inside: avoid;
+    isolation: isolate;
+    min-height: 13rem;
     vertical-align: top;
   }
 
   .blog-placeholder {
-    display: grid;
-    min-height: 9rem;
-    place-items: center;
-    border-bottom: 1px solid rgb(45 50 112 / 0.12);
-    padding: 1.25rem;
-    color: var(--placeholder-ink);
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid rgb(45 50 112 / 0.12);
     background: var(--placeholder-bg);
-    text-align: center;
+    pointer-events: none;
   }
 
-  .blog-placeholder span {
-    max-width: 12rem;
-    border: 1px dashed currentColor;
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
+  .blog-card-overlay {
+    position: absolute;
+    z-index: 1;
+    inset-inline: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 2.75rem 1rem 1rem;
+    background: linear-gradient(
+      180deg,
+      rgb(13 17 69 / 0%),
+      rgb(13 17 69 / 0.18) 24%,
+      rgb(13 17 69 / 0.94) 100%
+    );
+    color: #ffffff;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.4;
-    opacity: 0.78;
+    text-shadow: 0 1px 0 rgb(13 17 69 / 0.35);
   }
 
-  .blog-card[data-layout='tall'] .blog-placeholder {
-    min-height: 17rem;
+  .blog-card-overlay span:last-child {
+    flex-shrink: 0;
+    font-weight: 600;
   }
 
-  .blog-card[data-layout='feature'] .blog-placeholder {
-    min-height: 15rem;
+  .blog-card[data-layout='tall'] {
+    min-height: 25rem;
   }
 
-  .blog-card[data-layout='medium'] .blog-placeholder {
-    min-height: 11rem;
+  .blog-card[data-layout='feature'] {
+    min-height: 22rem;
   }
 
-  .blog-card[data-layout='compact'] .blog-placeholder,
-  .blog-card[data-layout='quote'] .blog-placeholder {
-    min-height: 7rem;
+  .blog-card[data-layout='medium'] {
+    min-height: 18rem;
+  }
+
+  .blog-card[data-layout='compact'],
+  .blog-card[data-layout='quote'] {
+    min-height: 13rem;
   }
 
   .blog-card[data-tone='navy'] {
@@ -239,7 +265,6 @@ const { blog } = siteContent;
   @media (min-width: 40rem) {
     .blog-masonry {
       column-count: 2;
-      column-gap: 1.25rem;
     }
 
     .blog-card {
@@ -250,6 +275,24 @@ const { blog } = siteContent;
   @media (min-width: 64rem) {
     .blog-masonry {
       column-count: 3;
+    }
+  }
+
+  @media (min-width: 90rem) {
+    .blog-masonry {
+      column-count: 4;
+    }
+  }
+
+  @media (min-width: 120rem) {
+    .blog-masonry {
+      column-count: 5;
+    }
+  }
+
+  @media (min-width: 150rem) {
+    .blog-masonry {
+      column-count: 6;
     }
   }
 </style>

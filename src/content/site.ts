@@ -267,8 +267,7 @@ export const siteContent = {
   },
   blog: {
     eyebrow: 'Ideas, consejos y oportunidades',
-    titleStart: 'Descubre contenido para ',
-    titleAccent: 'impulsar tu carrera',
+    title: 'Explora contenido de interés',
     description:
       'Guías prácticas y conversaciones sobre empleo para ayudarte a tomar mejores decisiones profesionales.',
     categoriesLabel: 'Temas de contenido, solo visuales por ahora',

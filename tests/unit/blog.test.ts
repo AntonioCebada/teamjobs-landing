@@ -8,6 +8,7 @@ const source = (path: string) =>
 describe('blog UI contract', () => {
   it('centralizes the static publication scaffold and honest non-goals', () => {
     const { blog } = siteContent;
+    expect(blog.title).toBe('Explora contenido de interés');
     expect(blog.categories).toHaveLength(6);
     expect(blog.posts).toHaveLength(9);
     expect(blog.sidebar.items).toHaveLength(3);
@@ -24,17 +25,88 @@ describe('blog UI contract', () => {
     expect(page).toContain('title={`Contenido | ${siteContent.brandName}`}');
   });
 
-  it('uses CSS-native masonry and bordered placeholders instead of post images', () => {
+  it('renders the exact centralized heading without assembling the old split copy', () => {
+    const blog = source('src/components/BlogPage.astro');
+    expect(blog).toContain('{blog.title}');
+    expect(blog).not.toContain('titleStart');
+    expect(blog).not.toContain('titleAccent');
+    expect(siteContent.blog.title).not.toContain('Descubre contenido para');
+  });
+
+  it('keeps the wide canvas exception local to the blog page', () => {
+    const blog = source('src/components/BlogPage.astro');
+    const global = source('src/styles/global.css');
+    expect(blog).toContain('data-blog-canvas');
+    expect(blog).toContain('.blog-page-canvas');
+    expect(blog).toContain('width: 100%');
+    expect(blog).toContain('max-width: none');
+    expect(global).toContain('width: min(100% - 2rem, 72rem)');
+  });
+
+  it('uses the full blog canvas for a fluid, responsive intro block', () => {
+    const blog = source('src/components/BlogPage.astro');
+    expect(blog).toContain('data-blog-intro');
+    expect(blog).toContain('data-blog-title');
+    expect(blog).toContain('data-blog-subtitle');
+    expect(blog).toMatch(
+      /\.blog-intro\s*\{[\s\S]*?width:\s*100%;[\s\S]*?max-width:\s*none;/,
+    );
+    expect(blog).toMatch(
+      /\.blog-intro-title\s*\{[\s\S]*?width:\s*100%;[\s\S]*?max-width:\s*none;[\s\S]*?font-size:\s*clamp\(/,
+    );
+    expect(blog).toMatch(
+      /\.blog-intro-subtitle\s*\{[\s\S]*?width:\s*100%;[\s\S]*?max-width:\s*none;[\s\S]*?font-size:\s*clamp\(/,
+    );
+    expect(blog).not.toContain('max-w-3xl');
+    expect(blog).not.toContain('max-w-2xl');
+  });
+
+  it('keeps the responsive intro on a restrained editorial scale', () => {
+    const blog = source('src/components/BlogPage.astro');
+    expect(blog).toContain(
+      'font-size: clamp(2.25rem, calc(2rem + 1.1vw), 4rem);',
+    );
+    expect(blog).toContain(
+      'font-size: clamp(1rem, calc(0.9rem + 0.3vw), 1.25rem);',
+    );
+    expect(blog).toContain(
+      'line-height: clamp(1.5rem, calc(1.4rem + 0.3vw), 2rem);',
+    );
+    expect(blog).toContain('margin-top: clamp(1rem, 1.25vw, 1.5rem);');
+    expect(blog).toContain('margin-top: clamp(0.75rem, 0.8vw, 1.25rem);');
+  });
+
+  it('uses CSS-native masonry with full-card placeholders and dense desktop columns', () => {
     const blog = source('src/components/BlogPage.astro');
     expect(blog).toContain('data-blog-masonry');
     expect(blog).toContain('column-count: 1');
     expect(blog).toContain('column-count: 2');
     expect(blog).toContain('column-count: 3');
+    expect(blog).toContain('column-count: 4');
+    expect(blog).toContain('column-count: 5');
+    expect(blog).toContain('column-count: 6');
+    expect(blog).toContain('@media (min-width: 150rem)');
     expect(blog).toContain('break-inside: avoid');
     expect(blog).toContain('data-placeholder');
     expect(blog).toContain('role="img"');
+    expect(blog).toContain('data-blog-overlay');
+    expect(blog).toContain('data-blog-publisher');
+    expect(blog).toContain('data-blog-reading-time');
+    expect(blog).toContain('inset: 0');
+    expect(blog).toContain('linear-gradient');
     expect(blog).not.toMatch(/<Image|<img\b/);
     expect(blog).not.toContain('client:');
+  });
+
+  it('does not render editorial fields inside publication cards', () => {
+    const blog = source('src/components/BlogPage.astro');
+    expect(blog).toContain('aria-label={post.title}');
+    expect(blog).not.toContain('{post.description}');
+    expect(blog).not.toContain('{post.category}');
+    expect(blog).not.toContain('{post.date}');
+    expect(blog).not.toContain('{post.dateTime}');
+    expect(blog).not.toContain('<h3');
+    expect(blog).not.toContain('<time');
   });
 
   it('keeps category and vacancy scaffolding visibly static', () => {
