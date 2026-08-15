@@ -1,0 +1,14 @@
+---
+import { siteContent } from '../../content/site';
+import AuthPanel from '../../islands/AuthPanel';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title={`${siteContent.account.title} | ${siteContent.brandName}`}
+  description={siteContent.account.description}
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 md:px-8">
+    <AuthPanel client:load />
+  </section>
+</BaseLayout>
