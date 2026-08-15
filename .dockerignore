@@ -7,3 +7,16 @@ node_modules
 *.log
 openspec
 design/mockups
+
+# Local secrets must never enter the Docker build context.
+**/.env
+**/.env.*
+!.env.example
+
+# Supabase runtime metadata can be root-owned and is not build input.
+supabase/.temp
+supabase/.temp/**
+**/supabase/.temp
+**/supabase/.temp/**
+**/supabase/**/.temp
+**/supabase/**/.temp/**

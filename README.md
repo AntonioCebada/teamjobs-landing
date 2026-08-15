@@ -106,21 +106,22 @@ amplia para este proyecto Astro 5.
 - La CLI de Playwright para la verificación en el navegador. **No** es una
   dependencia del paquete del proyecto; consulte [CLI de Playwright](#cli-de-playwright).
 - La CLI de Supabase **no** es un requisito global. Es la dependencia de
-  desarrollo local exacta `supabase@2.111.0` y debe invocarse mediante
-  `pnpm exec supabase`.
+  desarrollo local exacta `supabase@2.111.0` y debe invocarse desde la raíz
+  mediante `docker compose run --rm supabase-cli <argumentos>`.
 
 ## Modos de entorno
 
 ### Modo Docker (canónico)
 
-Compose define cuatro servicios:
+Compose define cinco servicios:
 
-| Servicio  | Propósito                                                    | Puerto                                                |
-| --------- | ------------------------------------------------------------ | ----------------------------------------------------- |
-| `dev`     | Servidor de desarrollo de Astro con el código fuente montado | Equipo anfitrión `4321` → contenedor `4321`           |
-| `test`    | Ejecución completa de Vitest                                 | Sin puerto publicado; usa la red del equipo anfitrión |
-| `build`   | Compilación de producción de Astro                           | Sin puerto publicado                                  |
-| `preview` | nginx sirve el sitio estático generado                       | Equipo anfitrión `4321` → contenedor `80`             |
+| Servicio       | Propósito                                                    | Puerto                                                |
+| -------------- | ------------------------------------------------------------ | ----------------------------------------------------- |
+| `dev`          | Servidor de desarrollo de Astro con el código fuente montado | Equipo anfitrión `4321` → contenedor `4321`           |
+| `test`         | Ejecución completa de Vitest                                 | Sin puerto publicado; usa la red del equipo anfitrión |
+| `build`        | Compilación de producción de Astro                           | Sin puerto publicado                                  |
+| `preview`      | nginx sirve el sitio estático generado                       | Equipo anfitrión `4321` → contenedor `80`             |
+| `supabase-cli` | Helper opt-in para la CLI local de Supabase                  | Red del equipo anfitrión; sin puerto propio           |
 
 Compose monta el repositorio en `/app` y superpone el volumen con nombre
 `app_node_modules` en `/app/node_modules`. El contexto de compilación de Docker
@@ -128,6 +129,13 @@ también excluye el `node_modules` del equipo anfitrión mediante `.dockerignore
 Por lo tanto, las dependencias están aisladas de las instaladas en el equipo
 anfitrión; no agregue un montaje bind de `node_modules` del equipo anfitrión a
 Compose.
+
+`supabase-cli` es la excepción deliberada: monta el repositorio en la misma ruta
+absoluta indicada por `${PWD}` y usa esa ruta como directorio de trabajo. Ejecute
+ese servicio únicamente desde la raíz del repositorio. El daemon Docker del host
+y la CLI deben resolver la misma ruta; `/app` no cumple ese contrato para los
+contenedores que crea Supabase. El perfil `tools` evita que el helper privilegiado
+arranque con `docker compose up dev`.
 
 ### Alternativa de pnpm en el equipo anfitrión
 
@@ -205,6 +213,7 @@ equipo anfitrión muestra la alternativa equivalente después de ejecutar
 | Registros de desarrollo          | `docker compose logs -f dev`                                                 | No aplicable                                                   | No                                                    |
 | Detener servicios                | `docker compose down`                                                        | Detener el proceso del equipo anfitrión con `Ctrl+C`           | Solo estado de Docker                                 |
 | Eliminar volumen de dependencias | `docker compose down --volumes`                                              | Eliminar `node_modules` solo al restablecerlo intencionalmente | Estado de Docker/dependencias                         |
+| Ejecutar la CLI de Supabase      | `docker compose run --rm supabase-cli <argumentos>`                          | No recomendada para el flujo canónico                          | Estado local según el subcomando                      |
 
 Los scripts del paquete están definidos en `package.json`:
 
@@ -323,17 +332,17 @@ Los datos del proyecto alojado son los siguientes:
 
 La referencia del proyecto alojado se representa intencionalmente como
 `<project-ref>` en este documento. Obténgala con el comando
-`pnpm exec supabase projects list`, desde el panel de Supabase o mediante un
+`docker compose run --rm supabase-cli projects list`, desde el panel de Supabase o mediante un
 mantenedor autorizado.
 
 El flujo de trabajo con el proyecto alojado de Supabase consiste en iniciar
 sesión, listar y vincular:
 
 ```bash
-pnpm exec supabase --version
-pnpm exec supabase login
-pnpm exec supabase projects list
-pnpm exec supabase link --project-ref <project-ref>
+docker compose run --rm supabase-cli --version
+docker compose run --rm supabase-cli login
+docker compose run --rm supabase-cli projects list
+docker compose run --rm supabase-cli link --project-ref <project-ref>
 ```
 
 `supabase login` abre el flujo de autenticación. `supabase link` puede requerir
@@ -360,9 +369,10 @@ La pila local de Supabase es opcional y está separada tanto del proyecto alojad
 como de los servicios Compose de Astro. Requiere Docker:
 
 ```bash
-pnpm exec supabase start
-pnpm exec supabase status
-pnpm exec supabase stop
+docker compose run --rm supabase-cli start
+docker compose run --rm supabase-cli status -o env
+docker compose run --rm supabase-cli db reset
+docker compose run --rm supabase-cli stop
 ```
 
 Los puertos provienen de `supabase/config.toml`:
@@ -377,9 +387,9 @@ Los puertos provienen de `supabase/config.toml`:
 
 `supabase start` crea contenedores y datos locales; no inicia Astro.
 `docker compose down` administra el proyecto de Compose de Astro, no esta pila
-local de Supabase. El comando normal `pnpm exec supabase stop` conserva los
+local de Supabase. El comando normal `docker compose run --rm supabase-cli stop` conserva los
 datos locales mediante el flujo de copia de seguridad de la CLI. No utilice
-`pnpm exec supabase stop --no-backup` ni `--all` de forma casual:
+`docker compose run --rm supabase-cli stop --no-backup` ni `--all` de forma casual:
 `--no-backup` elimina los volúmenes de datos locales y `--all` detiene todas las
 instancias locales de Supabase del usuario.
 Considere confidencial la salida de `supabase status` si contiene claves o
@@ -420,7 +430,7 @@ requiere configurar Auth para el sitio estático actual.
 | `mockups/`                    | Referencias de diseño; excluidas del contexto de compilación de Docker.                                                        |
 | `supabase/`                   | Configuración de la CLI de Supabase y trabajo futuro de base de datos/autenticación. `.temp/` son metadatos locales ignorados. |
 | `Dockerfile`                  | Etapas fijadas de compilación de Node.js/pnpm e imagen de producción de nginx.                                                 |
-| `docker-compose.yml`          | Orquestación de los servicios `dev`, `test`, `build` y `preview`.                                                              |
+| `docker-compose.yml`          | Orquestación de Astro y helper opt-in `supabase-cli`, con socket y ruta absoluta compartida.                                   |
 | `nginx.conf`                  | Configuración del servidor de producción estático.                                                                             |
 | `.agents/skills/`             | Guías locales del proyecto para la CLI de Playwright, Supabase y las prácticas recomendadas de Supabase Postgres.              |
 | `.playwright/cli.config.json` | Configuración del navegador para la CLI de Playwright.                                                                         |
@@ -518,10 +528,10 @@ Ejecute la CLI local del proyecto y compruebe la autenticación y la visibilidad
 del proyecto:
 
 ```bash
-pnpm exec supabase --version
-pnpm exec supabase login
-pnpm exec supabase projects list
-pnpm exec supabase link --project-ref <project-ref>
+docker compose run --rm supabase-cli --version
+docker compose run --rm supabase-cli login
+docker compose run --rm supabase-cli projects list
+docker compose run --rm supabase-cli link --project-ref <project-ref>
 ```
 
 Confirme que la cuenta tiene acceso a `Landing TeamJobs` y al proyecto
