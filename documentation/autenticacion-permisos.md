@@ -10,6 +10,7 @@ TeamJobs ofrece registro e inicio de sesión con Supabase. El navegador recibe
 | ---------- | ---------------------------------------- | ------------- |
 | `/auth/`   | Registro, inicio y cierre de sesión      | Público       |
 | `/editor/` | Creación y edición de borradores propios | Editor activo |
+| `/admin/`  | Gestión de cuentas y publicaciones       | Admin activo  |
 
 El navbar de escritorio y el menú móvil muestran **Iniciar sesión** con destino
 a `/auth/`. El footer no incluye este acceso.
@@ -43,6 +44,18 @@ Una cuenta con rol Editor puede abrir `/editor/`, crear borradores y modificar
 publicación o archivo. Una cuenta lectora, suspendida o anónima recibe una
 denegación explícita, mientras que RLS conserva la autoridad final sobre cada
 lectura y escritura.
+
+## Administración
+
+Una cuenta administradora activa puede abrir `/admin/`, cambiar roles, suspender
+o reactivar cuentas, editar publicaciones y cambiar su estado a publicado o
+archivado. La base de datos valida cada operación y protege al último
+administrador activo.
+
+El primer administrador no se crea desde el navegador. Su promoción requiere
+una acción fuera de banda, aprobada y ejecutada por una persona mantenedora que
+verifique previamente la identidad y el entorno. No utilice una clave
+`service_role` en el frontend para realizar este bootstrap.
 
 ## Configuración local
 
