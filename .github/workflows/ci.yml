@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: 'true'
+  PUBLIC_SUPABASE_URL: https://example.supabase.co
+  PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_placeholder
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.14.0
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.34.5 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm vitest run
+
+      - name: Run Astro check
+        run: pnpm check
+
+      - name: Run lint
+        run: pnpm lint
+
+      - name: Exclude managed tooling metadata from formatting
+        run: printf '%s\n' '.agents/' '.engram/' '.playwright/' >> .prettierignore
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Validate Docker Compose
+        run: docker compose config --quiet
+
+      - name: Run ShellCheck on tracked scripts
+        shell: bash
+        run: |
+          mapfile -d '' scripts < <(git ls-files -z '*.sh')
+          if ((${#scripts[@]})); then
+            shellcheck "${scripts[@]}"
+          fi
+
+  pull-request-policy:
+    name: Pull request policy
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate approved issue and type label
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const pullRequest = context.payload.pull_request;
+            const body = pullRequest.body ?? '';
+            const issuePattern = /\b(?:Closes|Fixes|Resolves)\s+#(\d+)\b/gi;
+            const issueNumbers = [
+              ...new Set(
+                [...body.matchAll(issuePattern)].map((match) => Number(match[1])),
+              ),
+            ];
+            const typeLabels = pullRequest.labels
+              .map((label) => label.name)
+              .filter((name) => name.startsWith('type:'));
+            const errors = [];
+
+            if (issueNumbers.length === 0) {
+              errors.push(
+                'The pull request body must contain Closes #N, Fixes #N, or Resolves #N.',
+              );
+            }
+
+            if (typeLabels.length !== 1) {
+              errors.push(
+                `The pull request must have exactly one type:* label; found ${typeLabels.length}.`,
+              );
+            }
+
+            for (const issueNumber of issueNumbers) {
+              try {
+                const { data: issue } = await github.rest.issues.get({
+                  ...context.repo,
+                  issue_number: issueNumber,
+                });
+
+                if (issue.pull_request) {
+                  errors.push(`#${issueNumber} is a pull request, not an issue.`);
+                  continue;
+                }
+
+                const labels = issue.labels.map((label) =>
+                  typeof label === 'string' ? label : label.name,
+                );
+
+                if (!labels.includes('status:approved')) {
+                  errors.push(`#${issueNumber} does not have status:approved.`);
+                }
+              } catch (error) {
+                if (error.status === 404) {
+                  errors.push(`#${issueNumber} does not exist.`);
+                  continue;
+                }
+                throw error;
+              }
+            }
+
+            if (errors.length > 0) {
+              core.setFailed(errors.join('\n'));
+            }
