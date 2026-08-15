@@ -67,15 +67,61 @@ describe('final footer, legal, and Compose contracts', () => {
     expect(source('src/pages/privacidad.astro')).toContain(
       'formulario de contacto de esta landing',
     );
-    expect(source('src/pages/cookies.astro')).toContain('no establece cookies');
+    expect(source('src/pages/cookies.astro')).toContain('localStorage');
+  });
+
+  it('discloses implemented account facts without legacy contradictions', () => {
+    const privacy = source('src/pages/privacidad.astro');
+    const cookies = source('src/pages/cookies.astro');
+    const legal = `${privacy}\n${cookies}`;
+    const normalizedPrivacy = privacy.replace(/\s+/g, ' ');
+    const normalizedCookies = cookies.replace(/\s+/g, ' ');
+    const normalizedLegal = legal.replace(/\s+/g, ' ');
+
+    expect(normalizedPrivacy).toContain('correo electrónico y contraseña');
+    expect(normalizedPrivacy).toContain('Supabase procesa esos datos');
+    expect(normalizedPrivacy).toContain('nombre público');
+    expect(normalizedPrivacy).toContain('rol (Lector,');
+    expect(normalizedPrivacy).toContain('estado de suspensión');
+    expect(normalizedPrivacy).toContain('crear o editar publicaciones');
+    expect(normalizedPrivacy).toContain('no guarda contraseñas en texto plano');
+    expect(normalizedPrivacy).toContain('teamjobsmexico@gmail.com');
+    expect(normalizedPrivacy).toContain('Río Churubusco 601');
+    expect(normalizedPrivacy).toContain('derechos que resulten aplicables');
+
+    expect(normalizedCookies).toContain('cliente de Supabase');
+    expect(normalizedCookies).toContain('localStorage');
+    expect(normalizedCookies).toContain(
+      'no se gestionan mediante una cookie propia de autenticación',
+    );
+    expect(normalizedCookies).toContain('cerrar sesión');
+
+    expect(normalizedLegal).not.toMatch(
+      /no es un portal de registro|no mantiene sesiones/i,
+    );
+    expect(normalizedLegal).not.toMatch(
+      /no establece cookies|no crea cookies/i,
+    );
+    expect(normalizedLegal).not.toMatch(
+      /contraseñas?\s+(en|sin)\s+texto\s+plano.*se almacenan/i,
+    );
   });
 
   it('removes managed Playwright infrastructure while preserving Docker targets', () => {
     const compose = source('docker-compose.yml');
-    expect(compose).not.toMatch(/playwright|e2e|profiles/i);
+    expect(compose).not.toMatch(/playwright|e2e/i);
     for (const service of ['dev:', 'build:', 'preview:', 'test:'])
       expect(compose).toContain(service);
-    expect(source('package.json')).not.toMatch(/playwright/i);
+    expect(source('package.json')).not.toMatch(
+      /playwright.*(?:service|image|e2e|compose)/i,
+    );
+    expect(compose).toContain(
+      '$${PUBLIC_SUPABASE_URL:?Define PUBLIC_SUPABASE_URL',
+    );
+    expect(compose).toContain(
+      '$${PUBLIC_SUPABASE_PUBLISHABLE_KEY:?Define PUBLIC_SUPABASE_PUBLISHABLE_KEY',
+    );
+    expect(compose).not.toMatch(/service[_-]?role|sb_secret_/i);
   });
 
   it('keeps the footer and legal documents safe at the 320px contract width', () => {

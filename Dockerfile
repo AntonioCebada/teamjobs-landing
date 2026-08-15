@@ -18,6 +18,14 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
+FROM deps AS supabase-cli
+RUN \
+  apk add --no-cache docker-cli \
+  && docker --version \
+  && pnpm exec supabase --version
+ENTRYPOINT ["/app/node_modules/.bin/supabase"]
+CMD ["--help"]
+
 FROM deps AS test
 COPY . .
 CMD ["pnpm", "test"]
@@ -29,6 +37,10 @@ CMD ["pnpm", "dev", "--host", "0.0.0.0"]
 
 FROM deps AS build
 COPY . .
+ARG PUBLIC_SUPABASE_URL
+ARG PUBLIC_SUPABASE_PUBLISHABLE_KEY
+ENV PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
+ENV PUBLIC_SUPABASE_PUBLISHABLE_KEY=${PUBLIC_SUPABASE_PUBLISHABLE_KEY}
 RUN pnpm build
 
 FROM nginx:1.29.1-alpine AS prod

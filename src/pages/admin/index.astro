@@ -1,0 +1,14 @@
+---
+import { siteContent } from '../../content/site';
+import AdminApp from '../../islands/AdminApp';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title={`${siteContent.admin.title} | ${siteContent.brandName}`}
+  description={siteContent.admin.description}
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 md:px-8">
+    <AdminApp client:load />
+  </section>
+</BaseLayout>

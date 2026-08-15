@@ -22,6 +22,7 @@ export const siteContent = {
     close: 'Cerrar menú',
     language: 'Español',
     disabled: 'Próximamente',
+    login: 'Iniciar sesión',
     search: {
       label: 'Búsqueda del sitio',
       placeholder: 'Buscar personas, temas o vacantes...',
@@ -264,6 +265,19 @@ export const siteContent = {
       cookies: 'Política de cookies',
     },
     copyright: '© 2026 TeamJobs. Todos los derechos reservados.',
+  },
+  account: {
+    title: 'Acceso a tu cuenta',
+    description:
+      'Inicia sesión o crea una cuenta para acceder a las herramientas de TeamJobs.',
+  },
+  editor: {
+    title: 'Editor de contenido',
+    description: 'Administra tus borradores de forma segura.',
+  },
+  admin: {
+    title: 'Administración de TeamJobs',
+    description: 'Gestiona cuentas, roles y publicaciones.',
   },
   blog: {
     eyebrow: 'Ideas, consejos y oportunidades',

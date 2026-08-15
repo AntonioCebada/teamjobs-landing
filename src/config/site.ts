@@ -8,6 +8,7 @@ export type NavigationKey = 'inicio' | 'vacantes' | 'contenido' | 'contacto';
 export const siteConfig = {
   siteUrl: 'https://teamjobs.example',
   contactHref: '#contacto',
+  authHref: '/auth/',
   whatsappNumber: '+5215610275879',
   urls,
   navigation: [

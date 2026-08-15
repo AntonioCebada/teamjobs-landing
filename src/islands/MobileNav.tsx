@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
 type Props = {
+  account: {
+    href: string;
+    label: string;
+    active: boolean;
+  };
   links: ReadonlyArray<{
     href?: string;
     label: string;
@@ -23,7 +28,7 @@ type Props = {
 const focusable =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export default function MobileNav({ links, flags, labels }: Props) {
+export default function MobileNav({ account, links, flags, labels }: Props) {
   const [open, setOpen] = useState(false);
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const triggerRef = useRef<HTMLElement>(null);
@@ -97,7 +102,7 @@ export default function MobileNav({ links, flags, labels }: Props) {
       <summary
         ref={triggerRef}
         aria-label={open ? labels.close : labels.open}
-        class="cursor-pointer list-none rounded-lg border border-white/20 p-2 group-open:fixed group-open:top-5 group-open:right-6 group-open:z-[60] [&::-webkit-details-marker]:hidden"
+        class="summary-marker-hidden cursor-pointer list-none rounded-lg border border-white/20 p-2 group-open:fixed group-open:top-5 group-open:right-6 group-open:z-[60]"
       >
         {open ? (
           <svg
@@ -158,6 +163,17 @@ export default function MobileNav({ links, flags, labels }: Props) {
               </a>
             ),
           )}
+          <a
+            data-auth-access="mobile"
+            aria-current={account.active ? 'page' : undefined}
+            className={`mt-3 rounded-full border border-brand-blue px-4 py-3 text-center font-bold hover:bg-brand-blue${
+              account.active ? ' bg-brand-blue text-white' : ''
+            }`}
+            href={account.href}
+            onClick={() => close(false)}
+          >
+            {account.label}
+          </a>
           <div class="mt-2 flex flex-wrap items-center gap-3 px-4 py-3">
             <span
               role="img"

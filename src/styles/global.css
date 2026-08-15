@@ -86,6 +86,10 @@
   animation: gentle-float 5s ease-in-out infinite;
 }
 
+.summary-marker-hidden::-webkit-details-marker {
+  display: none;
+}
+
 @utility page-shell {
   width: min(100% - 2rem, 72rem);
   margin-inline: auto;

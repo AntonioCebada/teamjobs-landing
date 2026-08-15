@@ -1,5 +1,10 @@
 .astro/
+.agents/
+.engram/
+.playwright/
 dist/
 node_modules/
 openspec/
 pnpm-lock.yaml
+supabase/.temp/
+supabase/**/.temp/

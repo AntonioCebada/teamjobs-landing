@@ -7,47 +7,70 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="Política de cookies | TeamJobs"
-  description="Información sobre cookies y tecnologías de almacenamiento en el sitio estático de TeamJobs."
+  description="Información sobre cookies y almacenamiento local en TeamJobs."
 >
   <Navbar slot="header" />
   <LegalPage
     title="Política de cookies"
-    description="El sitio estático de TeamJobs no incorpora cookies propias, seguimiento ni analítica en su implementación actual."
-    updatedAt="5 de agosto de 2026"
+    description="Descripción factual de las tecnologías de almacenamiento utilizadas por las cuentas actuales."
+    updatedAt="11 de agosto de 2026"
   >
     <section>
       <h2 class="text-2xl font-bold text-brand-navy">
-        1. Tecnologías utilizadas
+        1. Sesiones y almacenamiento local
       </h2>
       <p class="mt-3">
-        Esta landing se entrega como archivos estáticos y no establece cookies,
-        LocalStorage, SessionStorage, píxeles publicitarios ni herramientas de
-        analítica. Tampoco mantiene sesiones de usuario ni preferencias
-        persistentes.
-      </p>
-    </section>
-    <section>
-      <h2 class="text-2xl font-bold text-brand-navy">2. Enlaces a terceros</h2>
-      <p class="mt-3">
-        Los enlaces de correo, teléfono y WhatsApp pueden abrir aplicaciones o
-        servicios externos. Al salir de este sitio, el proveedor externo puede
-        aplicar sus propias tecnologías y políticas; esas prácticas no son
-        configuradas por esta landing.
+        Para las cuentas de TeamJobs, el cliente de Supabase conserva la sesión
+        en el almacenamiento local (<code>localStorage</code>) del navegador.
+        Estas sesiones no se gestionan mediante una cookie propia de
+        autenticación de esta aplicación. El almacenamiento local puede incluir
+        los datos técnicos necesarios para que la sesión persista entre visitas.
       </p>
     </section>
     <section>
       <h2 class="text-2xl font-bold text-brand-navy">
-        3. Control del navegador
+        2. Cookies y herramientas adicionales
       </h2>
       <p class="mt-3">
-        Los navegadores permiten consultar y administrar las cookies de los
-        sitios que sí las utilizan. En este sitio no existe un banner de
-        consentimiento porque la implementación actual no crea cookies ni activa
-        herramientas de seguimiento.
+        La implementación actual no agrega una herramienta propia de analítica
+        ni píxeles publicitarios. Esta página no describe una cookie de
+        autenticación porque la sesión de las cuentas se conserva en
+        <code>localStorage</code>, no en una cookie propia de esta aplicación.
       </p>
     </section>
     <section>
-      <h2 class="text-2xl font-bold text-brand-navy">4. Actualizaciones</h2>
+      <h2 class="text-2xl font-bold text-brand-navy">3. Enlaces a terceros</h2>
+      <p class="mt-3">
+        Los enlaces de correo, teléfono y WhatsApp pueden abrir aplicaciones o
+        servicios externos. Al salir de este sitio, el proveedor externo puede
+        aplicar sus propias cookies, tecnologías y políticas; esas prácticas no
+        son configuradas por esta aplicación.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        4. Control del navegador
+      </h2>
+      <p class="mt-3">
+        La interfaz de cuenta permite cerrar sesión. El navegador también
+        permite consultar y administrar el almacenamiento local y las cookies de
+        los sitios que los utilizan. Esta aplicación no fija un plazo de
+        conservación del almacenamiento local en su código.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">5. Contacto</h2>
+      <p class="mt-3">
+        Para consultas sobre privacidad, cookies o almacenamiento local puede
+        escribir a <a
+          class="font-semibold text-brand-blue underline"
+          href="mailto:teamjobsmexico@gmail.com">teamjobsmexico@gmail.com</a
+        >. También están disponibles el teléfono y el canal de WhatsApp
+        publicados por TeamJobs.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">6. Actualizaciones</h2>
       <p class="mt-3">
         Si el sitio incorpora una tecnología que cambie este alcance, esta
         página se actualizará para describirla de forma clara antes de

@@ -1,9 +1,36 @@
+x-public-supabase-args: &public-supabase-args
+  PUBLIC_SUPABASE_URL: ${PUBLIC_SUPABASE_URL:-}
+  PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${PUBLIC_SUPABASE_PUBLISHABLE_KEY:-}
+
+x-public-supabase-env: &public-supabase-env
+  PUBLIC_SUPABASE_URL: ${PUBLIC_SUPABASE_URL:-}
+  PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${PUBLIC_SUPABASE_PUBLISHABLE_KEY:-}
+
 services:
+  supabase-cli:
+    profiles: ['tools']
+    build:
+      context: .
+      target: supabase-cli
+      network: host
+    network_mode: host
+    user: '0:0'
+    working_dir: ${PWD:?Ejecuta Docker Compose desde la raiz del repositorio}
+    volumes:
+      - type: bind
+        source: ${PWD:?Ejecuta Docker Compose desde la raiz del repositorio}
+        target: ${PWD:?Ejecuta Docker Compose desde la raiz del repositorio}
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    command: ['--help']
+
   dev:
     build:
       context: .
       target: dev
       network: host
+      args: *public-supabase-args
     ports:
       - '4321:4321'
     volumes:
@@ -11,14 +38,22 @@ services:
       - app_node_modules:/app/node_modules
     environment:
       CI: 'true'
+      <<: *public-supabase-env
     command:
-      ['sh', '-c', 'pnpm install --frozen-lockfile && pnpm dev --host 0.0.0.0']
+      - sh
+      - -c
+      - |
+        : "$${PUBLIC_SUPABASE_URL:?Define PUBLIC_SUPABASE_URL para iniciar Docker dev}"
+        : "$${PUBLIC_SUPABASE_PUBLISHABLE_KEY:?Define PUBLIC_SUPABASE_PUBLISHABLE_KEY para iniciar Docker dev}"
+        pnpm install --frozen-lockfile
+        pnpm dev --host 0.0.0.0
 
   build:
     build:
       context: .
       target: build
       network: host
+      args: *public-supabase-args
     command: ['pnpm', 'build']
 
   preview:
@@ -26,6 +61,7 @@ services:
       context: .
       target: prod
       network: host
+      args: *public-supabase-args
     ports:
       - '4321:80'
 
@@ -34,12 +70,15 @@ services:
       context: .
       target: test
       network: host
+      args: *public-supabase-args
     network_mode: host
     volumes:
       - .:/app
       - app_node_modules:/app/node_modules
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       CI: 'true'
+      <<: *public-supabase-env
     command: ['pnpm', 'test']
 
 volumes:
