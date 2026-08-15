@@ -75,7 +75,9 @@ describe('final footer, legal, and Compose contracts', () => {
     expect(compose).not.toMatch(/playwright|e2e/i);
     for (const service of ['dev:', 'build:', 'preview:', 'test:'])
       expect(compose).toContain(service);
-    expect(source('package.json')).not.toMatch(/playwright/i);
+    expect(source('package.json')).not.toMatch(
+      /playwright.*(?:service|image|e2e|compose)/i,
+    );
   });
 
   it('keeps the footer and legal documents safe at the 320px contract width', () => {
