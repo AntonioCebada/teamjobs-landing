@@ -17,6 +17,11 @@ const links = siteConfig.navigation.map(({ key, href, disabled }) => ({
   active: !disabled && href === currentPath,
 }));
 const brandHref = isHome ? '#inicio' : '/';
+const account = {
+  href: siteConfig.authHref,
+  label: navigation.login,
+  active: currentPath === siteConfig.authHref.replace(/\/$/, ''),
+};
 ---
 
 <nav
@@ -85,6 +90,19 @@ const brandHref = isHome ? '#inicio' : '/';
       }
     </div>
     <div class="hidden items-center gap-3 lg:flex">
+      <a
+        data-auth-access="desktop"
+        href={account.href}
+        aria-current={account.active ? 'page' : undefined}
+        class:list={[
+          'rounded-full border px-4 py-2 text-sm font-bold transition',
+          account.active
+            ? 'border-brand-blue bg-brand-blue text-white'
+            : 'border-brand-blue/70 text-white hover:bg-brand-blue hover:text-white',
+        ]}
+      >
+        {account.label}
+      </a>
       <span
         role="img"
         aria-label={`Idioma actual: ${navigation.language}`}
@@ -113,6 +131,7 @@ const brandHref = isHome ? '#inicio' : '/';
     <MobileNav
       client:load
       links={links}
+      account={account}
       labels={navigation}
       flags={{ mexico: mexicoFlag.src, usa: usaFlag.src }}
     />
