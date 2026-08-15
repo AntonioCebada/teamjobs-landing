@@ -18,6 +18,14 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
+FROM deps AS supabase-cli
+RUN \
+  apk add --no-cache docker-cli \
+  && docker --version \
+  && pnpm exec supabase --version
+ENTRYPOINT ["/app/node_modules/.bin/supabase"]
+CMD ["--help"]
+
 FROM deps AS test
 COPY . .
 CMD ["pnpm", "test"]

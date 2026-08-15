@@ -1,4 +1,22 @@
 services:
+  supabase-cli:
+    profiles: ['tools']
+    build:
+      context: .
+      target: supabase-cli
+      network: host
+    network_mode: host
+    user: '0:0'
+    working_dir: ${PWD:?Ejecuta Docker Compose desde la raiz del repositorio}
+    volumes:
+      - type: bind
+        source: ${PWD:?Ejecuta Docker Compose desde la raiz del repositorio}
+        target: ${PWD:?Ejecuta Docker Compose desde la raiz del repositorio}
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    command: ['--help']
+
   dev:
     build:
       context: .

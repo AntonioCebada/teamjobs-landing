@@ -72,7 +72,7 @@ describe('final footer, legal, and Compose contracts', () => {
 
   it('removes managed Playwright infrastructure while preserving Docker targets', () => {
     const compose = source('docker-compose.yml');
-    expect(compose).not.toMatch(/playwright|e2e|profiles/i);
+    expect(compose).not.toMatch(/playwright|e2e/i);
     for (const service of ['dev:', 'build:', 'preview:', 'test:'])
       expect(compose).toContain(service);
     expect(source('package.json')).not.toMatch(/playwright/i);
