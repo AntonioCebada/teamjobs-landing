@@ -63,6 +63,15 @@ describe('navigation contract', () => {
     expect(source('src/islands/MobileNav.tsx')).toContain('labels.disabled');
     expect(source('src/islands/MobileNav.tsx')).toContain('data-nav-disabled');
     expect(source('src/islands/MobileNav.tsx')).toContain(
+      'summary-marker-hidden',
+    );
+    expect(source('src/islands/MobileNav.tsx')).not.toContain(
+      '[&::-webkit-details-marker]:hidden',
+    );
+    expect(source('src/styles/global.css')).toContain(
+      '.summary-marker-hidden::-webkit-details-marker',
+    );
+    expect(source('src/islands/MobileNav.tsx')).toContain(
       "aria-current={active ? 'page' : undefined}",
     );
     expect(source('src/islands/MobileNav.tsx')).not.toContain('>Menú<');
