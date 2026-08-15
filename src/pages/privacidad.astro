@@ -7,60 +7,103 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="Aviso de privacidad | TeamJobs"
-  description="Información de privacidad aplicable al sitio estático de TeamJobs."
+  description="Información sobre cuentas, sesiones y contenido publicado en TeamJobs."
 >
   <Navbar slot="header" />
   <LegalPage
     title="Aviso de privacidad"
-    description="Información clara sobre los datos que este sitio puede recibir y los canales externos disponibles para contactar a TeamJobs."
-    updatedAt="5 de agosto de 2026"
+    description="Descripción factual de las cuentas, las sesiones y el contenido que actualmente administra este sitio."
+    updatedAt="11 de agosto de 2026"
   >
     <section>
-      <h2 class="text-2xl font-bold text-brand-navy">
-        1. Alcance de este sitio
-      </h2>
+      <h2 class="text-2xl font-bold text-brand-navy">1. Alcance y contacto</h2>
       <p class="mt-3">
-        Esta página pertenece al sitio informativo estático de TeamJobs. Su
-        objetivo es presentar servicios y canales de contacto; no es un portal
-        de registro, autenticación, postulación ni gestión de expedientes.
+        Esta página describe el comportamiento actual de las cuentas y del blog
+        de TeamJobs. El sitio también presenta servicios y canales de contacto.
+        Para consultas relacionadas con privacidad puede escribir a
+        <a
+          class="font-semibold text-brand-blue underline"
+          href="mailto:teamjobsmexico@gmail.com">teamjobsmexico@gmail.com</a
+        >, llamar al <a
+          class="font-semibold text-brand-blue underline"
+          href="tel:+5215610275879">+52 1 56 1027 5879</a
+        > o utilizar el canal de WhatsApp publicado. El domicilio de contacto publicado
+        es Av. Río Churubusco 601, Xoco, Benito Juárez, 03330 Ciudad de México, CDMX.
       </p>
     </section>
     <section>
       <h2 class="text-2xl font-bold text-brand-navy">
-        2. Datos que no se recaban aquí
+        2. Datos de cuentas y publicaciones
+      </h2>
+      <p class="mt-3">
+        Las cuentas públicas se crean y utilizan mediante correo electrónico y
+        contraseña. Supabase procesa esos datos para autenticar la cuenta. Esta
+        aplicación no guarda contraseñas en texto plano ni las escribe en los
+        perfiles o las publicaciones.
+      </p>
+      <p class="mt-3">
+        El perfil de una cuenta contiene un nombre público, un rol (Lector,
+        Editor o Administrador) y un estado de suspensión. Estos datos se usan
+        para mostrar la cuenta y aplicar los límites de acceso. Una cuenta
+        autorizada puede crear o editar publicaciones; los borradores de un
+        editor están asociados con su autor y una cuenta administradora puede
+        gestionar las publicaciones y sus estados.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        3. Finalidades y límites de acceso
+      </h2>
+      <p class="mt-3">
+        Los datos de cuenta se utilizan para iniciar sesión, conservar la sesión
+        en el navegador, cargar el perfil y aplicar los permisos de lector,
+        editor o administrador. Las publicaciones se utilizan para administrar
+        borradores y, cuando una cuenta autorizada las publica, mostrar el
+        contenido del blog.
+      </p>
+      <p class="mt-3">
+        El acceso se limita por cuenta y rol: una persona editora administra
+        únicamente sus borradores; una persona administradora puede gestionar
+        perfiles y publicaciones; una cuenta suspendida no puede realizar las
+        acciones editoriales autorizadas. El contenido público del blog expone
+        el título, el texto, el nombre público del autor y la fecha de
+        publicación. No expone el correo electrónico, el rol ni el estado de
+        suspensión del perfil.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        4. Sesiones y conservación
+      </h2>
+      <p class="mt-3">
+        La sesión de una cuenta se conserva en el almacenamiento local del
+        navegador mediante el cliente de Supabase. La implementación actual no
+        define en la aplicación un plazo de conservación de los datos; por eso
+        esta página no inventa un periodo. La interfaz ofrece cerrar sesión y
+        cada persona puede administrar el almacenamiento de su navegador.
+      </p>
+    </section>
+    <section>
+      <h2 class="text-2xl font-bold text-brand-navy">
+        5. Formulario y canales externos
       </h2>
       <p class="mt-3">
         El formulario de contacto de esta landing es únicamente visual. La
         validación ocurre en el navegador, el formulario no tiene endpoint ni
-        transporte y los datos escritos no se envían desde este sitio. El sitio
-        tampoco solicita identificaciones, currículos ni resultados de
-        evaluaciones.
+        transporte y los datos escritos no se envían desde este sitio. Si una
+        persona elige escribir al correo, llamar por teléfono o abrir WhatsApp,
+        la interacción ocurre fuera de esta página y queda sujeta a los términos
+        y políticas del proveedor correspondiente. No envíe información sensible
+        mediante el formulario visual de esta página.
       </p>
-    </section>
-    <section>
-      <h2 class="text-2xl font-bold text-brand-navy">3. Canales externos</h2>
       <p class="mt-3">
-        Si una persona elige escribir al correo, llamar por teléfono o abrir
-        WhatsApp, la interacción ocurre fuera de esta página y queda sujeta a
-        los términos y políticas del proveedor correspondiente. Estos enlaces no
-        convierten el formulario visual en un canal de envío.
+        Para consultas sobre privacidad, acceso a información o el ejercicio de
+        los derechos que resulten aplicables, utilice los canales de contacto
+        indicados en la primera sección.
       </p>
     </section>
     <section>
-      <h2 class="text-2xl font-bold text-brand-navy">
-        4. Consultas sobre privacidad
-      </h2>
-      <p class="mt-3">
-        Para realizar una consulta relacionada con privacidad puede utilizar el
-        correo <a
-          class="font-semibold text-brand-blue underline"
-          href="mailto:teamjobsmexico@gmail.com">teamjobsmexico@gmail.com</a
-        >. No envíe información sensible mediante el formulario visual de esta
-        página.
-      </p>
-    </section>
-    <section>
-      <h2 class="text-2xl font-bold text-brand-navy">5. Actualizaciones</h2>
+      <h2 class="text-2xl font-bold text-brand-navy">6. Actualizaciones</h2>
       <p class="mt-3">
         Esta información puede actualizarse cuando cambie el alcance técnico del
         sitio o los canales publicados. La fecha de actualización se muestra al

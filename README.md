@@ -358,10 +358,13 @@ metadatos vinculados, pero este estado es local a esa copia y no está confirmad
 Cada desarrollador debe autenticarse y establecer sus propios metadatos de
 vínculo; no copie `.temp` entre máquinas.
 
-La CLI de Supabase y los SDK de aplicación de Supabase son aspectos diferentes.
-Este repositorio actualmente solo contiene la CLI. No incluye
-`@supabase/supabase-js` ni `@supabase/ssr`, y ninguna parte del código de la
-aplicación Astro lee credenciales de Supabase.
+La aplicación incluye un cliente de navegador basado en
+`@supabase/supabase-js`, que lee únicamente `PUBLIC_SUPABASE_URL` y
+`PUBLIC_SUPABASE_PUBLISHABLE_KEY`. La autenticación, el editor, la
+administración y el blog están implementados. La CLI de Supabase se ejecuta
+mediante el helper contenedorizado documentado arriba. Consulte
+[`documentation/autenticacion-permisos.md`](documentation/autenticacion-permisos.md)
+para conocer el flujo y los permisos en detalle.
 
 ### Pila local opcional de Supabase
 
