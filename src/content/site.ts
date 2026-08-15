@@ -271,6 +271,10 @@ export const siteContent = {
     description:
       'Inicia sesión o crea una cuenta para acceder a las herramientas de TeamJobs.',
   },
+  editor: {
+    title: 'Editor de contenido',
+    description: 'Administra tus borradores de forma segura.',
+  },
   blog: {
     eyebrow: 'Ideas, consejos y oportunidades',
     title: 'Explora contenido de interés',

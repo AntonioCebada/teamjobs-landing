@@ -6,9 +6,10 @@ TeamJobs ofrece registro e inicio de sesión con Supabase. El navegador recibe
 
 ## Ruta disponible
 
-| Ruta     | Propósito                           | Acceso  |
-| -------- | ----------------------------------- | ------- |
-| `/auth/` | Registro, inicio y cierre de sesión | Público |
+| Ruta       | Propósito                                | Acceso        |
+| ---------- | ---------------------------------------- | ------------- |
+| `/auth/`   | Registro, inicio y cierre de sesión      | Público       |
+| `/editor/` | Creación y edición de borradores propios | Editor activo |
 
 El navbar de escritorio y el menú móvil muestran **Iniciar sesión** con destino
 a `/auth/`. El footer no incluye este acceso.
@@ -34,6 +35,14 @@ independiente.
 
 Los lectores no pueden elevar su propio rol. La autorización permanece en la
 base de datos y no depende de controles visuales del navegador.
+
+## Editor de borradores
+
+Una cuenta con rol Editor puede abrir `/editor/`, crear borradores y modificar
+únicamente los borradores que le pertenecen. La interfaz no ofrece acciones de
+publicación o archivo. Una cuenta lectora, suspendida o anónima recibe una
+denegación explícita, mientras que RLS conserva la autoridad final sobre cada
+lectura y escritura.
 
 ## Configuración local
 
