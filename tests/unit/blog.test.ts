@@ -76,37 +76,21 @@ describe('blog UI contract', () => {
     expect(blog).toContain('margin-top: clamp(0.75rem, 0.8vw, 1.25rem);');
   });
 
-  it('uses CSS-native masonry with full-card placeholders and dense desktop columns', () => {
+  it('mounts the browser public blog island instead of static placeholder cards', () => {
     const blog = source('src/components/BlogPage.astro');
-    expect(blog).toContain('data-blog-masonry');
-    expect(blog).toContain('column-count: 1');
-    expect(blog).toContain('column-count: 2');
-    expect(blog).toContain('column-count: 3');
-    expect(blog).toContain('column-count: 4');
-    expect(blog).toContain('column-count: 5');
-    expect(blog).toContain('column-count: 6');
-    expect(blog).toContain('@media (min-width: 150rem)');
-    expect(blog).toContain('break-inside: avoid');
-    expect(blog).toContain('data-placeholder');
-    expect(blog).toContain('role="img"');
-    expect(blog).toContain('data-blog-overlay');
-    expect(blog).toContain('data-blog-publisher');
-    expect(blog).toContain('data-blog-reading-time');
-    expect(blog).toContain('inset: 0');
-    expect(blog).toContain('linear-gradient');
-    expect(blog).not.toMatch(/<Image|<img\b/);
-    expect(blog).not.toContain('client:');
+    expect(blog).toContain("import BlogApp from '../islands/BlogApp';");
+    expect(blog).toContain('<BlogApp client:load />');
+    expect(blog).not.toContain('data-blog-card');
+    expect(blog).not.toContain('data-placeholder');
   });
 
-  it('does not render editorial fields inside publication cards', () => {
-    const blog = source('src/components/BlogPage.astro');
-    expect(blog).toContain('aria-label={post.title}');
-    expect(blog).not.toContain('{post.description}');
-    expect(blog).not.toContain('{post.category}');
-    expect(blog).not.toContain('{post.date}');
-    expect(blog).not.toContain('{post.dateTime}');
-    expect(blog).not.toContain('<h3');
-    expect(blog).not.toContain('<time');
+  it('keeps public state rendering and Markdown safety in the island', () => {
+    const blogApp = source('src/islands/BlogApp.tsx');
+    expect(blogApp).toContain('getPublishedPosts');
+    expect(blogApp).toContain('renderSafeMarkdown');
+    expect(blogApp).toContain('dangerouslySetInnerHTML');
+    expect(blogApp).not.toMatch(/post\.(email|role)/);
+    expect(blogApp).not.toContain('authorEmail');
   });
 
   it('keeps category and vacancy scaffolding visibly static', () => {
