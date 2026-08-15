@@ -22,6 +22,7 @@ export const siteContent = {
     close: 'Cerrar menú',
     language: 'Español',
     disabled: 'Próximamente',
+    login: 'Iniciar sesión',
     search: {
       label: 'Búsqueda del sitio',
       placeholder: 'Buscar personas, temas o vacantes...',

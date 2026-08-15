@@ -10,6 +10,9 @@ TeamJobs ofrece registro e inicio de sesión con Supabase. El navegador recibe
 | -------- | ----------------------------------- | ------- |
 | `/auth/` | Registro, inicio y cierre de sesión | Público |
 
+El navbar de escritorio y el menú móvil muestran **Iniciar sesión** con destino
+a `/auth/`. El footer no incluye este acceso.
+
 ## Prerrequisitos
 
 - Docker y Docker Compose disponibles.

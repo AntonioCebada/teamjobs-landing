@@ -68,6 +68,24 @@ describe('navigation contract', () => {
     expect(source('src/islands/MobileNav.tsx')).not.toContain('>Menú<');
   });
 
+  it('exposes account access only in desktop and mobile navigation', () => {
+    const navbar = source('src/components/Navbar.astro');
+    const mobile = source('src/islands/MobileNav.tsx');
+    const footer = source('src/components/Footer.astro');
+
+    expect(siteConfig.authHref).toBe('/auth/');
+    expect(siteContent.navigation.login).toBe('Iniciar sesión');
+    expect(siteConfig.navigation.some(({ href }) => href === '/auth/')).toBe(
+      false,
+    );
+    expect(navbar).toContain('data-auth-access="desktop"');
+    expect(navbar).toContain('href={account.href}');
+    expect(mobile).toContain('data-auth-access="mobile"');
+    expect(mobile).toContain('href={account.href}');
+    expect(footer).not.toContain('data-auth-access');
+    expect(footer).not.toContain('/auth');
+  });
+
   it('uses a non-interactive search landmark without a fake input or action', () => {
     const search = source('src/components/SearchPlaceholder.astro');
     expect(search).toContain('role="search"');
