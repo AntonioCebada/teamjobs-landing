@@ -102,7 +102,7 @@ export default function MobileNav({ account, links, flags, labels }: Props) {
       <summary
         ref={triggerRef}
         aria-label={open ? labels.close : labels.open}
-        class="cursor-pointer list-none rounded-lg border border-white/20 p-2 group-open:fixed group-open:top-5 group-open:right-6 group-open:z-[60] [&::-webkit-details-marker]:hidden"
+        class="summary-marker-hidden cursor-pointer list-none rounded-lg border border-white/20 p-2 group-open:fixed group-open:top-5 group-open:right-6 group-open:z-[60]"
       >
         {open ? (
           <svg
