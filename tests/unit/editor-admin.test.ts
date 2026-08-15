@@ -26,4 +26,24 @@ describe('editor authorization UI contract', () => {
       expect(editor).toContain(state);
     expect(source('src/pages/editor/index.astro')).toContain('client:load');
   });
+
+  it('keeps account and publication controls exclusive to administrators', () => {
+    expect(canAccessRole('admin', 'admin')).toBe(true);
+    expect(canAccessRole('editor', 'admin')).toBe(false);
+    expect(
+      safeDataError({ message: 'cannot demote the last active admin' }),
+    ).toContain('último administrador');
+
+    const admin = source('src/islands/AdminApp.tsx');
+    for (const control of [
+      "from('profiles')",
+      "from('posts')",
+      'Publicar',
+      'Archivar',
+      'suspended_at',
+      'role="alert"',
+    ])
+      expect(admin).toContain(control);
+    expect(source('src/pages/admin/index.astro')).toContain('client:load');
+  });
 });

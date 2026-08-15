@@ -275,6 +275,10 @@ export const siteContent = {
     title: 'Editor de contenido',
     description: 'Administra tus borradores de forma segura.',
   },
+  admin: {
+    title: 'Administración de TeamJobs',
+    description: 'Gestiona cuentas, roles y publicaciones.',
+  },
   blog: {
     eyebrow: 'Ideas, consejos y oportunidades',
     title: 'Explora contenido de interés',
