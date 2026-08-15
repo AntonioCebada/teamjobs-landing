@@ -78,6 +78,13 @@ describe('final footer, legal, and Compose contracts', () => {
     expect(source('package.json')).not.toMatch(
       /playwright.*(?:service|image|e2e|compose)/i,
     );
+    expect(compose).toContain(
+      '$${PUBLIC_SUPABASE_URL:?Define PUBLIC_SUPABASE_URL',
+    );
+    expect(compose).toContain(
+      '$${PUBLIC_SUPABASE_PUBLISHABLE_KEY:?Define PUBLIC_SUPABASE_PUBLISHABLE_KEY',
+    );
+    expect(compose).not.toMatch(/service[_-]?role|sb_secret_/i);
   });
 
   it('keeps the footer and legal documents safe at the 320px contract width', () => {
