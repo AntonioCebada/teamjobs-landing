@@ -265,6 +265,11 @@ export const siteContent = {
     },
     copyright: '© 2026 TeamJobs. Todos los derechos reservados.',
   },
+  account: {
+    title: 'Acceso a tu cuenta',
+    description:
+      'Inicia sesión o crea una cuenta para acceder a las herramientas de TeamJobs.',
+  },
   blog: {
     eyebrow: 'Ideas, consejos y oportunidades',
     title: 'Explora contenido de interés',
